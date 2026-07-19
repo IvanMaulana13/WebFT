@@ -122,20 +122,30 @@ Section "Informasi" tampak di Beranda (kontak, akreditasi, dsb).
 - Urutan tampil (reorder) untuk logo yang tampil di Beranda.
 
 ### 5.6 Modul Data Dosen
-- Field: Nama, NIDN, foto, jabatan fungsional (Asisten Ahli/Lektor/dst), gelar akademik, bidang keahlian, email, program studi, status aktif/tidak aktif.
-- CRUD penuh.
-- Pencarian & filter berdasarkan program studi/bidang keahlian.
+- Field: **Foto, NIK, Kode Dosen, NIDN, Nama, Program Studi, Email**.
+- CRUD penuh (create, list dengan search & filter, update, hapus).
+- Pencarian & filter berdasarkan Program Studi.
+- Validasi: NIK, Kode Dosen, dan NIDN masing-masing unik (tidak boleh duplikat), Email harus format email valid.
 - Data ini nantinya dapat ditampilkan di halaman "Dosen" (jika ada) maupun direferensikan di halaman lain.
 
-### 5.7 Modul Data Pimpinan Fakultas & Struktur Organisasi
+### 5.7 Modul Data Tenaga Pendidikan *(baru)*
+- Field: **Foto, NUPTK, Nama, Jabatan, Email**.
+- CRUD penuh (create, list dengan search, update, hapus).
+- Validasi: NUPTK unik (jika diisi), Email format valid.
+- Modul ini terpisah dari Data Dosen karena Tenaga Pendidikan (tenaga kependidikan/staf non-dosen) memiliki struktur data yang berbeda.
+
+### 5.8 Modul Data Pimpinan Fakultas
 - Field: Nama, foto, jabatan (Dekan, Wakil Dekan I/II/III, Kaprodi, dst), periode jabatan, deskripsi singkat/sambutan (khusus Dekan sesuai contoh gambar).
-- **Level/urutan hierarki** — field khusus untuk menentukan posisi di bagan Struktur Organisasi (mis. level 1 = Dekan, level 2 = Wakil Dekan, dst) beserta "atasan langsung" (parent) agar bagan organisasi otomatis tergambar berdasarkan data, bukan gambar statis.
 - CRUD penuh + upload foto.
-- Perubahan data pimpinan otomatis ter-reflect di halaman "Pimpinan Fakultas" **dan** "Struktur Organisasi" tanpa perlu edit dua tempat terpisah.
+- **Tidak ada** relasi hierarki/atasan-bawahan yang disimpan di database — modul ini murni daftar profil pimpinan yang tampil di halaman "Pimpinan Fakultas".
 
-> **Catatan penting:** Sebaiknya "Struktur Organisasi" **tidak** dikelola sebagai gambar statis (seperti terlihat di mockup saat ini), melainkan digambar otomatis (misal pakai komponen tree/flow diagram) dari data Pimpinan Fakultas. ini menghindari admin harus mendesain ulang gambar bagan setiap kali ada pergantian jabatan.
+### 5.9 Modul Struktur Organisasi *(gambar statis)*
+- Berbeda dari rencana awal, **Struktur Organisasi dikelola sebagai satu gambar statis** (bukan bagan otomatis yang terhubung ke data Pimpinan Fakultas).
+- Admin dapat **upload/ganti (replace) gambar** bagan struktur organisasi kapan saja saat ada perubahan, melalui satu halaman sederhana di dashboard (upload gambar baru akan menggantikan gambar sebelumnya).
+- Tidak perlu form kompleks — cukup: preview gambar saat ini, tombol "Ganti Gambar" (upload baru), dan tombol hapus (opsional, mengembalikan ke kosong/placeholder).
+- Validasi upload: tipe file gambar (jpg/png/webp), ukuran maksimal (mis. 5MB agar bagan tetap jelas terbaca).
 
-### 5.8 Dashboard Overview (Beranda Admin)
+### 5.10 Dashboard Overview (Beranda Admin)
 - Ringkasan jumlah data (jumlah berita, prestasi, mitra, dosen) dalam bentuk card statistik.
 - Aktivitas terbaru (log siapa mengubah apa, kapan).
 - Shortcut ke modul yang sering diakses.
@@ -229,11 +239,20 @@ kemitraan
   id, partner_name, logo_url, partnership_type, mou_date, description, website_url, order_index, created_at, updated_at
 
 dosen
-  id, name, nidn, photo_url, jabatan_fungsional, gelar, bidang_keahlian, email, prodi, is_active, created_at, updated_at
+  id, photo_url, nik, kode_dosen, nidn, name, prodi, email, created_at, updated_at, deleted_at
+  (unique: nik, kode_dosen, nidn)
+
+tenaga_pendidikan
+  id, photo_url, nuptk, name, jabatan, email, created_at, updated_at, deleted_at
+  (unique: nuptk)
 
 pimpinan_fakultas
-  id, name, photo_url, jabatan, level_hierarki, parent_id (self-reference), periode_mulai, periode_selesai,
-  sambutan (khusus dekan), created_at, updated_at
+  id, name, photo_url, jabatan, periode_mulai, periode_selesai, sambutan (khusus dekan),
+  created_at, updated_at, deleted_at
+
+struktur_organisasi
+  id, image_url, updated_by (FK ke users.id), updated_at
+  (tabel ini hanya berisi 1 baris aktif — setiap upload baru meng-update baris yang sama, bukan menambah baris baru)
 
 activity_logs
   id, user_id, action, module, record_id, detail, created_at
@@ -242,7 +261,7 @@ media (opsional, untuk manajemen file terpusat)
   id, file_url, file_type, uploaded_by, created_at
 ```
 
-> `parent_id` pada tabel `pimpinan_fakultas` memungkinkan bagan Struktur Organisasi digambar otomatis secara hierarkis.
+> Struktur Organisasi sengaja dibuat sebagai tabel sederhana berisi satu gambar (bukan relasi hierarki), karena dikelola sebagai gambar statis yang diunggah ulang oleh admin saat ada perubahan.
 
 ---
 
@@ -268,8 +287,15 @@ PUT    /api/kemitraan/:id      DELETE /api/kemitraan/:id
 GET    /api/dosen              POST /api/dosen
 PUT    /api/dosen/:id          DELETE /api/dosen/:id
 
+GET    /api/tenaga-pendidikan          POST /api/tenaga-pendidikan
+PUT    /api/tenaga-pendidikan/:id      DELETE /api/tenaga-pendidikan/:id
+
 GET    /api/pimpinan           POST /api/pimpinan
 PUT    /api/pimpinan/:id       DELETE /api/pimpinan/:id
+
+GET    /api/struktur-organisasi        (ambil gambar aktif saat ini)
+POST   /api/struktur-organisasi        (upload/ganti gambar, replace baris yang ada)
+DELETE /api/struktur-organisasi        (opsional, kosongkan/hapus gambar)
 
 GET    /api/users (super admin only)  POST /api/users
 PUT    /api/users/:id                 DELETE /api/users/:id
@@ -294,7 +320,7 @@ Desain front-end publik yang dilampirkan (masih proses) menjadi acuan tampilan *
 - Admin dapat menambah/mengedit/menghapus konten tanpa bantuan developer.
 - Waktu update konten (mis. berita baru tayang) < 5 menit dari login hingga publish.
 - Tidak ada insiden keamanan (login jebol, data bocor) selama masa evaluasi.
-- Struktur organisasi otomatis ter-update begitu data pimpinan diubah.
+- Admin dapat mengganti gambar Struktur Organisasi dengan mudah (upload & replace) tanpa bantuan developer.
 
 ---
 
@@ -315,7 +341,7 @@ Desain front-end publik yang dilampirkan (masih proses) menjadi acuan tampilan *
 |---|---|
 | **Fase 1** | Setup project (Next.js + Bun + Tailwind + shadcn/ui), skema database, sistem login & role |
 | **Fase 2** | CRUD Informasi, Berita, Prestasi, Kemitraan + upload gambar |
-| **Fase 3** | CRUD Data Dosen & Pimpinan Fakultas + integrasi bagan Struktur Organisasi otomatis |
+| **Fase 3** | CRUD Data Dosen, Tenaga Pendidikan, Pimpinan Fakultas + fitur upload/ganti gambar Struktur Organisasi |
 | **Fase 4** | Integrasi ke halaman publik (dynamic rendering), testing, hardening keamanan |
 | **Fase 5** | UAT (User Acceptance Test) bersama staf fakultas, deployment produksi |
 
