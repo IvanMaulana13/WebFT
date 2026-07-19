@@ -113,8 +113,8 @@ export async function POST(request: NextRequest) {
     await db.insert(activityLogs).values({
       action: "create",
       module: "tenaga_pendidikan",
-      entityId: newId,
-      description: `Menambahkan tenaga pendidikan: ${name}`,
+      recordId: newId,
+      detail: `Menambahkan tenaga pendidikan: ${name}`,
     });
 
     const [newRecord] = await db
