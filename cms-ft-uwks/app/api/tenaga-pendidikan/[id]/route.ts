@@ -84,8 +84,8 @@ export async function PUT(request: NextRequest, context: RouteContext) {
     await db.insert(activityLogs).values({
       action: "update",
       module: "tenaga_pendidikan",
-      entityId: id,
-      description: `Memperbarui tenaga pendidikan: ${name}`,
+      recordId: id,
+      detail: `Memperbarui tenaga pendidikan: ${name}`,
     });
 
     const [updated] = await db
@@ -140,8 +140,8 @@ export async function DELETE(request: NextRequest, context: RouteContext) {
     await db.insert(activityLogs).values({
       action: "delete",
       module: "tenaga_pendidikan",
-      entityId: id,
-      description: `Menghapus tenaga pendidikan: ${existing.name}`,
+      recordId: id,
+      detail: `Menghapus tenaga pendidikan: ${existing.name}`,
     });
 
     return NextResponse.json({ message: "Berhasil dihapus" });
