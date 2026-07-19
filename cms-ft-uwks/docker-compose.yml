@@ -1,5 +1,16 @@
 version: "3.9"
 
+# Kompatibel dengan:
+#   docker compose up -d
+#   podman-compose up -d
+#
+# Atau jalankan langsung tanpa compose:
+#   podman run -d --name ft_uwks_mysql \
+#     -e MYSQL_ROOT_PASSWORD=password \
+#     -e MYSQL_DATABASE=ft_uwks_cms \
+#     -p 3306:3306 \
+#     mysql:8.0 --default-authentication-plugin=mysql_native_password
+
 services:
   mysql:
     image: mysql:8.0
@@ -8,8 +19,6 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: ft_uwks_cms
-      MYSQL_USER: ft_user
-      MYSQL_PASSWORD: password
     ports:
       - "3306:3306"
     volumes:
