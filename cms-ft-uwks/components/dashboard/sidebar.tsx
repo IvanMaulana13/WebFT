@@ -10,6 +10,7 @@ import {
   Trophy,
   Handshake,
   GraduationCap,
+  BookUser,
   Users2,
   Building2,
   Users,
@@ -46,6 +47,11 @@ const navItems = [
     title: "Data Dosen",
     href: "/dashboard/dosen",
     icon: GraduationCap,
+  },
+  {
+    title: "Tenaga Pendidikan",
+    href: "/dashboard/tenaga-pendidikan",
+    icon: BookUser,
   },
   {
     title: "Pimpinan Fakultas",
