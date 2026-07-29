@@ -35,3 +35,27 @@ export const tenagaPendidikanUpdateSchema = tenagaPendidikanSchema.partial().ext
 });
 
 export type TenagaPendidikanUpdateInput = z.infer<typeof tenagaPendidikanUpdateSchema>;
+
+// ─────────────────────────────────────────────
+// User Management
+// ─────────────────────────────────────────────
+export const createUserSchema = z.object({
+  name: z.string().min(1, "Nama wajib diisi").max(255, "Nama maksimal 255 karakter"),
+  email: z.string().email("Format email tidak valid").max(255, "Email maksimal 255 karakter"),
+  password: z
+    .string()
+    .min(8, "Password minimal 8 karakter")
+    .max(100, "Password maksimal 100 karakter"),
+  role: z.enum(["super_admin", "admin"]),
+});
+
+export type CreateUserInput = z.infer<typeof createUserSchema>;
+
+export const updateUserSchema = z.object({
+  name: z.string().min(1, "Nama wajib diisi").max(255).optional(),
+  email: z.string().email("Format email tidak valid").max(255).optional(),
+  role: z.enum(["super_admin", "admin"]).optional(),
+  isActive: z.boolean().optional(),
+});
+
+export type UpdateUserInput = z.infer<typeof updateUserSchema>;

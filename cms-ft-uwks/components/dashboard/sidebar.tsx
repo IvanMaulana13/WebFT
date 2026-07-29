@@ -1,7 +1,9 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { signOut } from "next-auth/react";
 import { cn } from "@/lib/utils";
 import {
   LayoutDashboard,
@@ -81,8 +83,14 @@ export function DashboardSidebar() {
       {/* Logo */}
       <div className="px-6 py-5 border-b border-gray-700">
         <Link href="/dashboard" className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-sm font-bold">
-            FT
+          <div className="w-9 h-9 rounded-lg bg-white/10 flex items-center justify-center overflow-hidden p-0.5 shrink-0">
+            <Image
+              src="/logo-uwks.png"
+              alt="Logo UWKS"
+              width={32}
+              height={32}
+              className="object-contain"
+            />
           </div>
           <div>
             <div className="font-bold text-sm">CMS FT UWKS</div>
@@ -150,7 +158,11 @@ export function DashboardSidebar() {
 
       {/* User / Logout */}
       <div className="p-4 border-t border-gray-700">
-        <button className="flex items-center gap-3 w-full px-3 py-2 rounded-lg text-sm text-gray-400 hover:bg-gray-800 hover:text-red-400 transition-colors">
+        <button
+          id="sidebar-logout-btn"
+          onClick={() => signOut({ callbackUrl: "/login" })}
+          className="flex items-center gap-3 w-full px-3 py-2 rounded-lg text-sm text-gray-400 hover:bg-gray-800 hover:text-red-400 transition-colors"
+        >
           <LogOut className="w-4 h-4" />
           Keluar
         </button>
