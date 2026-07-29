@@ -59,3 +59,33 @@ export const updateUserSchema = z.object({
 });
 
 export type UpdateUserInput = z.infer<typeof updateUserSchema>;
+
+// ─────────────────────────────────────────────
+// Informasi
+// ─────────────────────────────────────────────
+export const informasiSchema = z.object({
+  title: z.string().min(1, "Judul wajib diisi").max(500, "Judul maksimal 500 karakter"),
+  content: z.string().min(1, "Konten wajib diisi"),
+  category: z.string().max(100, "Kategori maksimal 100 karakter").optional().or(z.literal("")),
+  status: z.enum(["draft", "published"]),
+});
+
+export type InformasiInput = z.infer<typeof informasiSchema>;
+
+export const informasiUpdateSchema = informasiSchema.partial().extend({
+  title: z.string().min(1, "Judul wajib diisi").max(500),
+  content: z.string().min(1, "Konten wajib diisi"),
+});
+
+export type InformasiUpdateInput = z.infer<typeof informasiUpdateSchema>;
+
+export const reorderSchema = z.object({
+  items: z.array(
+    z.object({
+      id: z.number().int().positive(),
+      orderIndex: z.number().int().min(0),
+    })
+  ).min(1, "Minimal satu item diperlukan"),
+});
+
+export type ReorderInput = z.infer<typeof reorderSchema>;
