@@ -89,3 +89,25 @@ export const reorderSchema = z.object({
 });
 
 export type ReorderInput = z.infer<typeof reorderSchema>;
+
+// ─────────────────────────────────────────────
+// Berita
+// ─────────────────────────────────────────────
+export const beritaSchema = z.object({
+  title: z.string().min(1, "Judul wajib diisi").max(500, "Judul maksimal 500 karakter"),
+  slug: z
+    .string()
+    .min(1, "Slug wajib diisi")
+    .max(500)
+    .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Slug hanya boleh berisi huruf kecil, angka, dan tanda hubung"),
+  content: z.string().min(1, "Konten wajib diisi"),
+  thumbnailUrl: z.string().url("URL thumbnail tidak valid").max(500).optional().or(z.literal("")),
+  category: z.string().max(100).optional().or(z.literal("")),
+  status: z.enum(["draft", "published", "archived"]),
+  publishedAt: z.string().optional().or(z.literal("")),
+});
+
+export type BeritaInput = z.infer<typeof beritaSchema>;
+
+export const beritaUpdateSchema = beritaSchema;
+export type BeritaUpdateInput = z.infer<typeof beritaUpdateSchema>;
