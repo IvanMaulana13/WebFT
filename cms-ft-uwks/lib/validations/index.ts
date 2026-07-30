@@ -139,3 +139,30 @@ export type PrestasiInput = z.infer<typeof prestasiSchema>;
 
 export const prestasiUpdateSchema = prestasiSchema;
 export type PrestasiUpdateInput = z.infer<typeof prestasiUpdateSchema>;
+
+// ─────────────────────────────────────────────
+// Kemitraan
+// ─────────────────────────────────────────────
+export const kemitraanSchema = z.object({
+  partnerName: z.string().min(1, "Nama mitra wajib diisi").max(255, "Nama mitra maksimal 255 karakter"),
+  logoUrl: z.string().url("URL logo tidak valid").max(500).optional().or(z.literal("")),
+  partnershipType: z.string().max(100, "Tipe kemitraan maksimal 100 karakter").optional().or(z.literal("")),
+  mouDate: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, "Format tanggal tidak valid (YYYY-MM-DD)")
+    .optional()
+    .or(z.literal("")),
+  description: z.string().max(5000, "Deskripsi maksimal 5000 karakter").optional().or(z.literal("")),
+  websiteUrl: z
+    .string()
+    .url("Format URL tidak valid (cth: https://example.com)")
+    .max(500)
+    .optional()
+    .or(z.literal("")),
+  orderIndex: z.number().int().min(0).optional(),
+});
+
+export type KemitraanInput = z.infer<typeof kemitraanSchema>;
+
+export const kemitraanUpdateSchema = kemitraanSchema;
+export type KemitraanUpdateInput = z.infer<typeof kemitraanUpdateSchema>;
