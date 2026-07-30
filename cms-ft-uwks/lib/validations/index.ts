@@ -111,3 +111,31 @@ export type BeritaInput = z.infer<typeof beritaSchema>;
 
 export const beritaUpdateSchema = beritaSchema;
 export type BeritaUpdateInput = z.infer<typeof beritaUpdateSchema>;
+
+// ─────────────────────────────────────────────
+// Prestasi
+// ─────────────────────────────────────────────
+const CURRENT_YEAR = new Date().getFullYear();
+
+export const prestasiSchema = z.object({
+  title: z.string().min(1, "Judul wajib diisi").max(500, "Judul maksimal 500 karakter"),
+  achieverName: z.string().min(1, "Nama peraih wajib diisi").max(255, "Nama peraih maksimal 255 karakter"),
+  level: z.enum(["nasional", "internasional"] as const, {
+    error: "Level harus nasional atau internasional",
+  }),
+  year: z
+    .number()
+    .int("Tahun harus berupa bilangan bulat")
+    .min(1000, "Tahun harus 4 digit")
+    .max(9999, "Tahun harus 4 digit")
+    .refine((y) => y <= CURRENT_YEAR, {
+      message: `Tahun tidak boleh melebihi tahun berjalan (${CURRENT_YEAR})`,
+    }),
+  imageUrl: z.string().url("URL gambar tidak valid").max(500).optional().or(z.literal("")),
+  description: z.string().max(5000, "Deskripsi maksimal 5000 karakter").optional().or(z.literal("")),
+});
+
+export type PrestasiInput = z.infer<typeof prestasiSchema>;
+
+export const prestasiUpdateSchema = prestasiSchema;
+export type PrestasiUpdateInput = z.infer<typeof prestasiUpdateSchema>;
