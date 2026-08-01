@@ -37,6 +37,42 @@ export const tenagaPendidikanUpdateSchema = tenagaPendidikanSchema.partial().ext
 export type TenagaPendidikanUpdateInput = z.infer<typeof tenagaPendidikanUpdateSchema>;
 
 // ─────────────────────────────────────────────
+// Dosen
+// ─────────────────────────────────────────────
+export const PRODI_LIST = [
+  "Teknik Sipil",
+  "Informatika",
+  "Teknologi Industri Pertanian",
+] as const;
+
+export const dosenSchema = z.object({
+  photoUrl: z.string().max(500).optional().or(z.literal("")),
+  nik: z
+    .string()
+    .min(1, "NIK wajib diisi")
+    .max(30, "NIK maksimal 30 karakter")
+    .regex(/^\d+$/, "NIK hanya boleh berisi angka"),
+  kodeDosen: z
+    .string()
+    .min(1, "Kode Dosen wajib diisi")
+    .max(20, "Kode Dosen maksimal 20 karakter")
+    .regex(/^[A-Za-z0-9]+$/, "Kode Dosen hanya boleh berisi huruf dan angka"),
+  nidn: z
+    .string()
+    .min(1, "NIDN wajib diisi")
+    .max(20, "NIDN maksimal 20 karakter")
+    .regex(/^\d+$/, "NIDN hanya boleh berisi angka"),
+  name: z.string().min(1, "Nama wajib diisi").max(255, "Nama maksimal 255 karakter"),
+  prodi: z.string().min(1, "Program Studi wajib diisi").max(255),
+  email: z.string().email("Format email tidak valid").max(255),
+});
+
+export type DosenInput = z.infer<typeof dosenSchema>;
+
+export const dosenUpdateSchema = dosenSchema;
+export type DosenUpdateInput = z.infer<typeof dosenUpdateSchema>;
+
+// ─────────────────────────────────────────────
 // User Management
 // ─────────────────────────────────────────────
 export const createUserSchema = z.object({
