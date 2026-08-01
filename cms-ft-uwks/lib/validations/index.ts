@@ -202,3 +202,30 @@ export type KemitraanInput = z.infer<typeof kemitraanSchema>;
 
 export const kemitraanUpdateSchema = kemitraanSchema;
 export type KemitraanUpdateInput = z.infer<typeof kemitraanUpdateSchema>;
+
+// ─────────────────────────────────────────────
+// Pimpinan Fakultas
+// ─────────────────────────────────────────────
+export const JABATAN_DEKAN = "Dekan";
+
+export const pimpinanSchema = z.object({
+  name: z.string().min(1, "Nama wajib diisi").max(255, "Nama maksimal 255 karakter"),
+  photoUrl: z.string().max(500).optional().or(z.literal("")),
+  jabatan: z.string().min(1, "Jabatan wajib diisi").max(255),
+  periodeMulai: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, "Format tanggal tidak valid (YYYY-MM-DD)")
+    .optional()
+    .or(z.literal("")),
+  periodeSelesai: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, "Format tanggal tidak valid (YYYY-MM-DD)")
+    .optional()
+    .or(z.literal("")),
+  sambutan: z.string().optional().or(z.literal("")),
+});
+
+export type PimpinanInput = z.infer<typeof pimpinanSchema>;
+
+export const pimpinanUpdateSchema = pimpinanSchema;
+export type PimpinanUpdateInput = z.infer<typeof pimpinanUpdateSchema>;
