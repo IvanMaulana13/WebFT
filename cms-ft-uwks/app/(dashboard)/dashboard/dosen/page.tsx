@@ -713,7 +713,7 @@ export default function DosenPage() {
           <Select
             value={filterProdi || "__all__"}
             onValueChange={(val) =>
-              setFilterProdi(val === "__all__" ? "" : val)
+              setFilterProdi(val === "__all__" ? "" : (val ?? ""))
             }
           >
             <SelectTrigger id="dosen-filter-prodi" className="w-48">

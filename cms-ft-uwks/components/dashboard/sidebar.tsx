@@ -16,6 +16,7 @@ import {
   Users2,
   Building2,
   Users,
+  Settings2,
   LogOut,
 } from "lucide-react";
 
@@ -72,6 +73,11 @@ const adminItems = [
     title: "Manajemen User",
     href: "/dashboard/users",
     icon: Users,
+  },
+  {
+    title: "Pengaturan Situs",
+    href: "/dashboard/pengaturan",
+    icon: Settings2,
   },
 ];
 

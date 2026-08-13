@@ -87,8 +87,12 @@ export async function PUT(request: NextRequest, context: RouteContext) {
         name,
         photoUrl: photoUrl?.trim() || null,
         jabatan,
-        periodeMulai: periodeMulai?.trim() || null,
-        periodeSelesai: periodeSelesai?.trim() || null,
+        periodeMulai: periodeMulai?.trim()
+          ? new Date(periodeMulai.trim())
+          : null,
+        periodeSelesai: periodeSelesai?.trim()
+          ? new Date(periodeSelesai.trim())
+          : null,
         sambutan:
           jabatan === "Dekan" && sambutan?.trim()
             ? sambutan.trim()

@@ -10,7 +10,7 @@
  */
 
 import { db } from "./index";
-import { users, strukturOrganisasi } from "./schema";
+import { users, strukturOrganisasi, siteSettings } from "./schema";
 import { eq } from "drizzle-orm";
 import bcrypt from "bcryptjs";
 
@@ -67,6 +67,31 @@ async function seed() {
       updatedBy: null,
     });
     console.log("✅ Seed selesai: 1 baris awal tersedia di tabel struktur_organisasi.\n");
+  }
+
+  // ── 3. Site Settings ──────────────────────────────────────────────────
+  console.log("⚙️  Seeding site_settings...");
+
+  const existingSettings = await db.select().from(siteSettings).limit(1);
+
+  if (existingSettings.length > 0) {
+    console.log(
+      `✅ Baris awal site_settings sudah ada (id = ${existingSettings[0].id}). Skip.\n`
+    );
+  } else {
+    await db.insert(siteSettings).values({
+      heroVideoUrl: null,
+      heroPosterUrl: null,
+      waNumber: null,
+      waDefaultMessage: null,
+      socialInstagram: null,
+      socialFacebook: null,
+      socialYoutube: null,
+      socialTwitter: null,
+      socialLinkedin: null,
+      updatedBy: null,
+    });
+    console.log("✅ Seed selesai: 1 baris awal tersedia di tabel site_settings.\n");
   }
 
   console.log("🎉 Seeding selesai!");
