@@ -188,7 +188,36 @@ export type StrukturOrganisasi = typeof strukturOrganisasi.$inferSelect;
 export type NewStrukturOrganisasi = typeof strukturOrganisasi.$inferInsert;
 
 // ─────────────────────────────────────────────
-// 10. activity_logs
+// 10. site_settings
+// Single-record table: selalu UPDATE baris yang sama, bukan INSERT baru.
+// Seed awal: 1 baris dengan id = 1 (semua value null/kosong).
+// ─────────────────────────────────────────────
+export const siteSettings = mysqlTable("site_settings", {
+  id: int("id").primaryKey().autoincrement(),
+  /** URL file video hero (mp4/webm), diisi otomatis dari upload */
+  heroVideoUrl: varchar("hero_video_url", { length: 500 }),
+  /** URL gambar fallback/poster saat video belum termuat */
+  heroPosterUrl: varchar("hero_poster_url", { length: 500 }),
+  /** Nomor WhatsApp format internasional tanpa "+", contoh: 6281234567890 */
+  waNumber: varchar("wa_number", { length: 20 }),
+  /** Pesan default saat tombol WA diklik */
+  waDefaultMessage: text("wa_default_message"),
+  socialInstagram: varchar("social_instagram", { length: 500 }),
+  socialFacebook: varchar("social_facebook", { length: 500 }),
+  socialYoutube: varchar("social_youtube", { length: 500 }),
+  socialTwitter: varchar("social_twitter", { length: 500 }),
+  socialLinkedin: varchar("social_linkedin", { length: 500 }),
+  updatedBy: int("updated_by").references(() => users.id, {
+    onDelete: "set null",
+  }),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+});
+
+export type SiteSettings = typeof siteSettings.$inferSelect;
+export type NewSiteSettings = typeof siteSettings.$inferInsert;
+
+// ─────────────────────────────────────────────
+// 11. activity_logs
 // ─────────────────────────────────────────────
 export const activityLogs = mysqlTable("activity_logs", {
   id: int("id").primaryKey().autoincrement(),

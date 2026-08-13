@@ -85,8 +85,10 @@ export async function POST(request: NextRequest) {
       name,
       photoUrl: photoUrl?.trim() || null,
       jabatan,
-      periodeMulai: periodeMulai?.trim() || null,
-      periodeSelesai: periodeSelesai?.trim() || null,
+      periodeMulai: periodeMulai?.trim() ? new Date(periodeMulai.trim()) : null,
+      periodeSelesai: periodeSelesai?.trim()
+        ? new Date(periodeSelesai.trim())
+        : null,
       // sambutan hanya disimpan jika jabatan = "Dekan"
       sambutan:
         jabatan === "Dekan" && sambutan?.trim()
