@@ -119,3 +119,69 @@ body {
   color: hsl(var(--foreground));
   font-family: var(--font-sans);
 }
+
+/* ─────────────────────────────────────────────
+ * Custom Public Website Styles (Stitch Design)
+ * ───────────────────────────────────────────── */
+@keyframes marquee-ltr {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0%); }
+}
+
+@keyframes marquee-rtl {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee-ltr {
+  animation: marquee-ltr 40s linear infinite;
+  width: max-content;
+}
+
+.animate-marquee-rtl {
+  animation: marquee-rtl 40s linear infinite;
+  width: max-content;
+}
+
+.animate-marquee-ltr:hover,
+.animate-marquee-rtl:hover {
+  animation-play-state: paused;
+}
+
+@keyframes pulse-gentle {
+  0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.4); }
+  70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+}
+
+.animate-whatsapp {
+  animation: pulse-gentle 2s infinite;
+}
+
+.dropdown:hover > .dropdown-menu {
+  display: block;
+}
+
+.submenu:hover > .submenu-menu {
+  display: block;
+}
+
+.nav-link-hover {
+  position: relative;
+}
+
+.nav-link-hover::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: #E5B80B;
+  transition: width 0.3s ease;
+}
+
+.nav-link-hover:hover::after {
+  width: 100%;
+}
+

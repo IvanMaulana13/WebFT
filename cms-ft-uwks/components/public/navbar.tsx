@@ -1,159 +1,518 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import Image from "next/image";
+import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
+import { usePathname } from "next/navigation";
+import {
+  Menu,
+  X,
+  Search,
+  Globe,
+  ChevronRight,
+  ChevronDown,
+  Home,
+  Landmark,
+  GraduationCap,
+  FlaskConical,
+  Users,
+  Award,
+  UserCheck,
+  Info,
+} from "lucide-react";
 
-const navItems = [
-  { label: "Beranda", href: "/" },
-  { label: "Profil", href: "#profil" },
-  { label: "Akademik", href: "#akademik" },
-  { label: "Berita", href: "#berita" },
-  { label: "Prestasi", href: "#prestasi" },
-  { label: "Kemitraan", href: "#kemitraan" },
-  { label: "Kontak", href: "#kontak" },
-];
-
-/**
- * Navbar publik — transparan saat di top, solid saat di-scroll.
- */
 export default function PublicNavbar() {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileProfilOpen, setMobileProfilOpen] = useState(false);
+  const [mobileAkademikOpen, setMobileAkademikOpen] = useState(false);
+  const [mobilePenelitianOpen, setMobilePenelitianOpen] = useState(false);
+  const [mobileKemahasiswaanOpen, setMobileKemahasiswaanOpen] = useState(false);
+  const [mobileMutuOpen, setMobileMutuOpen] = useState(false);
+  const [mobileAlumniOpen, setMobileAlumniOpen] = useState(false);
+  const [mobileInformasiOpen, setMobileInformasiOpen] = useState(false);
+  const pathname = usePathname();
 
-  useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  const isActive = (path: string) => pathname === path;
 
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
-          ? "bg-slate-900/95 shadow-lg shadow-black/20 backdrop-blur-md"
-          : "bg-transparent"
-      }`}
-    >
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        {/* Logo */}
-        <Link href="/" className="flex items-center gap-3 group">
-          <div className="relative h-9 w-9 overflow-hidden rounded-lg">
-            <Image
-              src="/logo-uwks.png"
-              alt="Logo FT UWKS"
-              fill
-              className="object-contain"
-              sizes="36px"
-            />
-          </div>
-          <div className="hidden sm:block">
-            <span className="block text-sm font-bold leading-tight text-white drop-shadow">
-              FT UWKS
-            </span>
-            <span className="block text-xs text-white/60 leading-tight">
-              Fakultas Teknik
-            </span>
-          </div>
-        </Link>
-
-        {/* Desktop Nav */}
-        <nav
-          className="hidden items-center gap-1 lg:flex"
-          aria-label="Navigasi utama"
-        >
-          {navItems.map((item) => (
-            <a
-              key={item.href}
-              href={item.href}
-              className="rounded-full px-4 py-1.5 text-sm font-medium text-white/80 transition-all duration-200 hover:bg-white/10 hover:text-white"
+    <>
+      {/* ── Mobile Nav Header (Fixed Top) ── */}
+      <div className="md:hidden">
+        <header className="bg-white border-b border-slate-200 w-full z-50 fixed top-0 left-0 right-0">
+          <div className="flex justify-between items-center w-full px-4 h-16">
+            <Link href="/" className="flex items-center gap-2">
+              <Image
+                src="/logo-uwks.png"
+                alt="UWKS Logo"
+                width={32}
+                height={32}
+                className="h-8 w-auto object-contain"
+              />
+              <span className="text-lg font-bold text-[#002347] font-sans">
+                FT UWKS
+              </span>
+            </Link>
+            <button
+              onClick={() => setMobileMenuOpen(true)}
+              className="p-2 text-slate-700 hover:bg-slate-100 rounded-full"
+              aria-label="Buka Menu"
             >
-              {item.label}
-            </a>
-          ))}
-        </nav>
+              <Menu className="w-6 h-6" />
+            </button>
+          </div>
+        </header>
 
-        {/* Login CTA */}
-        <div className="flex items-center gap-3">
-          <Link
-            href="/login"
-            className="hidden rounded-full bg-blue-600 px-5 py-2 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:bg-blue-500 sm:inline-flex"
-          >
-            Login Admin
-          </Link>
+        {/* Mobile Side Drawer Menu */}
+        {mobileMenuOpen && (
+          <div className="fixed inset-0 z-50 flex">
+            <div
+              className="fixed inset-0 bg-black/50 backdrop-blur-sm"
+              onClick={() => setMobileMenuOpen(false)}
+            />
+            <nav className="relative w-80 max-w-full bg-[#002347] text-white flex flex-col py-6 px-4 h-full overflow-y-auto z-10 shadow-2xl ml-auto">
+              <div className="flex justify-between items-center mb-6 border-b border-white/10 pb-4">
+                <span className="font-bold text-sm text-[#E5B80B]">MENU UTAMA</span>
+                <button
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="p-1 text-white/80 hover:text-white"
+                >
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
 
-          {/* Mobile hamburger */}
-          <button
-            type="button"
-            className="inline-flex items-center justify-center rounded-lg p-2 text-white/80 hover:bg-white/10 hover:text-white lg:hidden"
-            aria-label="Buka menu"
-            aria-expanded={isMobileMenuOpen}
-            onClick={() => setIsMobileMenuOpen((v) => !v)}
-          >
-            {isMobileMenuOpen ? (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
-              >
-                <path d="M18 6 6 18" />
-                <path d="m6 6 12 12" />
-              </svg>
-            ) : (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
-              >
-                <line x1="4" x2="20" y1="12" y2="12" />
-                <line x1="4" x2="20" y1="6" y2="6" />
-                <line x1="4" x2="20" y1="18" y2="18" />
-              </svg>
-            )}
-          </button>
-        </div>
+              <div className="flex flex-col gap-1">
+                {/* 1. BERANDA */}
+                <Link
+                  href="/"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`flex items-center gap-3 px-4 py-3 rounded-lg text-xs font-bold uppercase transition-colors ${
+                    isActive("/") ? "bg-[#002C5F] text-[#E5B80B]" : "text-white/80 hover:bg-white/10 hover:text-white"
+                  }`}
+                >
+                  <Home className="w-4 h-4" /> BERANDA
+                </Link>
+
+                {/* 2. PROFIL */}
+                <div>
+                  <button
+                    onClick={() => setMobileProfilOpen(!mobileProfilOpen)}
+                    className="w-full flex items-center justify-between px-4 py-3 rounded-lg text-xs font-bold uppercase text-white/80 hover:bg-white/10 hover:text-white"
+                  >
+                    <span className="flex items-center gap-3">
+                      <Landmark className="w-4 h-4" /> PROFIL
+                    </span>
+                    <ChevronDown
+                      className={`w-4 h-4 transition-transform ${
+                        mobileProfilOpen ? "rotate-180" : ""
+                      }`}
+                    />
+                  </button>
+                  {mobileProfilOpen && (
+                    <div className="ml-4 pl-3 border-l border-white/20 flex flex-col gap-1 my-1">
+                      <Link href="/sejarah" onClick={() => setMobileMenuOpen(false)} className="py-1.5 text-xs text-white/80 hover:text-[#E5B80B]">
+                        Sejarah
+                      </Link>
+                      <Link href="/visi-misi" onClick={() => setMobileMenuOpen(false)} className="py-1.5 text-xs text-white/80 hover:text-[#E5B80B]">
+                        Visi, Misi dan Tujuan
+                      </Link>
+                      <Link href="/struktur-organisasi" onClick={() => setMobileMenuOpen(false)} className="py-1.5 text-xs text-white/80 hover:text-[#E5B80B]">
+                        Struktur Organisasi
+                      </Link>
+                      <Link href="/pimpinan-fakultas" onClick={() => setMobileMenuOpen(false)} className="py-1.5 text-xs text-white/80 hover:text-[#E5B80B]">
+                        Pimpinan Fakultas
+                      </Link>
+                      <Link href="/dosen" onClick={() => setMobileMenuOpen(false)} className="py-1.5 text-xs text-white/80 hover:text-[#E5B80B]">
+                        Dosen Pengajar
+                      </Link>
+                      <Link href="/tenaga-kependidikan" onClick={() => setMobileMenuOpen(false)} className="py-1.5 text-xs text-white/80 hover:text-[#E5B80B]">
+                        Tenaga Kependidikan
+                      </Link>
+                      <span className="py-1.5 text-xs text-white/70">
+                        Kerja Sama
+                      </span>
+                    </div>
+                  )}
+                </div>
+
+                {/* 3. AKADEMIK */}
+                <div>
+                  <button
+                    onClick={() => setMobileAkademikOpen(!mobileAkademikOpen)}
+                    className="w-full flex items-center justify-between px-4 py-3 rounded-lg text-xs font-bold uppercase text-white/80 hover:bg-white/10 hover:text-white"
+                  >
+                    <span className="flex items-center gap-3">
+                      <GraduationCap className="w-4 h-4" /> AKADEMIK
+                    </span>
+                    <ChevronDown
+                      className={`w-4 h-4 transition-transform ${
+                        mobileAkademikOpen ? "rotate-180" : ""
+                      }`}
+                    />
+                  </button>
+                  {mobileAkademikOpen && (
+                    <div className="ml-4 pl-3 border-l border-white/20 flex flex-col gap-1 my-1">
+                      <span className="py-1 text-xs font-bold text-[#E5B80B] uppercase">
+                        Program Studi
+                      </span>
+                      <span className="py-1 pl-2 text-xs text-white/80">• Teknik Sipil</span>
+                      <span className="py-1 pl-2 text-xs text-white/80">• Informatika</span>
+                      <span className="py-1 pl-2 text-xs text-white/80">• Teknologi Industri Pertanian</span>
+                      <span className="py-1.5 text-xs text-white/80">Kalender Akademik</span>
+                      <span className="py-1.5 text-xs text-white/80">Pedoman Akademik</span>
+                      <span className="py-1.5 text-xs text-white/80">Jadwal Perkuliahan</span>
+                      <span className="py-1.5 text-xs text-white/80">Akreditasi</span>
+                      <span className="py-1.5 text-xs text-white/80">Prosedur Akademik</span>
+                    </div>
+                  )}
+                </div>
+
+                {/* 4. PENELITIAN & PENGABDIAN */}
+                <div>
+                  <button
+                    onClick={() => setMobilePenelitianOpen(!mobilePenelitianOpen)}
+                    className="w-full flex items-center justify-between px-4 py-3 rounded-lg text-xs font-bold uppercase text-white/80 hover:bg-white/10 hover:text-white"
+                  >
+                    <span className="flex items-center gap-3">
+                      <FlaskConical className="w-4 h-4" /> PENELITIAN & PENGABDIAN
+                    </span>
+                    <ChevronDown className={`w-4 h-4 transition-transform ${mobilePenelitianOpen ? "rotate-180" : ""}`} />
+                  </button>
+                  {mobilePenelitianOpen && (
+                    <div className="ml-4 pl-3 border-l border-white/20 flex flex-col gap-1 my-1 text-xs text-white/80">
+                      <span className="py-1.5">Peta Jalan (RoadMap)</span>
+                      <span className="py-1.5">Penelitian</span>
+                      <span className="py-1.5">Pengabdian kepada Masyarakat</span>
+                      <span className="py-1.5">Pengelola Jurnal dan Seminar Ilmiah</span>
+                      <span className="py-1.5">Sustainable Development Goals (SDGs)</span>
+                    </div>
+                  )}
+                </div>
+
+                {/* 5. KEMAHASISWAAN */}
+                <div>
+                  <button
+                    onClick={() => setMobileKemahasiswaanOpen(!mobileKemahasiswaanOpen)}
+                    className="w-full flex items-center justify-between px-4 py-3 rounded-lg text-xs font-bold uppercase text-white/80 hover:bg-white/10 hover:text-white"
+                  >
+                    <span className="flex items-center gap-3">
+                      <Users className="w-4 h-4" /> KEMAHASISWAAN
+                    </span>
+                    <ChevronDown className={`w-4 h-4 transition-transform ${mobileKemahasiswaanOpen ? "rotate-180" : ""}`} />
+                  </button>
+                  {mobileKemahasiswaanOpen && (
+                    <div className="ml-4 pl-3 border-l border-white/20 flex flex-col gap-1 my-1 text-xs text-white/80">
+                      <span className="py-1.5">Organisasi Kemahasiswaan</span>
+                      <span className="py-1.5">Prestasi Mahasiswa</span>
+                      <span className="py-1.5">Informasi Beasiswa</span>
+                      <span className="py-1.5">Informasi Lomba Mahasiswa</span>
+                      <span className="py-1.5">Kegiatan Kemahasiswaan</span>
+                      <span className="py-1.5">Administrasi Kemahasiswaan</span>
+                      <span className="py-1.5">Layanan Konseling Mahasiswa</span>
+                    </div>
+                  )}
+                </div>
+
+                {/* 6. PENJAMINAN MUTU */}
+                <div>
+                  <button
+                    onClick={() => setMobileMutuOpen(!mobileMutuOpen)}
+                    className="w-full flex items-center justify-between px-4 py-3 rounded-lg text-xs font-bold uppercase text-white/80 hover:bg-white/10 hover:text-white"
+                  >
+                    <span className="flex items-center gap-3">
+                      <Award className="w-4 h-4" /> PENJAMINAN MUTU
+                    </span>
+                    <ChevronDown className={`w-4 h-4 transition-transform ${mobileMutuOpen ? "rotate-180" : ""}`} />
+                  </button>
+                  {mobileMutuOpen && (
+                    <div className="ml-4 pl-3 border-l border-white/20 flex flex-col gap-1 my-1 text-xs text-white/80">
+                      <span className="py-1.5">Evaluasi Pembelajaran</span>
+                      <span className="py-1.5">Sistem Penjamin Mutu Internal</span>
+                      <span className="py-1.5">Audit Mutu Internal</span>
+                      <span className="py-1.5">Rencana Tindak Lanjut</span>
+                      <span className="py-1.5">Rapat Tinjauan Manajemen</span>
+                      <span className="py-1.5">Kepuasan Layanan</span>
+                    </div>
+                  )}
+                </div>
+
+                {/* 7. ALUMNI */}
+                <div>
+                  <button
+                    onClick={() => setMobileAlumniOpen(!mobileAlumniOpen)}
+                    className="w-full flex items-center justify-between px-4 py-3 rounded-lg text-xs font-bold uppercase text-white/80 hover:bg-white/10 hover:text-white"
+                  >
+                    <span className="flex items-center gap-3">
+                      <UserCheck className="w-4 h-4" /> ALUMNI
+                    </span>
+                    <ChevronDown className={`w-4 h-4 transition-transform ${mobileAlumniOpen ? "rotate-180" : ""}`} />
+                  </button>
+                  {mobileAlumniOpen && (
+                    <div className="ml-4 pl-3 border-l border-white/20 flex flex-col gap-1 my-1 text-xs text-white/80">
+                      <span className="py-1.5">Komisariat Fakultas (KOMFAK)</span>
+                      <span className="py-1.5">Prominent Alumni</span>
+                      <span className="py-1.5">Tracer Study</span>
+                      <span className="py-1.5">Tracer Alumni</span>
+                      <span className="py-1.5">Pengembangan Karir</span>
+                    </div>
+                  )}
+                </div>
+
+                {/* 8. INFORMASI */}
+                <div>
+                  <button
+                    onClick={() => setMobileInformasiOpen(!mobileInformasiOpen)}
+                    className="w-full flex items-center justify-between px-4 py-3 rounded-lg text-xs font-bold uppercase text-white/80 hover:bg-white/10 hover:text-white"
+                  >
+                    <span className="flex items-center gap-3">
+                      <Info className="w-4 h-4" /> INFORMASI
+                    </span>
+                    <ChevronDown className={`w-4 h-4 transition-transform ${mobileInformasiOpen ? "rotate-180" : ""}`} />
+                  </button>
+                  {mobileInformasiOpen && (
+                    <div className="ml-4 pl-3 border-l border-white/20 flex flex-col gap-1 my-1 text-xs text-white/80">
+                      <span className="py-1.5">Fasilitas</span>
+                      <span className="py-1.5">Pendaftaran Mahasiswa Baru</span>
+                      <span className="py-1.5">Layanan Konsultasi Teknik</span>
+                      <span className="py-1.5">Lowongan Pekerjaan</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="mt-auto pt-6 border-t border-white/10">
+                <Link
+                  href="/login"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="w-full block text-center bg-[#E5B80B] text-[#002347] font-bold py-2.5 rounded uppercase text-xs tracking-wider"
+                >
+                  PORTAL ADMIN
+                </Link>
+              </div>
+            </nav>
+          </div>
+        )}
+        <div className="h-16" />
       </div>
 
-      {/* Mobile Menu Dropdown */}
-      {isMobileMenuOpen && (
-        <div className="border-t border-white/10 bg-slate-900/98 backdrop-blur-md lg:hidden">
-          <nav className="flex flex-col px-4 py-3" aria-label="Navigasi mobile">
-            {navItems.map((item) => (
-              <a
-                key={item.href}
-                href={item.href}
-                className="rounded-lg px-3 py-2.5 text-sm font-medium text-white/80 transition-colors hover:bg-white/5 hover:text-white"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                {item.label}
-              </a>
-            ))}
-            <div className="mt-3 border-t border-white/10 pt-3">
-              <Link
-                href="/login"
-                className="flex w-full items-center justify-center rounded-full bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-blue-500"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Login Admin
-              </Link>
+      {/* ── Desktop Nav Wrapper ── */}
+      <header className="hidden md:block w-full z-50">
+        {/* Top Header Logo Bar */}
+        <div className="bg-white w-full border-b border-slate-200">
+          <div className="max-w-7xl mx-auto px-6 h-24 flex items-center justify-between">
+            <Link href="/" className="flex items-center gap-3 group">
+              <Image
+                src="/logo-uwks.png"
+                alt="UWKS Logo"
+                width={48}
+                height={48}
+                className="h-12 w-auto object-contain transition-transform group-hover:scale-105"
+              />
+              <div className="flex flex-col -space-y-0.5">
+                <h1 className="text-[17px] font-bold text-[#002347] font-sans uppercase leading-tight tracking-tight">
+                  FAKULTAS TEKNIK
+                </h1>
+                <h2 className="text-[17px] font-bold text-[#002347] font-sans uppercase leading-tight tracking-tight">
+                  UNIVERSITAS WIJAYA KUSUMA SURABAYA
+                </h2>
+              </div>
+            </Link>
+
+            <div className="flex items-center gap-6">
+              <div className="flex items-center gap-1 cursor-pointer text-[#002347] font-bold text-xs hover:text-[#E5B80B] transition-colors">
+                <Globe className="w-4 h-4" />
+                <span>ID</span>
+                <span className="font-normal text-slate-400">/EN</span>
+              </div>
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Cari..."
+                  className="bg-slate-50 border border-slate-200 rounded-full pl-4 pr-9 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-[#002347] w-56 transition-all focus:w-64"
+                />
+                <Search className="w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-slate-400" />
+              </div>
             </div>
-          </nav>
+          </div>
         </div>
-      )}
-    </header>
+
+        {/* Blue Navigation Bar (No Down Arrow icons, clean plain text sub-items) */}
+        <nav className="bg-[#002347] w-full h-14 relative shadow-md">
+          <div className="max-w-7xl mx-auto px-4 lg:px-6 h-full flex items-center justify-between">
+            {/* 1. BERANDA */}
+            <Link
+              href="/"
+              className={`h-full flex items-center px-3 lg:px-3.5 text-[11px] lg:text-xs font-bold uppercase transition-colors whitespace-nowrap ${
+                isActive("/")
+                  ? "text-[#E5B80B] border-b-2 border-[#E5B80B]"
+                  : "text-white hover:text-[#E5B80B] nav-link-hover"
+              }`}
+            >
+              BERANDA
+            </Link>
+
+            {/* 2. PROFIL Dropdown */}
+            <div className="dropdown h-full relative group">
+              <button className="nav-link-hover text-white hover:text-[#E5B80B] transition-colors h-full flex items-center px-3 lg:px-3.5 text-[11px] lg:text-xs font-bold uppercase whitespace-nowrap">
+                PROFIL
+              </button>
+              <div className="dropdown-menu hidden group-hover:block absolute top-full left-0 w-64 bg-white shadow-xl py-2 z-50 border-t-2 border-[#E5B80B] rounded-b-lg border-x border-b border-slate-100">
+                <Link
+                  href="/sejarah"
+                  className="block px-4 py-2 text-slate-800 hover:bg-slate-50 hover:text-[#002347] transition-colors text-xs font-medium"
+                >
+                  Sejarah
+                </Link>
+                <Link
+                  href="/visi-misi"
+                  className="block px-4 py-2 text-slate-800 hover:bg-slate-50 hover:text-[#002347] transition-colors text-xs font-medium"
+                >
+                  Visi, Misi dan Tujuan
+                </Link>
+                <Link
+                  href="/struktur-organisasi"
+                  className="block px-4 py-2 text-slate-800 hover:bg-slate-50 hover:text-[#002347] transition-colors text-xs font-medium"
+                >
+                  Struktur Organisasi
+                </Link>
+                <Link
+                  href="/pimpinan-fakultas"
+                  className="block px-4 py-2 text-slate-800 hover:bg-slate-50 hover:text-[#002347] transition-colors text-xs font-medium"
+                >
+                  Pimpinan Fakultas
+                </Link>
+                <Link
+                  href="/dosen"
+                  className="block px-4 py-2 text-slate-800 hover:bg-slate-50 hover:text-[#002347] transition-colors text-xs font-medium"
+                >
+                  Dosen Pengajar
+                </Link>
+                <Link
+                  href="/tenaga-kependidikan"
+                  className="block px-4 py-2 text-slate-800 hover:bg-slate-50 hover:text-[#002347] transition-colors text-xs font-medium"
+                >
+                  Tenaga Kependidikan
+                </Link>
+                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">
+                  Kerja Sama
+                </span>
+              </div>
+            </div>
+
+            {/* 3. AKADEMIK Dropdown */}
+            <div className="dropdown h-full relative group">
+              <button className="nav-link-hover text-white hover:text-[#E5B80B] transition-colors h-full flex items-center px-3 lg:px-3.5 text-[11px] lg:text-xs font-bold uppercase whitespace-nowrap">
+                AKADEMIK
+              </button>
+              <div className="dropdown-menu hidden group-hover:block absolute top-full left-0 w-64 bg-white shadow-xl py-2 z-50 border-t-2 border-[#E5B80B] rounded-b-lg border-x border-b border-slate-100">
+                <div className="submenu relative group/sub">
+                  <div className="flex items-center justify-between px-4 py-2 text-slate-800 hover:bg-slate-50 transition-colors text-xs font-medium cursor-pointer">
+                    <span>Program Studi</span>
+                    <ChevronRight className="w-3.5 h-3.5 opacity-60" />
+                  </div>
+                  <div className="submenu-menu hidden group-hover/sub:block absolute top-0 left-full w-64 bg-white shadow-xl py-2 z-50 border-l-2 border-[#E5B80B] border-y border-r border-slate-100 rounded-r-lg">
+                    <span className="block px-4 py-2 text-xs font-bold text-[#002347]">
+                      Teknik Sipil
+                    </span>
+                    <span className="block px-4 py-2 text-xs font-bold text-[#002347]">
+                      Informatika
+                    </span>
+                    <span className="block px-4 py-2 text-xs font-bold text-[#002347]">
+                      Teknologi Industri Pertanian
+                    </span>
+                  </div>
+                </div>
+                <span className="block px-4 py-2 text-slate-700 hover:bg-slate-50 transition-colors text-xs font-medium">
+                  Kalender Akademik
+                </span>
+                <span className="block px-4 py-2 text-slate-700 hover:bg-slate-50 transition-colors text-xs font-medium">
+                  Pedoman Akademik
+                </span>
+                <span className="block px-4 py-2 text-slate-700 hover:bg-slate-50 transition-colors text-xs font-medium">
+                  Jadwal Perkuliahan
+                </span>
+                <span className="block px-4 py-2 text-slate-700 hover:bg-slate-50 transition-colors text-xs font-medium">
+                  Akreditasi
+                </span>
+                <span className="block px-4 py-2 text-slate-700 hover:bg-slate-50 transition-colors text-xs font-medium">
+                  Prosedur Akademik
+                </span>
+              </div>
+            </div>
+
+            {/* 4. PENELITIAN & PENGABDIAN */}
+            <div className="dropdown h-full relative group">
+              <button className="nav-link-hover text-white hover:text-[#E5B80B] transition-colors h-full flex items-center px-3 lg:px-3.5 text-[11px] lg:text-xs font-bold uppercase whitespace-nowrap">
+                PENELITIAN & PENGABDIAN
+              </button>
+              <div className="dropdown-menu hidden group-hover:block absolute top-full left-0 w-64 bg-white shadow-xl py-2 z-50 border-t-2 border-[#E5B80B] rounded-b-lg border-x border-b border-slate-100">
+                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">Peta Jalan (RoadMap)</span>
+                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">Penelitian</span>
+                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">Pengabdian kepada Masyarakat</span>
+                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">Pengelola Jurnal dan Seminar Ilmiah</span>
+                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">Sustainable Development Goals (SDGs)</span>
+              </div>
+            </div>
+
+            {/* 5. KEMAHASISWAAN */}
+            <div className="dropdown h-full relative group">
+              <button className="nav-link-hover text-white hover:text-[#E5B80B] transition-colors h-full flex items-center px-3 lg:px-3.5 text-[11px] lg:text-xs font-bold uppercase whitespace-nowrap">
+                KEMAHASISWAAN
+              </button>
+              <div className="dropdown-menu hidden group-hover:block absolute top-full left-0 w-64 bg-white shadow-xl py-2 z-50 border-t-2 border-[#E5B80B] rounded-b-lg border-x border-b border-slate-100">
+                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">Organisasi Kemahasiswaan</span>
+                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">Prestasi Mahasiswa</span>
+                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">Informasi Beasiswa</span>
+                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">Informasi Lomba Mahasiswa</span>
+                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">Kegiatan Kemahasiswaan</span>
+                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">Administrasi Kemahasiswaan</span>
+                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">Layanan Konseling Mahasiswa</span>
+              </div>
+            </div>
+
+            {/* 6. PENJAMINAN MUTU */}
+            <div className="dropdown h-full relative group">
+              <button className="nav-link-hover text-white hover:text-[#E5B80B] transition-colors h-full flex items-center px-3 lg:px-3.5 text-[11px] lg:text-xs font-bold uppercase whitespace-nowrap">
+                PENJAMINAN MUTU
+              </button>
+              <div className="dropdown-menu hidden group-hover:block absolute top-full left-0 w-64 bg-white shadow-xl py-2 z-50 border-t-2 border-[#E5B80B] rounded-b-lg border-x border-b border-slate-100">
+                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">Evaluasi Pembelajaran</span>
+                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">Sistem Penjamin Mutu Internal</span>
+                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">Audit Mutu Internal</span>
+                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">Rencana Tindak Lanjut</span>
+                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">Rapat Tinjauan Manajemen</span>
+                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">Kepuasan Layanan</span>
+              </div>
+            </div>
+
+            {/* 7. ALUMNI */}
+            <div className="dropdown h-full relative group">
+              <button className="nav-link-hover text-white hover:text-[#E5B80B] transition-colors h-full flex items-center px-3 lg:px-3.5 text-[11px] lg:text-xs font-bold uppercase whitespace-nowrap">
+                ALUMNI
+              </button>
+              <div className="dropdown-menu hidden group-hover:block absolute top-full left-0 w-64 bg-white shadow-xl py-2 z-50 border-t-2 border-[#E5B80B] rounded-b-lg border-x border-b border-slate-100">
+                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">Komisariat Fakultas (KOMFAK)</span>
+                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">Prominent Alumni</span>
+                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">Tracer Study</span>
+                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">Tracer Alumni</span>
+                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">Pengembangan Karir</span>
+              </div>
+            </div>
+
+            {/* 8. INFORMASI */}
+            <div className="dropdown h-full relative group">
+              <button className="nav-link-hover text-white hover:text-[#E5B80B] transition-colors h-full flex items-center px-3 lg:px-3.5 text-[11px] lg:text-xs font-bold uppercase whitespace-nowrap">
+                INFORMASI
+              </button>
+              <div className="dropdown-menu hidden group-hover:block absolute top-full right-0 w-64 bg-white shadow-xl py-2 z-50 border-t-2 border-[#E5B80B] rounded-b-lg border-x border-b border-slate-100">
+                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">Fasilitas</span>
+                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">Pendaftaran Mahasiswa Baru</span>
+                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">Layanan Konsultasi Teknik</span>
+                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">Lowongan Pekerjaan</span>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </header>
+    </>
   );
 }
