@@ -1,239 +1,183 @@
 import Image from "next/image";
-import { socialLinks } from "@/lib/config/social-links";
+import Link from "next/link";
+import { fetchPublicData } from "@/lib/public-api";
+import { Phone, Mail } from "lucide-react";
 
-// Lucide-style SVG icons untuk setiap platform sosmed
-const SocialIcon = ({ platform }: { platform: string }) => {
-  switch (platform) {
-    case "instagram":
-      return (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="18"
-          height="18"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          aria-hidden="true"
-        >
-          <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
-          <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-          <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
-        </svg>
-      );
-    case "facebook":
-      return (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="18"
-          height="18"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          aria-hidden="true"
-        >
-          <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
-        </svg>
-      );
-    case "youtube":
-      return (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="18"
-          height="18"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          aria-hidden="true"
-        >
-          <path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17" />
-          <path d="m10 15 5-3-5-3z" />
-        </svg>
-      );
-    case "twitter":
-      return (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="18"
-          height="18"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          aria-hidden="true"
-        >
-          <path d="M4 4l16 16" />
-          <path d="m4 20 7.5-7.5M20 4l-7.5 7.5" />
-          <path d="M4 4h4l12 16h-4z" />
-        </svg>
-      );
-    case "linkedin":
-      return (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="18"
-          height="18"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          aria-hidden="true"
-        >
-          <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
-          <rect width="4" height="12" x="2" y="9" />
-          <circle cx="4" cy="4" r="2" />
-        </svg>
-      );
-    default:
-      return null;
-  }
-};
+interface SiteSettings {
+  socialInstagram?: string | null;
+  socialFacebook?: string | null;
+  socialYoutube?: string | null;
+  socialTwitter?: string | null;
+  socialLinkedin?: string | null;
+}
 
-const footerLinks = [
-  {
-    heading: "Tentang Kami",
-    links: [
-      { label: "Profil Fakultas", href: "#profil" },
-      { label: "Visi & Misi", href: "#visi-misi" },
-      { label: "Sejarah", href: "#sejarah" },
-      { label: "Struktur Organisasi", href: "#struktur" },
-    ],
-  },
-  {
-    heading: "Akademik",
-    links: [
-      { label: "Program Studi", href: "#prodi" },
-      { label: "Kalender Akademik", href: "#kalender" },
-      { label: "Dosen", href: "#dosen" },
-      { label: "Jurnal & Penelitian", href: "#jurnal" },
-    ],
-  },
-  {
-    heading: "Layanan",
-    links: [
-      { label: "Informasi Umum", href: "#informasi" },
-      { label: "Berita & Kegiatan", href: "#berita" },
-      { label: "Prestasi", href: "#prestasi" },
-      { label: "Kemitraan", href: "#kemitraan" },
-    ],
-  },
-];
+export default async function PublicFooter() {
+  const settings = await fetchPublicData<SiteSettings>("/api/settings");
 
-/**
- * Footer publik — link navigasi, ikon sosial media, dan info kontak.
- * Semua URL sosmed diambil dari lib/config/social-links.ts
- */
-export default function PublicFooter() {
   const currentYear = new Date().getFullYear();
 
+  const socialPlatforms = [
+    {
+      key: "socialInstagram",
+      url: settings?.socialInstagram,
+      label: "Instagram",
+      icon: (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <rect width="20" height="20" x="2" y="2" rx="5" ry="5" strokeWidth="2"/>
+          <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" strokeWidth="2"/>
+          <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" strokeWidth="2"/>
+        </svg>
+      ),
+    },
+    {
+      key: "socialFacebook",
+      url: settings?.socialFacebook,
+      label: "Facebook",
+      icon: (
+        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.891h-2.33v6.988C18.343 21.128 22 16.991 22 12z"/>
+        </svg>
+      ),
+    },
+    {
+      key: "socialYoutube",
+      url: settings?.socialYoutube,
+      label: "YouTube",
+      icon: (
+        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+        </svg>
+      ),
+    },
+    {
+      key: "socialTwitter",
+      url: settings?.socialTwitter,
+      label: "X (Twitter)",
+      icon: (
+        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+        </svg>
+      ),
+    },
+    {
+      key: "socialLinkedin",
+      url: settings?.socialLinkedin,
+      label: "LinkedIn",
+      icon: (
+        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/>
+        </svg>
+      ),
+    },
+  ].filter((p) => Boolean(p.url && p.url.trim() !== ""));
+
   return (
-    <footer className="bg-slate-900 text-white" id="kontak">
-      {/* ── Main Footer ── */}
-      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-5">
-          {/* Brand & Description */}
-          <div className="lg:col-span-2">
-            <div className="flex items-center gap-3">
-              <div className="relative h-10 w-10 overflow-hidden rounded-xl bg-white/10">
-                <Image
-                  src="/logo-uwks.png"
-                  alt="Logo FT UWKS"
-                  fill
-                  className="object-contain p-1"
-                  sizes="40px"
-                />
-              </div>
-              <div>
-                <p className="text-base font-bold leading-tight">FT UWKS</p>
-                <p className="text-xs text-white/50 leading-tight">
-                  Fakultas Teknik
-                </p>
-              </div>
+    <footer className="bg-[#002347] text-white w-full py-12 border-t border-slate-800">
+      <div className="px-6 max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
+        {/* Branding & Contact */}
+        <div className="flex flex-col gap-4">
+          <div className="flex items-center gap-3">
+            <Image
+              src="/logo-uwks.png"
+              alt="UWKS Logo"
+              width={64}
+              height={64}
+              className="h-14 w-auto object-contain"
+            />
+            <div className="flex flex-col -space-y-1">
+              <span className="text-xl font-bold text-white">FT</span>
+              <span className="text-xl font-bold text-[#E5B80B]">UWKS</span>
             </div>
+          </div>
+          <p className="text-xs text-white/80 leading-relaxed mt-1">
+            Gedung B, Kampus Universitas Wijaya Kusuma Surabaya, Jl. Dukuh Kupang XXV No.54, Surabaya, Jawa Timur 60225, Indonesia
+          </p>
+          <div className="flex flex-col gap-2 mt-2 text-xs text-white/80">
+            <div className="flex items-center gap-2">
+              <Phone className="w-4 h-4 text-[#E5B80B]" />
+              <span>+62 31 5674667</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Mail className="w-4 h-4 text-[#E5B80B]" />
+              <span>ft@uwks.ac.id</span>
+            </div>
+          </div>
+        </div>
 
-            <p className="mt-5 max-w-xs text-sm leading-relaxed text-white/60">
-              Fakultas Teknik Universitas Wijaya Kusuma Surabaya — mencetak
-              insinyur berkarakter, inovatif, dan berdaya saing global.
-            </p>
+        {/* Tautan Cepat */}
+        <div className="flex flex-col gap-3">
+          <h4 className="text-xs font-bold uppercase tracking-wider text-[#E5B80B] mb-1">
+            Tautan Cepat
+          </h4>
+          <Link href="/sejarah" className="text-xs text-white/70 hover:text-[#E5B80B] transition-colors">
+            Sejarah
+          </Link>
+          <Link href="/visi-misi" className="text-xs text-white/70 hover:text-[#E5B80B] transition-colors">
+            Visi & Misi
+          </Link>
+          <Link href="/struktur-organisasi" className="text-xs text-white/70 hover:text-[#E5B80B] transition-colors">
+            Struktur Organisasi
+          </Link>
+          <Link href="/pimpinan-fakultas" className="text-xs text-white/70 hover:text-[#E5B80B] transition-colors">
+            Pimpinan Fakultas
+          </Link>
+          <Link href="/dosen" className="text-xs text-white/70 hover:text-[#E5B80B] transition-colors">
+            Dosen Pengajar
+          </Link>
+          <Link href="/tenaga-kependidikan" className="text-xs text-white/70 hover:text-[#E5B80B] transition-colors">
+            Tenaga Kependidikan
+          </Link>
+        </div>
 
-            {/* Alamat */}
-            <address className="mt-5 not-italic text-sm text-white/50 leading-relaxed">
-              Jl. Dukuh Kupang XXV No.54,
-              <br />
-              Surabaya, Jawa Timur 60225
-              <br />
-              <a
-                href="mailto:ft@uwks.ac.id"
-                className="mt-1 inline-block text-blue-400 hover:text-blue-300 transition-colors"
-              >
-                ft@uwks.ac.id
-              </a>
-            </address>
+        {/* Program Studi */}
+        <div className="flex flex-col gap-3">
+          <h4 className="text-xs font-bold uppercase tracking-wider text-[#E5B80B] mb-1">
+            Program Studi
+          </h4>
+          <span className="text-xs text-white/70">Teknik Sipil</span>
+          <span className="text-xs text-white/70">Informatika</span>
+          <span className="text-xs text-white/70">Teknologi Industri Pertanian</span>
+        </div>
 
-            {/* Social Media Icons */}
-            <div className="mt-6 flex flex-wrap items-center gap-2">
-              {socialLinks.map((link) => (
+        {/* Social Media & Stats */}
+        <div className="flex flex-col gap-4">
+          <h4 className="text-xs font-bold uppercase tracking-wider text-[#E5B80B] mb-1">
+            Media Sosial
+          </h4>
+          {socialPlatforms.length > 0 ? (
+            <div className="flex gap-3 flex-wrap">
+              {socialPlatforms.map((p) => (
                 <a
-                  key={link.platform}
-                  href={link.url}
+                  key={p.key}
+                  href={p.url!}
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label={link.label}
-                  title={link.label}
-                  className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white/60 transition-all duration-200 hover:border-blue-500/50 hover:bg-blue-600/20 hover:text-blue-400"
+                  aria-label={p.label}
+                  title={p.label}
+                  className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#E5B80B] hover:text-[#002347] transition-all duration-300 text-white hover:-translate-y-0.5"
                 >
-                  <SocialIcon platform={link.platform} />
+                  {p.icon}
                 </a>
               ))}
             </div>
-          </div>
+          ) : (
+            <p className="text-xs text-white/50 italic">Media sosial belum diatur</p>
+          )}
 
-          {/* Navigation Links */}
-          {footerLinks.map((section) => (
-            <div key={section.heading}>
-              <h3 className="mb-4 text-xs font-semibold uppercase tracking-widest text-white/40">
-                {section.heading}
-              </h3>
-              <ul className="space-y-2.5">
-                {section.links.map((link) => (
-                  <li key={link.label}>
-                    <a
-                      href={link.href}
-                      className="text-sm text-white/60 transition-colors duration-200 hover:text-white"
-                    >
-                      {link.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+          <h4 className="text-xs font-bold uppercase tracking-wider text-[#E5B80B] mt-2 mb-1">
+            Statistik
+          </h4>
+          <div className="bg-white/10 p-3 rounded-lg flex items-center justify-between border border-white/10">
+            <span className="text-xs text-white/80">Total Pengunjung</span>
+            <span className="text-xs font-bold text-[#E5B80B]">124,592</span>
+          </div>
         </div>
       </div>
 
-      {/* ── Bottom Bar ── */}
-      <div className="border-t border-white/5">
-        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-4 py-5 text-xs text-white/30 sm:flex-row sm:px-6 lg:px-8">
-          <p>
-            &copy; {currentYear} Fakultas Teknik Universitas Wijaya Kusuma
-            Surabaya. Hak cipta dilindungi.
-          </p>
-          <p className="text-white/20">
-            Dikembangkan oleh Tim IT FT UWKS
-          </p>
-        </div>
+      <div className="mt-10 pt-6 border-t border-white/10 text-center px-6">
+        <p className="text-xs text-white/60">
+          © {currentYear} Fakultas Teknik – Universitas Wijaya Kusuma Surabaya. All Rights Reserved.
+        </p>
       </div>
     </footer>
   );

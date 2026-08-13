@@ -1,0 +1,667 @@
+<!DOCTYPE html><html lang="id" style="width: 1280px; height: 3575px; overflow: hidden; position: relative;"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Beranda - Fakultas Teknik UWKS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Montserrat:wght@600;700&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-on-surface": "#f0f1f2",
+                        "on-secondary-fixed": "#1a1c1c",
+                        "surface-bright": "#f8f9fa",
+                        "on-secondary": "#ffffff",
+                        "tertiary": "#000b28",
+                        "text-rich-black": "#212529",
+                        "institutional-gold": "#E5B80B",
+                        "on-primary-fixed": "#001c3a",
+                        "surface-container-highest": "#e1e3e4",
+                        "surface-variant": "#e1e3e4",
+                        "on-error-container": "#93000a",
+                        "inverse-surface": "#2e3132",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-container": "#718bb5",
+                        "secondary-fixed-dim": "#c6c6c7",
+                        "tertiary-fixed": "#dae2ff",
+                        "surface-dim": "#d9dadb",
+                        "surface-tint": "#455f87",
+                        "on-secondary-fixed-variant": "#454747",
+                        "on-error": "#ffffff",
+                        "tertiary-container": "#001f54",
+                        "on-primary": "#ffffff",
+                        "tertiary-fixed-dim": "#b1c5ff",
+                        "background": "#f8f9fa",
+                        "primary-fixed": "#d4e3ff",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-high": "#e7e8e9",
+                        "on-tertiary-container": "#4a84ff",
+                        "surface-slate": "#6C757D",
+                        "primary-container": "#002347",
+                        "on-background": "#191c1d",
+                        "on-surface": "#191c1d",
+                        "primary": "#000d21",
+                        "secondary": "#5d5f5f",
+                        "on-secondary-container": "#616363",
+                        "outline-variant": "#c4c6cf",
+                        "outline": "#74777f",
+                        "surface-container-low": "#f3f4f5",
+                        "error-container": "#ffdad6",
+                        "secondary-container": "#dfe0e0",
+                        "secondary-fixed": "#e2e2e2",
+                        "whatsapp-green": "#25D366",
+                        "on-surface-variant": "#43474e",
+                        "primary-fixed-dim": "#adc8f5",
+                        "on-tertiary-fixed": "#001946",
+                        "error": "#ba1a1a",
+                        "on-primary-fixed-variant": "#2c486d",
+                        "surface": "#f8f9fa",
+                        "inverse-primary": "#adc8f5",
+                        "on-tertiary-fixed-variant": "#00419e",
+                        "surface-container": "#edeeef"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "margin-desktop": "64px",
+                        "gutter": "24px",
+                        "container-max": "1200px",
+                        "unit": "4px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "label-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Montserrat"],
+                        "headline-lg": ["Montserrat"],
+                        "label-sm": ["Inter"],
+                        "headline-xl": ["Montserrat"],
+                        "nav-link": ["Montserrat"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-md": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "600"}],
+                        "headline-xl": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "nav-link": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .dropdown:hover > .dropdown-menu {
+            display: block;
+        }
+        .submenu:hover > .submenu-menu {
+            display: block;
+        }
+        @keyframes marquee-ltr {
+            0% { transform: translateX(-50%); }
+            100% { transform: translateX(0%); }
+        }
+        @keyframes marquee-rtl {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+        }
+        .animate-marquee-ltr {
+            animation: marquee-ltr 40s linear infinite;
+            width: max-content;
+        }
+        .animate-marquee-rtl {
+            animation: marquee-rtl 40s linear infinite;
+            width: max-content;
+        }
+        .animate-marquee-ltr:hover, .animate-marquee-rtl:hover {
+            animation-play-state: paused;
+        }
+
+        /* Entrance Animations - Slowed down for elegance */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Nav Underline Interaction */
+        .nav-link-hover {
+            position: relative;
+        }
+        .nav-link-hover::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: #E5B80B;
+            transition: width 0.3s ease;
+        }
+        .nav-link-hover:hover::after {
+            width: 100%;
+        }
+
+        /* WhatsApp Pulse */
+        @keyframes pulse-gentle {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.4); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+        }
+        .animate-whatsapp {
+            animation: pulse-gentle 2s infinite;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .reveal, .animate-marquee-ltr, .animate-marquee-rtl, .animate-whatsapp {
+                animation: none !important;
+                transition: none !important;
+                opacity: 1 !important;
+                transform: none !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col">
+<!-- Mobile Nav Wrapper -->
+<div class="md:hidden">
+<!-- TopAppBar (Mobile) -->
+<header class="bg-surface border-b border-outline-variant w-full z-50 fixed top-0">
+<div class="flex justify-between items-center w-full px-margin-mobile h-16">
+<div class="flex items-center gap-2">
+<img alt="UWKS Logo" class="h-8 w-auto" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCDQrt4obDFFcsnzSPJW4ycenFeE3SHVs9nPFJt3-e2Zegm6EkonDgKsq8lpAo9ZhdtywzFu9Ev4MTNf28wdiG60NroTDD4lMHDluyxCs6gwLC7bCnB3zpq5Cpv0TkbGIrlrWTrs441Hno3ejK7rHBC_vnqiQC6RcgrX3lA23cgqVNynLA2AMyrfwImAP_5XLOfagmIQm4VqTCzfAwoFRDHDnrziRXJOYSka3bvcQm07JfhYTjtSMcar8mlCKGvxuwbS59beFWPIFo">
+<span class="text-headline-md font-headline-md font-bold text-primary truncate">FT UWKS</span>
+</div>
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-low rounded-full" id="mobile-menu-btn">
+<span class="material-symbols-outlined text-2xl">menu</span>
+</button>
+</div>
+</header>
+<!-- Mobile Side Nav -->
+<div class="fixed inset-0 z-40 hidden" id="mobile-menu">
+<div class="absolute inset-0 bg-black/50" onclick="document.getElementById('mobile-menu').classList.add('hidden')"></div>
+<nav class="absolute top-0 right-0 h-full w-64 bg-primary text-on-primary flex flex-col py-6 px-4 overflow-y-auto transform transition-transform shadow-lg z-50">
+<div class="flex justify-end mb-4">
+<button class="p-2 text-on-primary/80 hover:text-on-primary" onclick="document.getElementById('mobile-menu').classList.add('hidden')">
+<span class="material-symbols-outlined text-2xl">close</span>
+</button>
+</div>
+<div class="flex flex-col gap-2">
+<a class="bg-on-primary-fixed-variant text-on-primary rounded-lg px-4 py-3 text-nav-link font-nav-link uppercase flex items-center gap-3" href="#">
+<span class="material-symbols-outlined">home</span> BERANDA
+                </a>
+<a class="text-on-primary/80 hover:text-on-primary hover:bg-primary-fixed-dim/20 transition-all rounded-lg px-4 py-3 text-nav-link font-nav-link uppercase flex items-center gap-3" href="#">
+<span class="material-symbols-outlined">account_balance</span> PROFIL
+                </a>
+<a class="text-on-primary/80 hover:text-on-primary hover:bg-primary-fixed-dim/20 transition-all rounded-lg px-4 py-3 text-nav-link font-nav-link uppercase flex items-center gap-3" href="#">
+<span class="material-symbols-outlined">school</span> AKADEMIK
+                </a>
+<a class="text-on-primary/80 hover:text-on-primary hover:bg-primary-fixed-dim/20 transition-all rounded-lg px-4 py-3 text-nav-link font-nav-link uppercase flex items-center gap-3" href="#">
+<span class="material-symbols-outlined">science</span> PENELITIAN
+                </a>
+<a class="text-on-primary/80 hover:text-on-primary hover:bg-primary-fixed-dim/20 transition-all rounded-lg px-4 py-3 text-nav-link font-nav-link uppercase flex items-center gap-3" href="#">
+<span class="material-symbols-outlined">groups</span> MAHASISWA
+                </a>
+<a class="text-on-primary/80 hover:text-on-primary hover:bg-primary-fixed-dim/20 transition-all rounded-lg px-4 py-3 text-nav-link font-nav-link uppercase flex items-center gap-3" href="#">
+<span class="material-symbols-outlined">person_pin</span> ALUMNI
+                </a>
+</div>
+<div class="mt-auto pt-6">
+<button class="w-full bg-surface text-primary font-bold py-2 rounded uppercase text-label-md font-label-md">SIAM LOGIN</button>
+</div>
+</nav>
+</div>
+<div class="h-16"></div>
+</div>
+<!-- Desktop Nav Wrapper -->
+<div class="hidden md:block w-full z-50">
+<div class="bg-white w-full border-b border-outline-variant">
+<div class="max-w-container-max mx-auto px-margin-desktop h-24 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<img alt="UWKS Logo" class="h-12 w-auto" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCDQrt4obDFFcsnzSPJW4ycenFeE3SHVs9nPFJt3-e2Zegm6EkonDgKsq8lpAo9ZhdtywzFu9Ev4MTNf28wdiG60NroTDD4lMHDluyxCs6gwLC7bCnB3zpq5Cpv0TkbGIrlrWTrs441Hno3ejK7rHBC_vnqiQC6RcgrX3lA23cgqVNynLA2AMyrfwImAP_5XLOfagmIQm4VqTCzfAwoFRDHDnrziRXJOYSka3bvcQm07JfhYTjtSMcar8mlCKGvxuwbS59beFWPIFo">
+<div class="flex flex-col -space-y-1">
+<h1 class="text-[18px] font-bold text-[#002347] font-sans uppercase leading-tight">FAKULTAS TEKNIK</h1>
+<h2 class="text-[18px] font-bold text-[#002347] font-sans uppercase leading-tight">UNIVERSITAS WIJAYA KUSUMA SURABAYA</h2>
+</div>
+</div>
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-1 cursor-pointer text-[#002347] font-bold text-sm font-sans hover:text-institutional-gold transition-colors">
+<span class="material-symbols-outlined text-lg">language</span>
+<span class="">ID</span><span class="font-normal text-on-surface-variant">/EN</span>
+</div>
+<div class="relative">
+<input class="bg-white border border-outline-variant rounded-full pl-4 pr-10 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-[#002347] w-64 transition-all focus:w-72" placeholder="Cari..." type="text">
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]">search</span>
+</div>
+</div>
+</div>
+</div>
+<nav class="bg-[#002347] w-full h-14 overflow-visible">
+<div class="max-w-container-max mx-auto px-margin-desktop h-full flex items-center justify-between gap-0">
+<a class="text-white font-nav-link font-bold border-b-2 border-institutional-gold h-full flex items-center px-3 text-sm uppercase transition-colors whitespace-nowrap" href="#">BERANDA</a>
+<div class="dropdown h-full relative">
+<button class="nav-link-hover text-white hover:text-institutional-gold transition-colors h-full flex items-center px-3 text-sm font-nav-link font-bold uppercase whitespace-nowrap">PROFIL</button>
+<div class="dropdown-menu hidden absolute top-full left-0 w-64 bg-white shadow-lg py-2 z-50 border-t-2 border-institutional-gold">
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Sejarah</a>
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Visi, Misi dan Tujuan</a>
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Struktur Organisasi</a>
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Pimpinan Fakultas</a>
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Dosen Pengajar</a>
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Tenaga Kependidikan</a>
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Kerja Sama</a>
+</div>
+</div>
+<div class="dropdown h-full relative">
+<button class="nav-link-hover text-white hover:text-institutional-gold transition-colors h-full flex items-center px-3 text-sm font-nav-link font-bold uppercase whitespace-nowrap">AKADEMIK</button>
+<div class="dropdown-menu hidden absolute top-full left-0 w-64 bg-white shadow-lg py-2 z-50 border-t-2 border-institutional-gold">
+<div class="submenu relative">
+<a class="flex items-center justify-between px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium group cursor-pointer" href="#">
+<span>Program Studi</span>
+<span class="material-symbols-outlined text-[18px] transform -rotate-90">expand_more</span>
+</a>
+<div class="submenu-menu hidden absolute top-0 left-full w-64 bg-white shadow-lg py-2 z-[60] border-l-2 border-institutional-gold">
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium font-headline-md" href="#">Teknik Sipil</a>
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium font-headline-md" href="#">Informatika</a>
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium font-headline-md" href="#">Teknologi Industri Pertanian</a>
+</div>
+</div>
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Kalender Akademik</a>
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Pedoman Akademik</a>
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Jadwal Perkuliahan</a>
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Akreditasi</a>
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Prosedur Akademik</a>
+</div>
+</div>
+<div class="dropdown h-full relative">
+<button class="nav-link-hover text-white hover:text-institutional-gold transition-colors h-full flex items-center px-3 text-sm font-nav-link font-bold uppercase whitespace-nowrap">PENELITIAN &amp; PENGABDIAN</button>
+<div class="dropdown-menu hidden absolute top-full left-0 w-64 bg-white shadow-lg py-2 z-50 border-t-2 border-institutional-gold">
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Peta Jalan (RoadMap)</a>
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Penelitian</a>
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Pengabdian kepada Masyarakat</a>
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Pengelola Jurnal dan Seminar Ilmiah</a>
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Sustainable Development Goals (SDGs)</a>
+</div>
+</div>
+<div class="dropdown h-full relative">
+<button class="nav-link-hover text-white hover:text-institutional-gold transition-colors h-full flex items-center px-3 text-sm font-nav-link font-bold uppercase whitespace-nowrap">KEMAHASISWAAN</button>
+<div class="dropdown-menu hidden absolute top-full left-0 w-64 bg-white shadow-lg py-2 z-50 border-t-2 border-institutional-gold">
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Organisasi Kemahasiswaan</a>
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Prestasi Mahasiswa</a>
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Informasi Beasiswa</a>
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Informasi Lomba Mahasiswa</a>
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Kegiatan Kemahasiswaan</a>
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Administrasi Kemahasiswaan</a>
+</div>
+</div>
+<div class="dropdown h-full relative">
+<button class="nav-link-hover text-white hover:text-institutional-gold transition-colors h-full flex items-center px-3 text-sm font-nav-link font-bold uppercase whitespace-nowrap">ALUMNI</button>
+<div class="dropdown-menu hidden absolute top-full left-0 w-64 bg-white shadow-lg py-2 z-50 border-t-2 border-institutional-gold">
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Komisariat Fakultas (KOMFAK)</a>
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Prominent Alumni</a>
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Tracer Study</a>
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Pengembangan Karir</a>
+</div>
+</div>
+<div class="dropdown h-full relative">
+<button class="nav-link-hover text-white hover:text-institutional-gold transition-colors h-full flex items-center px-3 text-sm font-nav-link font-bold uppercase whitespace-nowrap">INFORMASI</button>
+<div class="dropdown-menu hidden absolute top-full right-0 w-64 bg-white shadow-lg py-2 z-50 border-t-2 border-institutional-gold">
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Fasilitas</a>
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Pendaftaran Mahasiswa Baru</a>
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Layanan Konsultasi Teknik</a>
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Lowongan Pekerjaan</a>
+</div>
+</div>
+</div>
+</nav>
+</div>
+<!-- Main Content Area -->
+<main class="flex-grow">
+<!-- Hero Section -->
+<section class="reveal relative w-full h-[500px] md:h-[600px] bg-tertiary flex items-center justify-center overflow-hidden active">
+<div class="absolute inset-0 z-0 bg-cover bg-center transition-transform duration-1000 scale-105" style="background-image: url(&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuDilu4YPQ_FU6xsO5u2i1_ytiZlGOu8RXrwRs5Uwsw4zDqJeJNILkRrVYTydwG7acXLtuN65OwwgP_M_PdiN9TEWm2EHOM-uT6Gj2_pqssZ3jyuZI_XNyAB_NsZkQDWcwoYUAYCC5hCNkFNP4313cNWfSJy5_auxfsU6GUit_Ge8UU3ykohwpSlSB4IHFpzV_4j7co5i6BTJyDH1SnkybGeOhTT7wYNIai-v2bRQcidwQmX5nZVhJHSUnUql75ewBzndrqpvHAUCBc&quot;);">
+<div class="absolute inset-0 bg-primary/20"></div>
+</div>
+</section>
+<!-- Quick Stats Bento Grid -->
+<section class="py-16 bg-surface-container-lowest">
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter">
+<div class="reveal bg-surface p-6 border border-outline-variant rounded-lg text-center flex flex-col items-center justify-center hover:-translate-y-2 hover:shadow-xl transition-all duration-200 active">
+<span class="material-symbols-outlined text-4xl text-primary mb-2 transition-transform group-hover:scale-110">school</span>
+<h3 class="text-headline-lg font-headline-lg text-text-rich-black">3</h3>
+<p class="text-body-md font-body-md text-surface-slate">Program Studi</p>
+</div>
+<div class="reveal bg-surface p-6 border border-outline-variant rounded-lg text-center flex flex-col items-center justify-center hover:-translate-y-2 hover:shadow-xl transition-all duration-200 active" style="transition-delay: 100ms;">
+<span class="material-symbols-outlined text-4xl text-primary mb-2">group</span>
+<h3 class="text-headline-lg font-headline-lg text-text-rich-black">1.2K+</h3>
+<p class="text-body-md font-body-md text-surface-slate">Mahasiswa Aktif</p>
+</div>
+<div class="reveal bg-surface p-6 border border-outline-variant rounded-lg text-center flex flex-col items-center justify-center hover:-translate-y-2 hover:shadow-xl transition-all duration-200 active" style="transition-delay: 200ms;">
+<span class="material-symbols-outlined text-4xl text-primary mb-2">engineering</span>
+<h3 class="text-headline-lg font-headline-lg text-text-rich-black">50+</h3>
+<p class="text-body-md font-body-md text-surface-slate">Dosen Ahli</p>
+</div>
+<div class="reveal bg-surface p-6 border border-outline-variant rounded-lg text-center flex flex-col items-center justify-center hover:-translate-y-2 hover:shadow-xl transition-all duration-200 active" style="transition-delay: 300ms;">
+<span class="material-symbols-outlined text-4xl text-primary mb-2">emoji_events</span>
+<h3 class="text-headline-lg font-headline-lg text-text-rich-black">98%</h3>
+<p class="text-body-md font-body-md text-surface-slate">Terserap Industri</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Informasi Section -->
+<section class="py-16 bg-surface-container-low">
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+<div class="reveal flex items-center gap-4 mb-8 active">
+<h2 class="text-headline-lg font-headline-lg text-primary">Informasi</h2>
+<div class="flex-grow h-px bg-outline-variant"></div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="reveal bg-surface-container-lowest p-4 border border-outline-variant rounded-lg flex flex-col gap-1 hover:shadow-md hover:border-institutional-gold hover:-translate-y-1 transition-all duration-200 cursor-pointer group active">
+<span class="text-label-sm font-label-sm text-surface-slate">April 9, 2026</span>
+<h3 class="text-body-md font-bold text-primary group-hover:text-institutional-gold transition-colors">Beasiswa CSR dan Moduit 2026</h3>
+</div>
+<div class="reveal bg-surface-container-lowest p-4 border border-outline-variant rounded-lg flex flex-col gap-1 hover:shadow-md hover:border-institutional-gold hover:-translate-y-1 transition-all duration-200 cursor-pointer group active" style="transition-delay: 100ms;">
+<span class="text-label-sm font-label-sm text-surface-slate">Februari 11, 2026</span>
+<h3 class="text-body-md font-bold text-primary group-hover:text-institutional-gold transition-colors">Beasiswa VDMI 2026-2027</h3>
+</div>
+<div class="reveal bg-surface-container-lowest p-4 border border-outline-variant rounded-lg flex flex-col gap-1 hover:shadow-md hover:border-institutional-gold hover:-translate-y-1 transition-all duration-200 cursor-pointer group active" style="transition-delay: 200ms;">
+<span class="text-label-sm font-label-sm text-surface-slate">September 4, 2025</span>
+<h3 class="text-body-md font-bold text-primary group-hover:text-institutional-gold transition-colors">Dekanat Fakultas Teknik Universitas Wijaya Kusuma Surabaya Periode 2025/2029</h3>
+</div>
+<div class="reveal bg-surface-container-lowest p-4 border border-outline-variant rounded-lg flex flex-col gap-1 hover:shadow-md hover:border-institutional-gold hover:-translate-y-1 transition-all duration-200 cursor-pointer group active" style="transition-delay: 300ms;">
+<span class="text-label-sm font-label-sm text-surface-slate">Agustus 30, 2025</span>
+<h3 class="text-body-md font-bold text-primary group-hover:text-institutional-gold transition-colors">Segera Lakukan Perwalian Gasal 2024/2025</h3>
+</div>
+</div>
+</div>
+</section>
+<!-- Berita Section -->
+<section class="py-16 bg-surface">
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+<div class="reveal flex items-center gap-4 mb-8 active">
+<h2 class="text-headline-lg font-headline-lg text-primary">Berita</h2>
+<div class="flex-grow h-px bg-outline-variant"></div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<div class="reveal flex flex-col gap-4 group active">
+<div class="aspect-video overflow-hidden rounded-lg shadow-md">
+<img alt="Kunjungan Akademik" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCOHVUX5hWJgzLuYYQj0zN9T5IRpEAimkpfkTiFz12pOTqeIub7ubP7cxWe-Gr090JQOWoGssa4LNyUdBYbBdMzG9Ia3eoVCAqOr0v9n-8ot87dHkl2bY1KWoqGCQM0kh6_qyiyPntixcZCwDX2yuowtAna8vh-aygZf9ikCc2VkhRBGuqxBX7ZovdtcVkzb2S_4TUptZmGf05z-AsA8i5g6CJCt7xZfYiTIY0SEn54emy_f8UiPeDDhXMpXM43oGNPWpEgq7lGglA">
+</div>
+<div class="flex flex-col gap-2">
+<span class="text-label-md font-label-md text-surface-slate">Juni 15, 2026</span>
+<h3 class="text-headline-md font-headline-md text-primary leading-tight group-hover:text-institutional-gold transition-colors duration-200">Departemen Arsitektur FT UWKS Terima Kunjungan Akademik University of Udine</h3>
+</div>
+</div>
+<div class="reveal flex flex-col gap-4 group active" style="transition-delay: 100ms;">
+<div class="aspect-video overflow-hidden rounded-lg shadow-md">
+<img alt="Kemitraan Global" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAwLg2CsB1dbbLNPygACAZ9RVIEiF2YEMvXr9HZo5AWTenLgY4e7cKPoRZIL_0nkpDhrgKiNn12qmg5RDm8g-3hCOiiom5MJSqWAFnHDLjWIWJhwSgBpNVQ51lqoJ1pBxSK68BfGOAdAlxfwo0evG1n_q2Oa7ShCAQNLGmcOhnnORf_Uo1jxZ8ML3wHFT9cyyttRjhJGNQVUXoyMPDQBrucFujE-qqw0txz4lYc2Tsu287MmnZNQuVUWb_-6CEvypeT9OF2zrtZt-I">
+</div>
+<div class="flex flex-col gap-2">
+<span class="text-label-md font-label-md text-surface-slate">Juni 12, 2026</span>
+<h3 class="text-headline-md font-headline-md text-primary leading-tight group-hover:text-institutional-gold transition-colors duration-200">FT UWKS Buka Jalur Global bagi Talenta Indonesia melalui Kemitraan Internasional</h3>
+</div>
+</div>
+<div class="reveal flex flex-col gap-4 group active" style="transition-delay: 200ms;">
+<div class="aspect-video overflow-hidden rounded-lg shadow-md">
+<img alt="Visiting Professor" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDP7X45VIoKRRM1WoChVz-MAdU0B_znpx2l_DzRk1UDKO4lgaifyNsJq8Zu_eBTwIaebWzdzxLgJ9e5zdrWKktiqlhfjb8WuDKujdVrKONBicHlWVYg8AsjYof0tnJ-QPGhNVrz_7h01RW4CxQenvlncdIQxgwR15i1e9GVpe9mS0TjcH1iuOcAsZToYIi9qEsGA3sPbQNuVgrrvK0SO_q-VLgbKIwYCF4OLk96pZva9WyVwNw61B84nE031Wy0WVLLbEFHQGg8mSc">
+</div>
+<div class="flex flex-col gap-2">
+<span class="text-label-md font-label-md text-surface-slate">Juni 12, 2026</span>
+<h3 class="text-headline-md font-headline-md text-primary leading-tight group-hover:text-institutional-gold transition-colors duration-200">FT UWKS Hadirkan Visiting Professor dari Zhejiang University dalam WCU Series Vol. 3</h3>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Prestasi Section -->
+<section class="py-16 bg-surface-container-lowest">
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+<div class="reveal flex items-center gap-4 mb-8 active">
+<h2 class="text-headline-lg font-headline-lg text-primary">Prestasi</h2>
+<div class="flex-grow h-px bg-outline-variant"></div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter mb-12">
+<div class="reveal bg-surface p-6 border border-outline-variant rounded-lg flex flex-col gap-4 hover:bg-primary-container/5 hover:border-institutional-gold transition-all duration-200 active">
+<div class="w-12 h-12 rounded-full bg-institutional-gold/20 flex items-center justify-center text-institutional-gold transition-transform hover:rotate-12 duration-200">
+<span class="material-symbols-outlined text-2xl">military_tech</span>
+</div>
+<div>
+<h3 class="text-label-md font-bold text-primary mb-2">3</h3>
+<p class="text-label-sm text-surface-slate">Bangkok International Intellectual Property, Invention, Innovation</p>
+</div>
+</div>
+<div class="reveal bg-surface p-6 border border-outline-variant rounded-lg flex flex-col gap-4 hover:bg-primary-container/5 hover:border-institutional-gold transition-all duration-200 active" style="transition-delay: 100ms;">
+<div class="w-12 h-12 rounded-full bg-institutional-gold/20 flex items-center justify-center text-institutional-gold transition-transform hover:rotate-12 duration-200">
+<span class="material-symbols-outlined text-2xl">sports_martial_arts</span>
+</div>
+<div>
+<h3 class="text-label-md font-bold text-primary mb-2">1st Place Boxing 73 Weight Class</h3>
+<p class="text-label-sm text-surface-slate">Event "The PIT 4"</p>
+</div>
+</div>
+<div class="reveal bg-surface p-6 border border-outline-variant rounded-lg flex flex-col gap-4 hover:bg-primary-container/5 hover:border-institutional-gold transition-all duration-200 active" style="transition-delay: 200ms;">
+<div class="w-12 h-12 rounded-full bg-institutional-gold/20 flex items-center justify-center text-institutional-gold transition-transform hover:rotate-12 duration-200">
+<span class="material-symbols-outlined text-2xl">emoji_events</span>
+</div>
+<div>
+<h3 class="text-label-md font-bold text-primary mb-2">UWKS GAMES 2025</h3>
+<p class="text-label-sm text-surface-slate">Student Achievements</p>
+</div>
+</div>
+<div class="reveal bg-surface p-6 border border-outline-variant rounded-lg flex flex-col gap-4 hover:bg-primary-container/5 hover:border-institutional-gold transition-all duration-200 active" style="transition-delay: 300ms;">
+<div class="w-12 h-12 rounded-full bg-institutional-gold/20 flex items-center justify-center text-institutional-gold transition-transform hover:rotate-12 duration-200">
+<span class="material-symbols-outlined text-2xl">workspace_premium</span>
+</div>
+<div>
+<h3 class="text-label-md font-bold text-primary mb-2">2nd Place (Silver) POMNAS</h3>
+<p class="text-label-sm text-surface-slate">Women's 50.1-54 kg Category</p>
+</div>
+</div>
+</div>
+<div class="reveal flex justify-center active">
+<button class="bg-transparent border-2 border-primary text-primary px-8 py-2 rounded text-label-md font-bold hover:bg-primary hover:text-white transition-all duration-200 active:scale-95">Lihat Lainnya</button>
+</div>
+</div>
+</section>
+<!-- Kemitraan Section -->
+<section class="py-16 bg-surface">
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+<div class="reveal flex items-center gap-4 mb-12 active">
+<h2 class="text-headline-lg font-headline-lg text-primary">Kemitraan</h2>
+<div class="flex-grow h-px bg-outline-variant"></div>
+</div>
+<!-- Universitas Mitra -->
+<div class="mb-12">
+<h3 class="reveal text-label-md font-bold text-primary uppercase tracking-wider mb-8 active">Universitas Mitra</h3>
+<div class="reveal relative overflow-hidden group active">
+<div class="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-surface to-transparent z-10"></div>
+<div class="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-surface to-transparent z-10"></div>
+<div class="flex gap-8 items-center animate-marquee-ltr whitespace-nowrap py-4">
+<!-- Individual Logo Placeholders -->
+<div class="flex-shrink-0 w-48 h-24 bg-surface-container border border-outline-variant rounded flex items-center justify-center p-4 hover:border-institutional-gold transition-colors duration-200">
+<span class="text-label-sm text-on-surface-variant font-bold text-center">UNIVERSITY<br>PARTNER 1</span>
+</div>
+<div class="flex-shrink-0 w-48 h-24 bg-surface-container border border-outline-variant rounded flex items-center justify-center p-4 hover:border-institutional-gold transition-colors duration-200">
+<span class="text-label-sm text-on-surface-variant font-bold text-center">UNIVERSITY<br>PARTNER 2</span>
+</div>
+<div class="flex-shrink-0 w-48 h-24 bg-surface-container border border-outline-variant rounded flex items-center justify-center p-4 hover:border-institutional-gold transition-colors duration-200">
+<span class="text-label-sm text-on-surface-variant font-bold text-center">UNIVERSITY<br>PARTNER 3</span>
+</div>
+<div class="flex-shrink-0 w-48 h-24 bg-surface-container border border-outline-variant rounded flex items-center justify-center p-4 hover:border-institutional-gold transition-colors duration-200">
+<span class="text-label-sm text-on-surface-variant font-bold text-center">UNIVERSITY<br>PARTNER 4</span>
+</div>
+<div class="flex-shrink-0 w-48 h-24 bg-surface-container border border-outline-variant rounded flex items-center justify-center p-4 hover:border-institutional-gold transition-colors duration-200">
+<span class="text-label-sm text-on-surface-variant font-bold text-center">UNIVERSITY<br>PARTNER 5</span>
+</div>
+<div class="flex-shrink-0 w-48 h-24 bg-surface-container border border-outline-variant rounded flex items-center justify-center p-4 hover:border-institutional-gold transition-colors duration-200">
+<span class="text-label-sm text-on-surface-variant font-bold text-center">UNIVERSITY<br>PARTNER 6</span>
+</div>
+<!-- Replicated for loop -->
+<div class="flex-shrink-0 w-48 h-24 bg-surface-container border border-outline-variant rounded flex items-center justify-center p-4 hover:border-institutional-gold transition-colors duration-200">
+<span class="text-label-sm text-on-surface-variant font-bold text-center">UNIVERSITY<br>PARTNER 1</span>
+</div>
+<div class="flex-shrink-0 w-48 h-24 bg-surface-container border border-outline-variant rounded flex items-center justify-center p-4 hover:border-institutional-gold transition-colors duration-200">
+<span class="text-label-sm text-on-surface-variant font-bold text-center">UNIVERSITY<br>PARTNER 2</span>
+</div>
+<div class="flex-shrink-0 w-48 h-24 bg-surface-container border border-outline-variant rounded flex items-center justify-center p-4 hover:border-institutional-gold transition-colors duration-200">
+<span class="text-label-sm text-on-surface-variant font-bold text-center">UNIVERSITY<br>PARTNER 3</span>
+</div>
+<div class="flex-shrink-0 w-48 h-24 bg-surface-container border border-outline-variant rounded flex items-center justify-center p-4 hover:border-institutional-gold transition-colors duration-200">
+<span class="text-label-sm text-on-surface-variant font-bold text-center">UNIVERSITY<br>PARTNER 4</span>
+</div>
+<div class="flex-shrink-0 w-48 h-24 bg-surface-container border border-outline-variant rounded flex items-center justify-center p-4 hover:border-institutional-gold transition-colors duration-200">
+<span class="text-label-sm text-on-surface-variant font-bold text-center">UNIVERSITY<br>PARTNER 5</span>
+</div>
+<div class="flex-shrink-0 w-48 h-24 bg-surface-container border border-outline-variant rounded flex items-center justify-center p-4 hover:border-institutional-gold transition-colors duration-200">
+<span class="text-label-sm text-on-surface-variant font-bold text-center">UNIVERSITY<br>PARTNER 6</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Lembaga Mitra -->
+<div>
+<h3 class="reveal text-label-md font-bold text-primary uppercase tracking-wider mb-8 active">Lembaga Mitra</h3>
+<div class="reveal relative overflow-hidden group active">
+<div class="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-surface to-transparent z-10"></div>
+<div class="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-surface to-transparent z-10"></div>
+<div class="flex gap-8 items-center animate-marquee-rtl whitespace-nowrap py-4">
+<div class="flex-shrink-0 w-48 h-24 bg-surface-container border border-outline-variant rounded flex items-center justify-center p-4 hover:border-institutional-gold transition-colors duration-200">
+<span class="text-label-sm text-on-surface-variant font-bold text-center">INSTITUTION<br>PARTNER A</span>
+</div>
+<div class="flex-shrink-0 w-48 h-24 bg-surface-container border border-outline-variant rounded flex items-center justify-center p-4 hover:border-institutional-gold transition-colors duration-200">
+<span class="text-label-sm text-on-surface-variant font-bold text-center">INSTITUTION<br>PARTNER B</span>
+</div>
+<div class="flex-shrink-0 w-48 h-24 bg-surface-container border border-outline-variant rounded flex items-center justify-center p-4 hover:border-institutional-gold transition-colors duration-200">
+<span class="text-label-sm text-on-surface-variant font-bold text-center">INSTITUTION<br>PARTNER C</span>
+</div>
+<div class="flex-shrink-0 w-48 h-24 bg-surface-container border border-outline-variant rounded flex items-center justify-center p-4 hover:border-institutional-gold transition-colors duration-200">
+<span class="text-label-sm text-on-surface-variant font-bold text-center">INSTITUTION<br>PARTNER D</span>
+</div>
+<div class="flex-shrink-0 w-48 h-24 bg-surface-container border border-outline-variant rounded flex items-center justify-center p-4 hover:border-institutional-gold transition-colors duration-200">
+<span class="text-label-sm text-on-surface-variant font-bold text-center">INSTITUTION<br>PARTNER E</span>
+</div>
+<div class="flex-shrink-0 w-48 h-24 bg-surface-container border border-outline-variant rounded flex items-center justify-center p-4 hover:border-institutional-gold transition-colors duration-200">
+<span class="text-label-sm text-on-surface-variant font-bold text-center">INSTITUTION<br>PARTNER F</span>
+</div>
+<!-- Replicated for loop -->
+<div class="flex-shrink-0 w-48 h-24 bg-surface-container border border-outline-variant rounded flex items-center justify-center p-4 hover:border-institutional-gold transition-colors duration-200">
+<span class="text-label-sm text-on-surface-variant font-bold text-center">INSTITUTION<br>PARTNER A</span>
+</div>
+<div class="flex-shrink-0 w-48 h-24 bg-surface-container border border-outline-variant rounded flex items-center justify-center p-4 hover:border-institutional-gold transition-colors duration-200">
+<span class="text-label-sm text-on-surface-variant font-bold text-center">INSTITUTION<br>PARTNER B</span>
+</div>
+<div class="flex-shrink-0 w-48 h-24 bg-surface-container border border-outline-variant rounded flex items-center justify-center p-4 hover:border-institutional-gold transition-colors duration-200">
+<span class="text-label-sm text-on-surface-variant font-bold text-center">INSTITUTION<br>PARTNER C</span>
+</div>
+<div class="flex-shrink-0 w-48 h-24 bg-surface-container border border-outline-variant rounded flex items-center justify-center p-4 hover:border-institutional-gold transition-colors duration-200">
+<span class="text-label-sm text-on-surface-variant font-bold text-center">INSTITUTION<br>PARTNER D</span>
+</div>
+<div class="flex-shrink-0 w-48 h-24 bg-surface-container border border-outline-variant rounded flex items-center justify-center p-4 hover:border-institutional-gold transition-colors duration-200">
+<span class="text-label-sm text-on-surface-variant font-bold text-center">INSTITUTION<br>PARTNER E</span>
+</div>
+<div class="flex-shrink-0 w-48 h-24 bg-surface-container border border-outline-variant rounded flex items-center justify-center p-4 hover:border-institutional-gold transition-colors duration-200">
+<span class="text-label-sm text-on-surface-variant font-bold text-center">INSTITUTION<br>PARTNER F</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Floating WhatsApp CTA -->
+<a aria-label="Chat WhatsApp" class="animate-whatsapp fixed bottom-6 right-6 z-50 bg-whatsapp-green text-white p-4 rounded-full shadow-[0_8px_16px_-8px_rgba(0,0,0,0.5)] transition-transform flex items-center justify-center" href="#">
+<svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"></path>
+</svg>
+</a>
+<footer class="dark:bg-primary-container text-on-primary dark:text-on-primary-container w-full py-12 bg-[#002347]">
+<div class="px-margin-desktop max-w-container-max mx-auto grid grid-cols-1 md:grid-cols-4 gap-gutter">
+<div class="flex flex-col gap-4">
+<div class="flex items-center gap-3">
+<img alt="UWKS Logo" class="h-16 w-auto" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAcYG3es12Mz616A1w1LbgBG1vXKn-72Fbpul0xGSXprBFnL7o_Nw_gJVDbCpz1bPXEIz9HfO7cmpSyYndYEN6IkukwBTEEDu4nW1K_-hapmZSfY4yptOkRXhIrx9OvxQwcVxrSwIAi_-uJhEGNJsnmRxpneNYP6Nk02TvmahOvaHV2AE4hfXHD1glzMhPVzu3O2e_GKo5q5m6IQGSaAqj5KBuyjsy_ymmEl2pDIUED88oXTs4rlomCnDQRBAUzw_calaZyjBzQiEI">
+<div class="flex flex-col -space-y-1">
+<span class="text-headline-md font-headline-md font-bold text-on-primary">FT</span>
+<span class="text-headline-md font-headline-md font-bold text-on-primary">UWKS</span>
+</div>
+</div>
+<p class="text-body-md font-body-md text-on-primary/80 mt-2">Gedung B, Kampus Universitas Wijaya Kusuma Surabaya, Jl. Dukuh Kupang XXV No.54, Surabaya, Jawa Timur 60225, Indonesia</p>
+<div class="flex flex-col gap-2 mt-4">
+<div class="flex items-center gap-2 text-on-primary/80"><span class="material-symbols-outlined text-[18px]">call</span><span class="text-body-md">+62 31 5674667</span></div>
+<div class="flex items-center gap-2 text-on-primary/80"><span class="material-symbols-outlined text-[18px]">mail</span><span class="text-body-md">ft@uwks.ac.id</span></div>
+</div>
+</div>
+<div class="flex flex-col gap-4">
+<h4 class="text-label-md font-label-md font-bold uppercase tracking-wider text-institutional-gold mb-2">Tautan Cepat</h4>
+<a class="text-body-md font-body-md text-on-primary/70 hover:text-institutional-gold transition-colors" href="#">Profil</a>
+<a class="text-body-md font-body-md text-on-primary/70 hover:text-institutional-gold transition-colors" href="#">Akademik</a>
+<a class="text-body-md font-body-md text-on-primary/70 hover:text-institutional-gold transition-colors" href="#">Penelitian &amp; Pengabdian</a>
+<a class="text-body-md font-body-md text-on-primary/70 hover:text-institutional-gold transition-colors" href="#">Kemahasiswaan</a>
+<a class="text-body-md font-body-md text-on-primary/70 hover:text-institutional-gold transition-colors" href="#">Kontak Kami</a>
+</div>
+<div class="flex flex-col gap-4">
+<h4 class="text-label-md font-label-md font-bold uppercase tracking-wider text-institutional-gold mb-2">Program Studi</h4>
+<a class="text-body-md font-body-md text-on-primary/70 hover:text-institutional-gold transition-colors" href="#">Teknik Sipil</a>
+<a class="text-body-md font-body-md text-on-primary/70 hover:text-institutional-gold transition-colors" href="#">Informatika</a>
+<a class="text-body-md font-body-md text-on-primary/70 hover:text-institutional-gold transition-colors" href="#">Teknologi Industri Pertanian</a>
+</div>
+<div class="flex flex-col gap-4">
+<h4 class="text-label-md font-label-md font-bold uppercase tracking-wider text-institutional-gold mb-2">Media Sosial</h4>
+<div class="flex gap-4 mb-6">
+<a aria-label="Instagram" class="w-10 h-10 rounded-full bg-surface/10 flex items-center justify-center hover:bg-institutional-gold hover:text-primary transition-all duration-300 text-on-primary hover:-translate-y-1" href="#"><span class="material-symbols-outlined">photo_camera</span></a>
+<a aria-label="YouTube" class="w-10 h-10 rounded-full bg-surface/10 flex items-center justify-center hover:bg-institutional-gold hover:text-primary transition-all duration-300 text-on-primary hover:-translate-y-1" href="#"><span class="material-symbols-outlined">play_arrow</span></a>
+<a aria-label="WhatsApp" class="w-10 h-10 rounded-full bg-surface/10 flex items-center justify-center hover:bg-institutional-gold hover:text-primary transition-all duration-300 text-on-primary hover:-translate-y-1" href="#"><span class="material-symbols-outlined">chat</span></a>
+</div>
+<h4 class="text-label-md font-label-md font-bold uppercase tracking-wider text-institutional-gold mb-2">Statistik</h4>
+<div class="bg-surface/10 p-3 rounded flex items-center justify-between border border-surface/20">
+<span class="text-label-sm font-label-sm text-on-primary/80">Total Pengunjung</span>
+<span class="text-label-md font-label-md font-bold text-on-primary">124,592</span>
+</div>
+</div>
+</div>
+<div class="mt-12 pt-6 border-t border-surface/20 text-center px-margin-desktop">
+<p class="text-label-sm font-label-sm text-on-primary/70">© <span class="" id="year">2026</span> Fakultas Teknik – Universitas Wijaya Kusuma Surabaya. All Rights Reserved.</p>
+</div>
+</footer>
+<script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    const btn = document.getElementById('mobile-menu-btn');
+    const menu = document.getElementById('mobile-menu');
+    btn.addEventListener('click', () => { menu.classList.remove('hidden'); });
+
+    // Intersection Observer for Scroll Reveals
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('active');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('.reveal').forEach(el => {
+        revealObserver.observe(el);
+    });
+</script>
+</body></html>

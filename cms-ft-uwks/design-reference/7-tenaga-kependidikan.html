@@ -1,0 +1,372 @@
+<!DOCTYPE html><html lang="id" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Profil Fakultas - Tenaga Kependidikan</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-high": "#e7e8e9",
+                        "text-rich-black": "#212529",
+                        "surface-container-low": "#f3f4f5",
+                        "secondary-fixed-dim": "#efc11c",
+                        "primary-container": "#002347",
+                        "inverse-surface": "#2e3132",
+                        "outline": "#74777f",
+                        "primary": "#000d21",
+                        "tertiary": "#001103",
+                        "on-primary": "#ffffff",
+                        "secondary-fixed": "#ffe089",
+                        "surface-tint": "#455f87",
+                        "surface-container": "#edeeef",
+                        "secondary": "#745b00",
+                        "on-tertiary-fixed": "#002109",
+                        "tertiary-fixed-dim": "#3de273",
+                        "inverse-on-surface": "#f0f1f2",
+                        "surface-container-highest": "#e1e3e4",
+                        "surface-bright": "#f8f9fa",
+                        "on-surface-variant": "#43474e",
+                        "on-error": "#ffffff",
+                        "on-secondary-fixed-variant": "#574400",
+                        "on-tertiary": "#ffffff",
+                        "secondary-container": "#fecf2e",
+                        "on-primary-fixed": "#001c3a",
+                        "on-secondary-container": "#705900",
+                        "error": "#ba1a1a",
+                        "tertiary-container": "#002a0e",
+                        "on-primary-fixed-variant": "#2c486d",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-container": "#00a048",
+                        "on-background": "#191c1d",
+                        "surface": "#f8f9fa",
+                        "outline-variant": "#c4c6cf",
+                        "on-tertiary-fixed-variant": "#005322",
+                        "on-primary-container": "#718bb5",
+                        "surface-slate": "#6C757D",
+                        "surface-dim": "#d9dadb",
+                        "on-error-container": "#93000a",
+                        "on-secondary-fixed": "#241a00",
+                        "tertiary-fixed": "#66ff8e",
+                        "inverse-primary": "#adc8f5",
+                        "primary-fixed": "#d4e3ff",
+                        "on-secondary": "#ffffff",
+                        "primary-fixed-dim": "#adc8f5",
+                        "on-surface": "#191c1d",
+                        "error-container": "#ffdad6",
+                        "background": "#f8f9fa",
+                        "surface-variant": "#e1e3e4"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "container-max": "1200px",
+                        "gutter": "24px",
+                        "unit": "4px",
+                        "margin-mobile": "16px",
+                        "margin-desktop": "64px"
+                    },
+                    "fontFamily": {
+                        "headline-xl": ["Montserrat"],
+                        "body-lg": ["Inter"],
+                        "headline-lg": ["Montserrat"],
+                        "headline-md": ["Montserrat"],
+                        "nav-link": ["Montserrat"],
+                        "body-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "label-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-xl": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "700" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "nav-link": ["14px", { "lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "fontWeight": "500" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .zebra-row:nth-child(even) {
+            background-color: var(--color-surface-container-low);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<header class="w-full z-50 sticky top-0">
+<!-- Top Tier: Brand & Actions -->
+<div class="bg-white w-full border-b border-outline-variant">
+<div class="max-w-container-max mx-auto px-margin-desktop h-24 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<img alt="UWKS Logo" class="h-12 w-auto" src="https://lh3.googleusercontent.com/aida/AP1WRLtJR6IuEaOXSl2HJE5SVXno-k7Ix7wIKLrPjD4X2KhBUv9GlmpSaMMeuxAQBX_PTNEts277QRouK_KD4aUhgAwMtaD0A2zlFg2c03c3RJ8CSdGiS1UUEhN7RP5iugXd-NpEQTkbJqctn8Jam8uEZBNdTbq0C39VNR26ex0QyhBwj-UwCNap_UxDbAVqafR7uoWWNl9cjqerSN7K0iD61NuUlTl-Xk9so7FRDKaO3sIPMUJPErr_HVcgPPGNU6itrcONfufiQ930Ew">
+<div class="flex flex-col -space-y-1">
+<h1 class="text-[18px] font-bold text-[#002347] font-sans uppercase leading-tight">FAKULTAS TEKNIK</h1>
+<h2 class="text-[18px] font-bold text-[#002347] font-sans uppercase leading-tight">UNIVERSITAS WIJAYA KUSUMA SURABAYA</h2>
+</div>
+</div>
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-1 cursor-pointer text-[#002347] font-bold text-sm font-sans">
+<span class="material-symbols-outlined text-lg">language</span>
+<span class="">ID</span><span class="font-normal text-on-surface-variant">/EN</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative">
+<input class="bg-white border border-outline-variant rounded-full pl-4 pr-10 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-[#002347] w-64" placeholder="Cari..." type="text">
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]">search</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Tier: Main Navigation -->
+<nav class="bg-[#002347] w-full h-14 overflow-visible">
+<div class="max-w-container-max mx-auto px-margin-desktop h-full flex items-center justify-between gap-0">
+<a class="text-white opacity-80 hover:opacity-100 transition-opacity h-full flex items-center px-3 text-sm font-nav-link font-bold uppercase whitespace-nowrap" href="#">BERANDA</a>
+<div class="dropdown h-full relative">
+<button class="text-white font-bold border-b-2 border-institutional-gold h-full flex items-center px-3 text-sm font-nav-link uppercase whitespace-nowrap">
+                    PROFIL
+                </button>
+<div class="dropdown-menu hidden absolute top-full left-0 w-64 bg-white shadow-lg py-2 z-50 border-t-2 border-institutional-gold">
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Sejarah</a>
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Visi, Misi dan Tujuan</a>
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Struktur Organisasi</a>
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Pimpinan Fakultas</a>
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Dosen Pengajar</a>
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Tenaga Kependidikan</a>
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Kerja Sama</a>
+</div>
+</div>
+<div class="dropdown h-full relative">
+<button class="text-white hover:text-institutional-gold transition-colors h-full flex items-center px-3 text-sm font-nav-link font-bold uppercase whitespace-nowrap">
+                    AKADEMIK
+                </button>
+<div class="dropdown-menu hidden absolute top-full left-0 w-64 bg-white shadow-lg py-2 z-50 border-t-2 border-institutional-gold">
+<div class="submenu relative">
+<button class="w-full flex items-center justify-between px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium text-left">
+<span class="">Program Studi</span>
+
+<span class="material-symbols-outlined text-[18px]">chevron_right</span></button>
+<div class="submenu-menu hidden absolute left-full top-0 w-64 bg-white shadow-lg py-2 z-50 border-l-2 border-institutional-gold">
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Teknik Sipil</a>
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Informatika</a>
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Teknologi Industri Pertanian</a>
+</div>
+</div>
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Kalender Akademik</a>
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Pedoman Akademik</a>
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Jadwal Perkuliahan</a>
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Akreditasi</a>
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Prosedur Akademik</a>
+</div>
+</div>
+<div class="dropdown h-full relative">
+<button class="text-white hover:text-institutional-gold transition-colors h-full flex items-center px-3 text-sm font-nav-link font-bold uppercase whitespace-nowrap">
+                    PENELITIAN &amp; PENGABDIAN
+                </button>
+<div class="dropdown-menu hidden absolute top-full left-0 w-64 bg-white shadow-lg py-2 z-50 border-t-2 border-institutional-gold">
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Peta Jalan (RoadMap)</a>
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Penelitian</a>
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Pengabdian kepada Masyarakat</a>
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Pengelola Jurnal dan Seminar Ilmiah</a>
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Sustainable Development Goals (SDGs)</a>
+</div>
+</div>
+<div class="dropdown h-full relative">
+<button class="text-white hover:text-institutional-gold transition-colors h-full flex items-center px-3 text-sm font-nav-link font-bold uppercase whitespace-nowrap">
+                    KEMAHASISWAAN
+                </button>
+<div class="dropdown-menu hidden absolute top-full left-0 w-64 bg-white shadow-lg py-2 z-50 border-t-2 border-institutional-gold">
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Organisasi Kemahasiswaan</a>
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Prestasi Mahasiswa</a>
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Informasi Beasiswa</a>
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Informasi Lomba Mahasiswa</a>
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Kegiatan Kemahasiswaan</a>
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Administrasi Kemahasiswaan</a>
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Layanan Konseling Mahasiswa</a>
+</div>
+</div>
+<div class="dropdown h-full relative">
+<button class="text-white hover:text-institutional-gold transition-colors h-full flex items-center px-3 text-sm font-nav-link font-bold uppercase whitespace-nowrap">
+                    PENJAMINAN MUTU
+                </button>
+<div class="dropdown-menu hidden absolute top-full left-0 w-64 bg-white shadow-lg py-2 z-50 border-t-2 border-institutional-gold">
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Evaluasi Pembelajaran</a>
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Sistem Penjamin Mutu Internal</a>
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Audit Mutu Internal</a>
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Rencana Tindak Lanjut</a>
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Rapat Tinjauan Manajemen</a>
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Kepuasan Layanan</a>
+</div>
+</div>
+<div class="dropdown h-full relative">
+<button class="text-white hover:text-institutional-gold transition-colors h-full flex items-center px-3 text-sm font-nav-link font-bold uppercase whitespace-nowrap">
+                    ALUMNI
+                </button>
+<div class="dropdown-menu hidden absolute top-full left-0 w-64 bg-white shadow-lg py-2 z-50 border-t-2 border-institutional-gold">
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Komisariat Fakultas (KOMFAK)</a>
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Prominent Alumni</a>
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Tracer Study</a>
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Tracer Alumni</a>
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Pengembangan Karir</a>
+</div>
+</div>
+<div class="dropdown h-full relative">
+<button class="text-white hover:text-institutional-gold transition-colors h-full flex items-center px-3 text-sm font-nav-link font-bold uppercase whitespace-nowrap">
+                    INFORMASI
+                </button>
+<div class="dropdown-menu hidden absolute top-full right-0 w-64 bg-white shadow-lg py-2 z-50 border-t-2 border-institutional-gold">
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Fasilitas</a>
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Pendaftaran Mahasiswa Baru</a>
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Layanan Konsultasi Teknik</a>
+<a class="block px-4 py-2 text-primary hover:bg-surface-container-low transition-colors text-sm font-medium" href="#">Lowongan Pekerjaan</a>
+</div>
+</div>
+</div>
+</nav>
+</header>
+<!-- Main Content Layout -->
+<main class="flex-grow w-full"><section class="relative h-64 flex items-center overflow-hidden"><div class="absolute inset-0 bg-primary-container/80 z-10"></div><div class="absolute inset-0 bg-cover bg-center" style="background-image: url(&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuAW1U5BTsnUUW4XUtR-Xn70Cc3id4UjSRlakVbeVHB8d-hI_QV5Kb_YcQo3KALsBTxfeMNG6lFLR8AiFNg3KqK_olg05tLYuPbP2ZknQ-QunlHgTN4OIZijDE1PsmstusiyI8YkqQZVYcrxOVWWMxTt3NAgqyu-r5-1Otak_bR83GsUxgE9HrcUcsh4S_Nq3hgibKFzp48OoXqYMIo5aq4WxI6HiLGcKrTXp5O5o7btyhtsG7ByGN-AdpJg6_91_HvXIQ&quot;);"></div><div class="relative z-20 max-w-container-max mx-auto px-margin-desktop w-full text-on-primary"><nav class="flex items-center gap-2 mb-4 opacity-80 text-label-sm uppercase tracking-wider font-headline-md"><a class="hover:underline" href="#">BERANDA</a><span class="material-symbols-outlined text-[14px]">chevron_right</span><a class="hover:underline" href="#">PROFIL</a><span class="material-symbols-outlined text-[14px]">chevron_right</span><span class="text-institutional-gold font-bold">TENAGA KEPENDIDIKAN</span></nav><h1 class="font-headline-xl text-headline-xl text-shadow-sm font-bold">Tenaga Kependidikan</h1></div></section><div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-16 w-full grid grid-cols-1 md:grid-cols-12 gap-gutter"><aside class="col-span-12 lg:col-span-3"><div class="bg-[#F8F9FA] rounded-xl p-6 sticky top-40 border border-outline-variant/50 flex flex-col">
+<div class="flex items-center mb-8">
+<div class="w-[6px] h-[52px] bg-[#F1C40F] mr-4"></div>
+<div class="flex flex-col">
+<h3 class="text-[24px] font-bold text-[#002C5F] leading-tight uppercase">PROFIL</h3>
+<h3 class="text-[24px] font-bold text-[#002C5F] leading-tight uppercase">FAKULTAS</h3>
+</div>
+</div>
+<ul class="flex flex-col gap-2">
+<li class="">
+<a class="flex items-center px-4 py-3 bg-transparent text-[#4A5568] rounded-[8px] transition-all hover:bg-surface-container-high gap-3" href="#">
+<span class="material-symbols-outlined text-[20px]">history</span>
+<span class="text-[16px] font-medium">Sejarah</span>
+</a>
+</li>
+<li class="">
+<a class="flex items-center px-4 py-3 bg-transparent text-[#4A5568] rounded-[8px] transition-all hover:bg-surface-container-high gap-3" href="#">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+<span class="text-[16px] font-medium">Visi &amp; Misi</span>
+</a>
+</li>
+<li class="">
+<a class="flex items-center px-4 py-3 bg-transparent text-[#4A5568] rounded-[8px] transition-all hover:bg-surface-container-high gap-3" href="#">
+<span class="material-symbols-outlined text-[20px]">account_tree</span>
+<span class="text-[16px] font-medium">Struktur Organisasi</span>
+</a>
+</li>
+<li class="">
+<a class="flex items-center px-4 py-3 bg-transparent text-[#4A5568] rounded-[8px] transition-all hover:bg-surface-container-high gap-3" href="#">
+<span class="material-symbols-outlined text-[20px]">groups</span>
+<span class="text-[16px] font-medium">Pimpinan Fakultas</span>
+</a>
+</li>
+<li class="">
+<a class="flex items-center px-4 py-3 bg-transparent text-[#4A5568] rounded-[8px] transition-all hover:bg-surface-container-high gap-3" href="#">
+<span class="material-symbols-outlined text-[20px]">school</span>
+<span class="text-[16px] font-medium">Dosen Pengajar</span>
+</a>
+</li>
+<li class="">
+<a class="flex items-center px-4 py-3 bg-[#002C5F] text-white rounded-[8px] transition-all gap-3" href="#">
+<span class="material-symbols-outlined text-[20px]">badge</span>
+<span class="text-[16px] font-medium">Tenaga Kependidikan</span>
+</a>
+</li>
+<li class="">
+<a class="flex items-center px-4 py-3 bg-transparent text-[#4A5568] rounded-[8px] transition-all hover:bg-surface-container-high gap-3" href="#">
+<span class="material-symbols-outlined text-[20px]">handshake</span>
+<span class="text-[16px] font-medium">Kerja Sama</span>
+</a>
+</li>
+</ul>
+</div></aside><article class="col-span-12 lg:col-span-9 bg-surface-container-lowest rounded-xl p-8 lg:p-12 shadow-sm border border-outline-variant"><div class="space-y-8"><div class="space-y-4"><div class="h-1 w-24 bg-institutional-gold rounded-full"></div></div><div class="overflow-x-auto border border-outline-variant rounded-xl"><table class="w-full text-left border-collapse"><thead><tr class="bg-[#002347] text-white"><th class="p-4 font-label-md uppercase tracking-wider text-sm font-bold">Foto</th><th class="p-4 font-label-md uppercase tracking-wider text-sm font-bold">NUPT</th><th class="p-4 font-label-md uppercase tracking-wider text-sm font-bold">Nama Lengkap</th><th class="p-4 font-label-md uppercase tracking-wider text-sm font-bold">Jabatan</th><th class="p-4 font-label-md uppercase tracking-wider text-sm font-bold">Email</th></tr></thead><tbody class="divide-y divide-outline-variant"><tr class="bg-white hover:bg-surface-container-low transition-colors"><td class="p-4 text-primary"><img alt="Budi Santoso" class="w-12 h-12 rounded-full object-cover border border-outline-variant" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDzSKZY1EckMbItfySUFgcGO0CXGM7GXpH93Bdr379z5YhKVMkOxV4PjxriNI4GCJ0yJfAo-KnGAWhQKCdLpVnt_TQMwIn8agi32VXgxvBwtemt9rwfVAJtb6ZX2_o-djqsYVdrkpKNiCUNbGHz5EB8ED8rxQsQVrWi4Oh6CiDIbCiqdIpVjpen0rxCYoBQgjX2n-0C7Dt6eqxCi-mHDHZ2yTQbxV444aojJP2OYc_oVceIJdEHJjeO"></td><td class="p-4 text-sm font-medium text-primary">198205142008121001</td><td class="p-4 text-sm font-bold text-primary">Budi Santoso, S.Kom.</td><td class="p-4 text-sm text-primary">Kepala Bagian Tata Usaha</td><td class="p-4 text-sm text-[#002347] underline text-primary">budi.tu@ft.uwks.ac.id</td></tr><tr class="bg-surface-container-lowest hover:bg-surface-container-low transition-colors"><td class="p-4 text-primary"><img alt="Siti Rahmawati" class="w-12 h-12 rounded-full object-cover border border-outline-variant" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCIqy2T49k2Ut0-yu8DzN3SpdlVZMG2iB6Suu5QAFatsrz6qrIBpTYdrw_T_1RHxJvWoyy3O2SVVmrYu4Qp_JfzNSlf2DSMT3EJWCiv2cdTL-UBhHZy80ugdYhDmjLoRAJ0TlA6cgFMGIqCo5fg-Y2hUGZcV3Pn1guaPYIwlwYW0ptMzOIOWI-Aun9DjZI9j7eCKRa059_Y1jiYnoOZVrcn8JDD0kIGmNx44YercZz4vwfeZ7Np4qL2"></td><td class="p-4 text-sm font-medium text-primary">198511202010122003</td><td class="p-4 text-sm font-bold text-primary">Siti Rahmawati, S.E.</td><td class="p-4 text-sm text-primary">Staf Administrasi Akademik</td><td class="p-4 text-sm text-[#002347] underline text-primary">siti.akademik@ft.uwks.ac.id</td></tr><tr class="bg-white hover:bg-surface-container-low transition-colors"><td class="p-4 text-primary"><img alt="Agus Pratama" class="w-12 h-12 rounded-full object-cover border border-outline-variant" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC3yUoI5k0Oigiyxd7LIEKT0vFjfmyGU8UdSeQEguzahYj6w7pq-TTyDhP2wsBl8L6OMu7F3e7BWlP9fB-jufUwQLvT4Zgv6DVg7jROJSLR1cnrCbvqEoWB-2sII442jMQK3941Krs6X_TlgoHik2ZYP9gohjqXWsdktTfcVDlXxCq0oQH-VbNGe3dFmj6QwQRS-wOVQZa4QlAZwEf2UYZxQWLDmvBF1IS-6e83qfAA43tKI-hvrHdm"></td><td class="p-4 text-sm font-medium text-primary">199003152015041002</td><td class="p-4 text-sm font-bold text-primary">Agus Pratama, A.Md.</td><td class="p-4 text-sm text-primary">Laboran Teknik Informatika</td><td class="p-4 text-sm text-[#002347] underline text-primary">agus.lab@ft.uwks.ac.id</td></tr><tr class="bg-surface-container-lowest hover:bg-surface-container-low transition-colors"><td class="p-4 text-primary"><img alt="Dewi Lestari" class="w-12 h-12 rounded-full object-cover border border-outline-variant" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzun021jTdC6wRez93nQ7WDWARS2Rs7_gyDl56rQhCIq-yQdlzl8ON18zVNZmi2lGuPs2vtUSB9N1sHzqQclt-viYLhC8pFBvh42XuQa8b8CpiVDyt9j3spawDtO1dW9xzYPDvz4tfCzQNH9OjSZOrPNmyROhPB7i6KAq29XPQ65TqHmrLj9emI0aywT-naAEOxQcsLr5aM7atvbMlA43nh6xEUGeVZPttZBqCaTf6e3l2sFKzCH4x"></td><td class="p-4 text-sm font-medium text-primary">198807222012122005</td><td class="p-4 text-sm font-bold text-primary">Dewi Lestari, S.I.Kom.</td><td class="p-4 text-sm text-primary">Staf Kemahasiswaan &amp; Alumni</td><td class="p-4 text-sm text-[#002347] underline text-primary">dewi.mahasiswa@ft.uwks.ac.id</td></tr><tr class="bg-white hover:bg-surface-container-low transition-colors"><td class="p-4 text-primary"><img alt="Hendra Gunawan" class="w-12 h-12 rounded-full object-cover border border-outline-variant" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA--V2fViZszC3czpCSKKDAsKG8G4FPFEZIHsovSJBVqg766dAHYkgj7qqqNj-sNWys4c0sG5WCP928w0bfSpIXoIdxfpt37iIFjSNMvEg4en8cX5AehW2TgyuGOjxC9f_iHBGfv7pi8US2rB6_BfLBMoJFI2_km83PbRg2TGrsYPMSHfJfebwCI5K_PXJU8a6kQA68oldYQyaTWprTWZcE0MgRbMTxrF106u24RaEoVOrSsCpSK40R"></td><td class="p-4 text-sm font-medium text-primary">199201102018031004</td><td class="p-4 text-sm font-bold text-primary">Hendra Gunawan</td><td class="p-4 text-sm text-primary">Staf IT &amp; Infrastruktur</td><td class="p-4 text-sm text-[#002347] underline text-primary">hendra.it@ft.uwks.ac.id</td></tr></tbody></table></div></div></article></div></main>
+<!-- Footer -->
+<footer class="bg-[#002347] text-white w-full py-12">
+<div class="px-margin-desktop max-w-container-max mx-auto grid grid-cols-1 md:grid-cols-4 gap-gutter">
+<!-- Branding Section -->
+<div class="flex flex-col gap-4">
+<div class="flex items-center gap-3">
+<img alt="UWKS Logo" class="h-16 w-auto" src="https://lh3.googleusercontent.com/aida/AP1WRLtJR6IuEaOXSl2HJE5SVXno-k7Ix7wIKLrPjD4X2KhBUv9GlmpSaMMeuxAQBX_PTNEts277QRouK_KD4aUhgAwMtaD0A2zlFg2c03c3RJ8CSdGiS1UUEhN7RP5iugXd-NpEQTkbJqctn8Jam8uEZBNdTbq0C39VNR26ex0QyhBwj-UwCNap_UxDbAVqafR7uoWWNl9cjqerSN7K0iD61NuUlTl-Xk9so7FRDKaO3sIPMUJPErr_HVcgPPGNU6itrcONfufiQ930Ew">
+<div class="flex flex-col -space-y-1">
+<span class="text-headline-md font-headline-md font-bold text-white">FT</span>
+<span class="text-headline-md font-headline-md font-bold text-white">UWKS</span>
+</div>
+</div>
+<p class="text-body-md font-body-md text-white/80 mt-2">Gedung B, Kampus Universitas Wijaya Kusuma Surabaya, Jl. Dukuh Kupang XXV No.54, Surabaya, Jawa Timur 60225, Indonesia</p>
+<div class="flex flex-col gap-2 mt-4">
+<div class="flex items-center gap-2 text-white/80">
+<span class="material-symbols-outlined text-[18px]">call</span>
+<span class="text-body-md">+62 31 5674667</span>
+</div>
+<div class="flex items-center gap-2 text-white/80">
+<span class="material-symbols-outlined text-[18px]">mail</span>
+<span class="text-body-md">ft@uwks.ac.id</span>
+</div>
+</div>
+</div>
+<!-- Quick Links -->
+<div class="flex flex-col gap-4">
+<h4 class="text-label-md font-label-md font-bold uppercase tracking-wider text-institutional-gold mb-2">Tautan Cepat</h4>
+<a class="text-body-md font-body-md text-white/70 hover:text-institutional-gold transition-colors" href="#">Profil</a>
+<a class="text-body-md font-body-md text-white/70 hover:text-institutional-gold transition-colors" href="#">Akademik</a>
+<a class="text-body-md font-body-md text-white/70 hover:text-institutional-gold transition-colors" href="#">Penelitian &amp; Pengabdian</a>
+<a class="text-body-md font-body-md text-white/70 hover:text-institutional-gold transition-colors" href="#">Kemahasiswaan</a>
+<a class="text-body-md font-body-md text-white/70 hover:text-institutional-gold transition-colors" href="#">Kontak Kami</a>
+</div>
+<!-- Program Studies -->
+<div class="flex flex-col gap-4">
+<h4 class="text-label-md font-label-md font-bold uppercase tracking-wider text-institutional-gold mb-2">Program Studi</h4>
+<a class="text-body-md font-body-md text-white/70 hover:text-institutional-gold transition-colors" href="#">Teknik Sipil</a>
+<a class="text-body-md font-body-md text-white/70 hover:text-institutional-gold transition-colors" href="#">Informatika</a>
+<a class="text-body-md font-body-md text-white/70 hover:text-institutional-gold transition-colors" href="#">Teknologi Industri Pertanian</a>
+</div>
+<!-- Social Media & Stats -->
+<div class="flex flex-col gap-4">
+<h4 class="text-label-md font-label-md font-bold uppercase tracking-wider text-institutional-gold mb-2">Media Sosial</h4>
+<div class="flex gap-4 mb-6">
+<a aria-label="Instagram" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-institutional-gold hover:text-[#002347] transition-colors text-white" href="#">
+<span class="material-symbols-outlined">photo_camera</span>
+</a>
+<a aria-label="YouTube" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-institutional-gold hover:text-[#002347] transition-colors text-white" href="#">
+<span class="material-symbols-outlined">play_arrow</span>
+</a>
+<a aria-label="WhatsApp" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-institutional-gold hover:text-[#002347] transition-colors text-white" href="#">
+<span class="material-symbols-outlined">chat</span>
+</a>
+</div>
+<h4 class="text-label-md font-label-md font-bold uppercase tracking-wider text-institutional-gold mb-2">Statistik</h4>
+<div class="bg-white/10 p-3 rounded flex items-center justify-between border border-white/20">
+<span class="text-label-sm font-label-sm text-white/80">Total Pengunjung</span>
+<span class="text-label-md font-label-md font-bold text-white">124,592</span>
+</div>
+</div>
+</div>
+<div class="mt-12 pt-6 border-t border-white/20 text-center px-margin-desktop">
+<p class="text-label-sm font-label-sm text-white/70">© 2024 Fakultas Teknik – Universitas Wijaya Kusuma Surabaya. All Rights Reserved.</p>
+</div>
+</footer>
+<!-- Floating WhatsApp Button -->
+<a aria-label="Chat via WhatsApp" class="fixed bottom-6 right-6 bg-[#25D366] text-white p-4 rounded-full shadow-lg hover:bg-[#1EBE5D] hover:-translate-y-1 transition-transform duration-300 z-50 flex items-center justify-center group" href="https://wa.me/1234567890" rel="noopener noreferrer" target="_blank">
+<svg fill="currentColor" height="28" viewBox="0 0 16 16" width="28" xmlns="http://www.w3.org/2000/svg">
+<path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"></path>
+</svg>
+<span class="absolute right-full mr-4 bg-inverse-surface text-inverse-on-surface px-3 py-1 rounded-lg text-sm whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none font-label-md text-label-md">
+            Hubungi Kami
+        </span>
+</a>
+</body></html>
