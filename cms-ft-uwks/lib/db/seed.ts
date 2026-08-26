@@ -10,7 +10,14 @@
  */
 
 import { db } from "./index";
-import { users, strukturOrganisasi, siteSettings } from "./schema";
+import {
+  users,
+  strukturOrganisasi,
+  siteSettings,
+  programStudi,
+  kalenderAkademik,
+  pedomanAkademik,
+} from "./schema";
 import { eq } from "drizzle-orm";
 import bcrypt from "bcryptjs";
 
@@ -92,6 +99,53 @@ async function seed() {
       updatedBy: null,
     });
     console.log("✅ Seed selesai: 1 baris awal tersedia di tabel site_settings.\n");
+  }
+
+  // ── 4. Program Studi ──────────────────────────────────────────────────
+  console.log("🎓 Seeding program_studi (3 prodi generik FT)...");
+
+  const prodiSeed = [
+    { nama: "Teknik Informatika", kode: "TI" },
+    { nama: "Teknik Sipil", kode: "TS" },
+    { nama: "Teknik Elektro", kode: "TE" },
+  ];
+
+  for (const prodi of prodiSeed) {
+    const [existing] = await db
+      .select({ id: programStudi.id })
+      .from(programStudi)
+      .where(eq(programStudi.kode, prodi.kode))
+      .limit(1);
+
+    if (existing) {
+      console.log(`  ✅ ${prodi.nama} (${prodi.kode}) sudah ada. Skip.`);
+    } else {
+      await db.insert(programStudi).values(prodi);
+      console.log(`  ➕ ${prodi.nama} (${prodi.kode}) ditambahkan.`);
+    }
+  }
+  console.log();
+
+  // ── 5. Kalender Akademik (single-record placeholder) ─────────────────
+  console.log("📅 Seeding kalender_akademik...");
+
+  const existingKalender = await db.select().from(kalenderAkademik).limit(1);
+  if (existingKalender.length > 0) {
+    console.log(`✅ Baris kalender_akademik sudah ada. Skip.\n`);
+  } else {
+    await db.insert(kalenderAkademik).values({ fileUrl: null, tahunAjaran: null, updatedBy: null });
+    console.log("✅ Baris placeholder kalender_akademik dibuat.\n");
+  }
+
+  // ── 6. Pedoman Akademik (single-record placeholder) ──────────────────
+  console.log("📘 Seeding pedoman_akademik...");
+
+  const existingPedoman = await db.select().from(pedomanAkademik).limit(1);
+  if (existingPedoman.length > 0) {
+    console.log(`✅ Baris pedoman_akademik sudah ada. Skip.\n`);
+  } else {
+    await db.insert(pedomanAkademik).values({ fileUrl: null, updatedBy: null });
+    console.log("✅ Baris placeholder pedoman_akademik dibuat.\n");
   }
 
   console.log("🎉 Seeding selesai!");

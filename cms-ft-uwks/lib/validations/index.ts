@@ -229,3 +229,110 @@ export type PimpinanInput = z.infer<typeof pimpinanSchema>;
 
 export const pimpinanUpdateSchema = pimpinanSchema;
 export type PimpinanUpdateInput = z.infer<typeof pimpinanUpdateSchema>;
+
+// ─────────────────────────────────────────────
+// Akademik — Program Studi
+// ─────────────────────────────────────────────
+export const programStudiSchema = z.object({
+  nama: z.string().min(1, "Nama program studi wajib diisi").max(255, "Nama maksimal 255 karakter"),
+  kode: z
+    .string()
+    .min(1, "Kode wajib diisi")
+    .max(20, "Kode maksimal 20 karakter")
+    .regex(/^[A-Za-z0-9]+$/, "Kode hanya boleh berisi huruf dan angka"),
+});
+
+export type ProgramStudiInput = z.infer<typeof programStudiSchema>;
+export const programStudiUpdateSchema = programStudiSchema;
+export type ProgramStudiUpdateInput = z.infer<typeof programStudiUpdateSchema>;
+
+// ─────────────────────────────────────────────
+// Akademik — Kalender Akademik (single-record)
+// ─────────────────────────────────────────────
+export const kalenderAkademikSchema = z.object({
+  fileUrl: z.string().min(1, "File wajib diunggah terlebih dahulu").max(500),
+  tahunAjaran: z
+    .string()
+    .min(1, "Tahun ajaran wajib diisi")
+    .max(20, "Tahun ajaran maksimal 20 karakter"),
+});
+
+export type KalenderAkademikInput = z.infer<typeof kalenderAkademikSchema>;
+
+// ─────────────────────────────────────────────
+// Akademik — Pedoman Akademik (single-record)
+// ─────────────────────────────────────────────
+export const pedomanAkademikSchema = z.object({
+  fileUrl: z.string().min(1, "File wajib diunggah terlebih dahulu").max(500),
+});
+
+export type PedomanAkademikInput = z.infer<typeof pedomanAkademikSchema>;
+
+// ─────────────────────────────────────────────
+// Akademik — Jadwal Kuliah
+// ─────────────────────────────────────────────
+export const jadwalKuliahSchema = z.object({
+  prodiId: z.number().int().positive("Program studi wajib dipilih"),
+  fileUrl: z.string().min(1, "File jadwal wajib diunggah terlebih dahulu").max(500),
+  semester: z.enum(["ganjil", "genap"], {
+    error: "Semester harus 'ganjil' atau 'genap'",
+  }),
+  tahunAjaran: z
+    .string()
+    .min(1, "Tahun ajaran wajib diisi")
+    .max(20, "Tahun ajaran maksimal 20 karakter"),
+});
+
+export type JadwalKuliahInput = z.infer<typeof jadwalKuliahSchema>;
+export const jadwalKuliahUpdateSchema = jadwalKuliahSchema;
+export type JadwalKuliahUpdateInput = z.infer<typeof jadwalKuliahUpdateSchema>;
+
+// ─────────────────────────────────────────────
+// Akademik — Akreditasi
+// ─────────────────────────────────────────────
+export const akreditasiSchema = z.object({
+  prodiId: z.number().int().positive("Program studi wajib dipilih"),
+  peringkat: z.string().min(1, "Peringkat wajib diisi").max(100, "Peringkat maksimal 100 karakter"),
+  noSk: z.string().min(1, "Nomor SK wajib diisi").max(255, "Nomor SK maksimal 255 karakter"),
+  tanggalBerlaku: z
+    .string()
+    .min(1, "Tanggal berlaku wajib diisi")
+    .regex(/^\d{4}-\d{2}-\d{2}$/, "Format tanggal tidak valid (YYYY-MM-DD)"),
+  fileSertifikat: z.string().min(1, "File sertifikat wajib diunggah terlebih dahulu").max(500),
+});
+
+export type AkreditasiInput = z.infer<typeof akreditasiSchema>;
+export const akreditasiUpdateSchema = akreditasiSchema;
+export type AkreditasiUpdateInput = z.infer<typeof akreditasiUpdateSchema>;
+
+// ─────────────────────────────────────────────
+// Akademik — Prosedur Akademik
+// ─────────────────────────────────────────────
+export const prosedurAkademikSchema = z
+  .object({
+    judulSop: z.string().min(1, "Judul SOP wajib diisi").max(500, "Judul maksimal 500 karakter"),
+    narasi: z.string().min(1, "Narasi/deskripsi wajib diisi"),
+    penanggungJawab: z.string().min(1, "Penanggung jawab wajib diisi").max(255, "Penanggung jawab maksimal 255 karakter"),
+    fileUrl: z.string().max(500).optional().or(z.literal("")),
+    linkUrl: z
+      .string()
+      .url("Format URL tidak valid (cth: https://example.com)")
+      .max(500)
+      .optional()
+      .or(z.literal("")),
+  })
+  .refine(
+    (data) => {
+      const hasFile = data.fileUrl && data.fileUrl.trim() !== "";
+      const hasLink = data.linkUrl && data.linkUrl.trim() !== "";
+      return hasFile || hasLink;
+    },
+    {
+      message: "Minimal salah satu dari File atau Link URL harus diisi",
+      path: ["fileUrl"],
+    }
+  );
+
+export type ProsedurAkademikInput = z.infer<typeof prosedurAkademikSchema>;
+export const prosedurAkademikUpdateSchema = prosedurAkademikSchema;
+export type ProsedurAkademikUpdateInput = z.infer<typeof prosedurAkademikUpdateSchema>;

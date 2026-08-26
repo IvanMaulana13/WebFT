@@ -248,3 +248,117 @@ export const visitorLogs = mysqlTable("visitor_logs", {
 
 export type VisitorLog = typeof visitorLogs.$inferSelect;
 export type NewVisitorLog = typeof visitorLogs.$inferInsert;
+
+// ─────────────────────────────────────────────
+// 13. program_studi
+// Master data program studi — direferensikan oleh jadwal_kuliah & akreditasi.
+// ─────────────────────────────────────────────
+export const programStudi = mysqlTable("program_studi", {
+  id: int("id").primaryKey().autoincrement(),
+  nama: varchar("nama", { length: 255 }).notNull(),
+  kode: varchar("kode", { length: 20 }).notNull().unique(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+});
+
+export type ProgramStudi = typeof programStudi.$inferSelect;
+export type NewProgramStudi = typeof programStudi.$inferInsert;
+
+// ─────────────────────────────────────────────
+// 14. kalender_akademik
+// Single-record: selalu UPDATE baris yang sama (id = 1).
+// Seed awal: 1 baris dengan file_url = null.
+// ─────────────────────────────────────────────
+export const kalenderAkademik = mysqlTable("kalender_akademik", {
+  id: int("id").primaryKey().autoincrement(),
+  fileUrl: varchar("file_url", { length: 500 }),
+  tahunAjaran: varchar("tahun_ajaran", { length: 20 }),
+  updatedBy: int("updated_by").references(() => users.id, {
+    onDelete: "set null",
+  }),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+});
+
+export type KalenderAkademik = typeof kalenderAkademik.$inferSelect;
+export type NewKalenderAkademik = typeof kalenderAkademik.$inferInsert;
+
+// ─────────────────────────────────────────────
+// 15. pedoman_akademik
+// Single-record: selalu UPDATE baris yang sama (id = 1).
+// Seed awal: 1 baris dengan file_url = null.
+// ─────────────────────────────────────────────
+export const pedomanAkademik = mysqlTable("pedoman_akademik", {
+  id: int("id").primaryKey().autoincrement(),
+  fileUrl: varchar("file_url", { length: 500 }),
+  updatedBy: int("updated_by").references(() => users.id, {
+    onDelete: "set null",
+  }),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+});
+
+export type PedomanAkademik = typeof pedomanAkademik.$inferSelect;
+export type NewPedomanAkademik = typeof pedomanAkademik.$inferInsert;
+
+// ─────────────────────────────────────────────
+// 16. jadwal_kuliah
+// CRUD biasa: satu prodi bisa punya banyak jadwal (beda semester/tahun).
+// Soft delete dengan deleted_at.
+// ─────────────────────────────────────────────
+export const jadwalKuliah = mysqlTable("jadwal_kuliah", {
+  id: int("id").primaryKey().autoincrement(),
+  prodiId: int("prodi_id")
+    .notNull()
+    .references(() => programStudi.id, { onDelete: "restrict" }),
+  fileUrl: varchar("file_url", { length: 500 }).notNull(),
+  semester: mysqlEnum("semester", ["ganjil", "genap"]).notNull(),
+  tahunAjaran: varchar("tahun_ajaran", { length: 20 }).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+  deletedAt: datetime("deleted_at"),
+});
+
+export type JadwalKuliah = typeof jadwalKuliah.$inferSelect;
+export type NewJadwalKuliah = typeof jadwalKuliah.$inferInsert;
+
+// ─────────────────────────────────────────────
+// 17. akreditasi
+// CRUD: satu prodi bisa punya 1 atau lebih data akreditasi.
+// Soft delete dengan deleted_at.
+// ─────────────────────────────────────────────
+export const akreditasi = mysqlTable("akreditasi", {
+  id: int("id").primaryKey().autoincrement(),
+  prodiId: int("prodi_id")
+    .notNull()
+    .references(() => programStudi.id, { onDelete: "restrict" }),
+  /** Peringkat fleksibel (text) agar tidak perlu ubah enum saat BAN-PT ubah istilah */
+  peringkat: varchar("peringkat", { length: 100 }).notNull(),
+  noSk: varchar("no_sk", { length: 255 }).notNull(),
+  tanggalBerlaku: date("tanggal_berlaku").notNull(),
+  fileSertifikat: varchar("file_sertifikat", { length: 500 }).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+  deletedAt: datetime("deleted_at"),
+});
+
+export type Akreditasi = typeof akreditasi.$inferSelect;
+export type NewAkreditasi = typeof akreditasi.$inferInsert;
+
+// ─────────────────────────────────────────────
+// 18. prosedur_akademik
+// CRUD SOP/prosedur akademik: bisa berupa file upload atau link eksternal.
+// Soft delete dengan deleted_at.
+// ─────────────────────────────────────────────
+export const prosedurAkademik = mysqlTable("prosedur_akademik", {
+  id: int("id").primaryKey().autoincrement(),
+  judulSop: varchar("judul_sop", { length: 500 }).notNull(),
+  narasi: text("narasi").notNull(),
+  fileUrl: varchar("file_url", { length: 500 }),
+  linkUrl: varchar("link_url", { length: 500 }),
+  penanggungJawab: varchar("penanggung_jawab", { length: 255 }).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+  deletedAt: datetime("deleted_at"),
+});
+
+export type ProsedurAkademik = typeof prosedurAkademik.$inferSelect;
+export type NewProsedurAkademik = typeof prosedurAkademik.$inferInsert;

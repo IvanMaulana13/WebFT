@@ -18,6 +18,7 @@ Dashboard ini akan menangani:
 - **CRUD** untuk konten: **Informasi, Berita, Prestasi, Kemitraan**
 - **CRUD** untuk **Data Dosen** dan **Data Tenaga Pendidikan**
 - **CRUD** untuk **Data Pimpinan Fakultas**, serta pengelolaan gambar **Struktur Organisasi** (gambar statis)
+- **Modul Akademik**: Kalender Akademik & Pedoman Akademik (upload file), Jadwal Perkuliahan & Akreditasi (relasi ke Program Studi), Prosedur Akademik
 - **Pengaturan Situs**: hero video, nomor WhatsApp (floating bubble), dan link media sosial di footer
 - **Sistem autentikasi (login)** untuk admin
 
@@ -170,7 +171,29 @@ Dibagi menjadi 3 bagian dalam satu halaman `/dashboard/pengaturan`:
 
 Semua perubahan pada modul ini dicatat ke `activity_logs` (module = `site_settings`).
 
-### 5.11 Dashboard Overview (Beranda Admin)
+### 5.11 Modul Akademik *(baru)*
+Menu "Akademik" di sidebar dashboard berupa dropdown/submenu berisi 5 sub-modul berikut. Empat di antaranya membutuhkan tabel master **Program Studi** (nama, kode) sebagai referensi relasi, di-seed 3 data sesuai jumlah prodi di FT UWKS, dengan CRUD sederhana khusus Super Admin agar bisa disesuaikan.
+
+**a. Kalender Akademik** *(single-record, upload file)*
+- Admin upload/ganti 1 file (PDF) kalender akademik beserta label tahun ajaran, kapan saja ada perubahan (pola sama seperti modul Struktur Organisasi: file lama tergantikan, bukan menumpuk).
+
+**b. Pedoman Akademik** *(single-record, upload file)*
+- Sama seperti Kalender Akademik: admin upload/ganti 1 file (PDF) pedoman akademik yang berlaku.
+
+**c. Jadwal Perkuliahan** *(CRUD, relasi ke Program Studi)*
+- Setiap entri berisi: Program Studi (relasi), file jadwal (PDF), semester (Ganjil/Genap), tahun ajaran.
+- Berbeda dari Kalender/Pedoman, modul ini CRUD penuh (banyak entri) karena satu prodi bisa punya beberapa jadwal di semester/tahun ajaran berbeda, dan riwayat jadwal tahun-tahun sebelumnya tetap tersimpan.
+- Admin bisa filter berdasarkan Program Studi, Semester, dan Tahun Ajaran.
+
+**d. Akreditasi** *(CRUD, relasi ke Program Studi)*
+- Setiap entri berisi: Program Studi (relasi), peringkat akreditasi, nomor SK, tanggal berlaku, file sertifikat (upload).
+- CRUD penuh per Program Studi.
+
+**e. Prosedur Akademik** *(CRUD)*
+- Setiap entri berisi: judul SOP, narasi/deskripsi, file SOP **atau** link eksternal (minimal salah satu wajib diisi), penanggung jawab.
+- CRUD penuh dengan pencarian berdasarkan judul/penanggung jawab.
+
+### 5.12 Dashboard Overview (Beranda Admin)
 - Ringkasan jumlah data (jumlah berita, prestasi, mitra, dosen) dalam bentuk card statistik.
 - Aktivitas terbaru (log siapa mengubah apa, kapan).
 - Shortcut ke modul yang sering diakses.
@@ -285,6 +308,28 @@ site_settings
   updated_by (FK ke users.id), updated_at
   (tabel ini juga hanya berisi 1 baris aktif — sama seperti struktur_organisasi, setiap perubahan meng-update baris yang sama)
 
+program_studi
+  id, nama, kode (unique)
+  (tabel master, di-seed 3 data, direferensikan oleh jadwal_kuliah dan akreditasi)
+
+kalender_akademik
+  id, file_url, tahun_ajaran, updated_by (FK ke users.id), updated_at
+  (single-record, sama pola dengan struktur_organisasi)
+
+pedoman_akademik
+  id, file_url, updated_by (FK ke users.id), updated_at
+  (single-record)
+
+jadwal_kuliah
+  id, prodi_id (FK ke program_studi.id), file_url, semester (enum: 'ganjil','genap'), tahun_ajaran, created_at, updated_at, deleted_at
+
+akreditasi
+  id, prodi_id (FK ke program_studi.id), peringkat, no_sk, tanggal_berlaku, file_sertifikat, created_at, updated_at, deleted_at
+
+prosedur_akademik
+  id, judul_sop, narasi, file_url (nullable), link_url (nullable), penanggung_jawab, created_at, updated_at, deleted_at
+  (minimal salah satu dari file_url/link_url wajib diisi — divalidasi di aplikasi)
+
 activity_logs
   id, user_id, action, module, record_id, detail, created_at
 
@@ -331,6 +376,24 @@ DELETE /api/struktur-organisasi        (opsional, kosongkan/hapus gambar)
 GET    /api/settings           (ambil pengaturan situs aktif: hero video, WA, media sosial)
 PUT    /api/settings           (update pengaturan situs, replace baris yang ada)
 
+GET    /api/akademik/program-studi     POST /api/akademik/program-studi (super admin only)
+PUT    /api/akademik/program-studi/:id DELETE /api/akademik/program-studi/:id (super admin only)
+
+GET    /api/akademik/kalender          POST /api/akademik/kalender (upload/ganti, replace)
+DELETE /api/akademik/kalender
+
+GET    /api/akademik/pedoman           POST /api/akademik/pedoman (upload/ganti, replace)
+DELETE /api/akademik/pedoman
+
+GET    /api/akademik/jadwal            POST /api/akademik/jadwal
+PUT    /api/akademik/jadwal/:id        DELETE /api/akademik/jadwal/:id
+
+GET    /api/akademik/akreditasi        POST /api/akademik/akreditasi
+PUT    /api/akademik/akreditasi/:id    DELETE /api/akademik/akreditasi/:id
+
+GET    /api/akademik/prosedur          POST /api/akademik/prosedur
+PUT    /api/akademik/prosedur/:id      DELETE /api/akademik/prosedur/:id
+
 GET    /api/users (super admin only)  POST /api/users
 PUT    /api/users/:id                 DELETE /api/users/:id
 ```
@@ -376,6 +439,7 @@ Desain front-end publik yang dilampirkan (masih proses) menjadi acuan tampilan *
 | **Fase 1** | Setup project (Next.js + Bun + Tailwind + shadcn/ui), skema database, sistem login & role |
 | **Fase 2** | CRUD Informasi, Berita, Prestasi, Kemitraan + upload gambar |
 | **Fase 3** | CRUD Data Dosen, Tenaga Pendidikan, Pimpinan Fakultas + fitur upload/ganti gambar Struktur Organisasi + Modul Pengaturan Situs (hero video, WhatsApp, media sosial) |
+| **Fase 3b** | Modul Akademik: Program Studi (master data), Kalender Akademik, Pedoman Akademik, Jadwal Perkuliahan, Akreditasi, Prosedur Akademik |
 | **Fase 4** | Integrasi ke halaman publik (dynamic rendering), testing, hardening keamanan |
 | **Fase 5** | UAT (User Acceptance Test) bersama staf fakultas, deployment produksi |
 
