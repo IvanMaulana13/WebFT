@@ -7,46 +7,51 @@ import { and, eq, isNull, ne } from "drizzle-orm";
 import { logActivity } from "@/lib/activity-log";
 
 // ─────────────────────────────────────────────
-// GET /api/berita/[id] — Fetch single for edit form
+// GET /api/berita/[slug] — Public endpoint (tidak perlu auth)
+// HANYA kembalikan data jika status = 'published'
 // ─────────────────────────────────────────────
 export async function GET(
   _request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
-  const session = await auth();
-  if (!session?.user) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const { slug } = await params;
+  if (!slug) {
+    return NextResponse.json({ error: "Slug tidak valid" }, { status: 400 });
   }
-
-  const { id } = await params;
-  const beritaId = parseInt(id, 10);
-  if (isNaN(beritaId)) return NextResponse.json({ error: "ID tidak valid" }, { status: 400 });
 
   const [record] = await db
     .select()
     .from(berita)
-    .where(and(eq(berita.id, beritaId), isNull(berita.deletedAt)))
+    .where(
+      and(
+        eq(berita.slug, slug),
+        eq(berita.status, "published"),
+        isNull(berita.deletedAt)
+      )
+    )
     .limit(1);
 
-  if (!record) return NextResponse.json({ error: "Berita tidak ditemukan" }, { status: 404 });
+  if (!record) {
+    return NextResponse.json({ error: "Berita tidak ditemukan" }, { status: 404 });
+  }
 
   return NextResponse.json({ data: record });
 }
 
 // ─────────────────────────────────────────────
-// PUT /api/berita/[id]
+// PUT /api/berita/[id] (menerima ID pada path parameter)
 // ─────────────────────────────────────────────
 export async function PUT(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   const session = await auth();
   if (!session?.user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { id } = await params;
-  const beritaId = parseInt(id, 10);
+  const { slug } = await params;
+  const beritaId = parseInt(slug, 10);
   if (isNaN(beritaId)) return NextResponse.json({ error: "ID tidak valid" }, { status: 400 });
 
   const [existing] = await db
@@ -67,7 +72,7 @@ export async function PUT(
       );
     }
 
-    const { title, slug, content, thumbnailUrl, category, status, publishedAt } = parsed.data;
+    const { title, slug: newSlug, content, thumbnailUrl, category, status, publishedAt } = parsed.data;
 
     // Validasi slug unik — boleh sama dengan milik sendiri
     const [slugConflict] = await db
@@ -75,7 +80,7 @@ export async function PUT(
       .from(berita)
       .where(
         and(
-          eq(berita.slug, slug),
+          eq(berita.slug, newSlug),
           isNull(berita.deletedAt),
           ne(berita.id, beritaId) // bukan record sendiri
         )
@@ -100,7 +105,7 @@ export async function PUT(
       .update(berita)
       .set({
         title,
-        slug,
+        slug: newSlug,
         content,
         thumbnailUrl: thumbnailUrl && thumbnailUrl.trim() !== "" ? thumbnailUrl : null,
         category: category && category.trim() !== "" ? category : null,
@@ -114,7 +119,7 @@ export async function PUT(
       action: "update",
       module: "berita",
       recordId: beritaId,
-      detail: JSON.stringify({ title, slug, status }),
+      detail: JSON.stringify({ title, slug: newSlug, status }),
     });
 
     const [updated] = await db
@@ -131,19 +136,19 @@ export async function PUT(
 }
 
 // ─────────────────────────────────────────────
-// DELETE /api/berita/[id] — Soft delete
+// DELETE /api/berita/[id] (menerima ID pada path parameter) — Soft delete
 // ─────────────────────────────────────────────
 export async function DELETE(
   _request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   const session = await auth();
   if (!session?.user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { id } = await params;
-  const beritaId = parseInt(id, 10);
+  const { slug } = await params;
+  const beritaId = parseInt(slug, 10);
   if (isNaN(beritaId)) return NextResponse.json({ error: "ID tidak valid" }, { status: 400 });
 
   const [existing] = await db

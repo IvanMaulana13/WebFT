@@ -11,6 +11,7 @@ import {
   ArrowRight,
   ExternalLink,
   Medal,
+  User,
 } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -217,9 +218,10 @@ export default async function HomePage() {
           {publishedBerita.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {publishedBerita.map((item) => (
-                <article
+                <Link
                   key={item.id}
-                  className="flex flex-col gap-3 group bg-white rounded-xl border border-slate-200 overflow-hidden hover:shadow-lg transition-all"
+                  href={`/berita/${item.slug}`}
+                  className="flex flex-col gap-3 group bg-white rounded-xl border border-slate-200 overflow-hidden hover:shadow-xl hover:border-[#E5B80B]/60 hover:-translate-y-1 transition-all duration-300 cursor-pointer"
                 >
                   <div className="aspect-video relative overflow-hidden bg-slate-100">
                     {item.thumbnailUrl ? (
@@ -250,7 +252,7 @@ export default async function HomePage() {
                       {item.title}
                     </h3>
                   </div>
-                </article>
+                </Link>
               ))}
             </div>
           ) : (
@@ -272,27 +274,53 @@ export default async function HomePage() {
           </div>
 
           {sortedPrestasi.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-8">
               {sortedPrestasi.map((item) => (
-                <div
+                <Link
                   key={item.id}
-                  className="bg-white p-6 border border-slate-200 rounded-xl flex flex-col gap-4 hover:border-[#E5B80B] hover:shadow-md transition-all"
+                  href={`/prestasi/${item.id}`}
+                  className="bg-white border border-slate-200 rounded-xl overflow-hidden flex flex-col hover:border-[#E5B80B] hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer group"
                 >
-                  <div className="w-12 h-12 rounded-full bg-[#E5B80B]/20 flex items-center justify-center text-[#E5B80B]">
-                    <Medal className="w-6 h-6" />
+                  {/* Foto / Gambar Prestasi */}
+                  <div className="relative aspect-[4/3] w-full bg-slate-100 overflow-hidden">
+                    {item.imageUrl ? (
+                      <Image
+                        src={item.imageUrl}
+                        alt={item.title}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-500"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-amber-50 to-slate-100 text-amber-500/70">
+                        <Medal className="w-10 h-10 stroke-1" />
+                      </div>
+                    )}
+                    <div className="absolute top-2.5 right-2.5">
+                      <span className="bg-[#002347]/90 backdrop-blur-sm text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider shadow-sm border border-white/10">
+                        {item.level}
+                      </span>
+                    </div>
                   </div>
-                  <div>
-                    <span className="text-xs font-bold text-slate-400 block mb-1">
-                      {item.year} • {item.level.toUpperCase()}
-                    </span>
-                    <h3 className="text-sm font-bold text-[#002347] mb-1 leading-snug">
-                      {item.title}
-                    </h3>
-                    <p className="text-xs text-slate-500 font-medium">
-                      {item.achieverName}
-                    </p>
+
+                  {/* Info Konten */}
+                  <div className="p-4 flex flex-col flex-grow justify-between gap-3">
+                    <div>
+                      <span className="text-[11px] font-bold text-[#E5B80B] block mb-1">
+                        Tahun {item.year}
+                      </span>
+                      <h3 className="text-sm font-bold text-[#002347] group-hover:text-[#E5B80B] transition-colors leading-snug line-clamp-2">
+                        {item.title}
+                      </h3>
+                    </div>
+                    <div className="pt-2 border-t border-slate-100 flex items-center gap-1.5 text-xs text-slate-500">
+                      <User className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
+                      <p className="font-medium truncate">
+                        {item.achieverName}
+                      </p>
+                    </div>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           ) : (
