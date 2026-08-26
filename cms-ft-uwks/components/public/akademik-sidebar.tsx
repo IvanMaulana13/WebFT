@@ -4,32 +4,30 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-  History,
-  Eye,
-  GitFork,
-  Users,
-  GraduationCap,
-  BadgeCheck,
+  Calendar,
+  BookOpen,
+  CalendarDays,
+  Award,
+  ClipboardList,
   ChevronDown,
 } from "lucide-react";
 
-const profilNavItems = [
-  { href: "/sejarah", label: "Sejarah", icon: History },
-  { href: "/visi-misi", label: "Visi & Misi", icon: Eye },
-  { href: "/struktur-organisasi", label: "Struktur Organisasi", icon: GitFork },
-  { href: "/pimpinan-fakultas", label: "Pimpinan Fakultas", icon: Users },
-  { href: "/dosen", label: "Dosen Pengajar", icon: GraduationCap },
-  { href: "/tenaga-kependidikan", label: "Tenaga Kependidikan", icon: BadgeCheck },
+const akademikNavItems = [
+  { href: "/akademik/kalender", label: "Kalender Akademik", icon: Calendar },
+  { href: "/akademik/pedoman", label: "Pedoman Akademik", icon: BookOpen },
+  { href: "/akademik/jadwal-perkuliahan", label: "Jadwal Perkuliahan", icon: CalendarDays },
+  { href: "/akademik/akreditasi", label: "Akreditasi", icon: Award },
+  { href: "/akademik/prosedur", label: "Prosedur Akademik", icon: ClipboardList },
 ];
 
-export default function ProfilSidebar() {
+export default function AkademikSidebar() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const activeItem =
-    profilNavItems.find(
+    akademikNavItems.find(
       (item) => pathname === item.href || pathname.startsWith(`${item.href}/`)
-    ) || profilNavItems[0];
+    ) || akademikNavItems[0];
   const ActiveIcon = activeItem.icon;
 
   return (
@@ -41,13 +39,13 @@ export default function ProfilSidebar() {
           onClick={() => setMobileOpen((prev) => !prev)}
           className="md:hidden flex items-center justify-between w-full text-left gap-3 focus:outline-none"
           aria-expanded={mobileOpen}
-          aria-label="Toggle Menu Profil"
+          aria-label="Toggle Menu Akademik"
         >
           <div className="flex items-center gap-3 min-w-0">
             <div className="w-1.5 h-8 bg-[#E5B80B] rounded-full flex-shrink-0" />
             <div className="flex flex-col min-w-0">
               <span className="text-[10px] font-bold tracking-wider text-slate-400 uppercase leading-tight">
-                PROFIL FAKULTAS
+                MENU AKADEMIK
               </span>
               <div className="flex items-center gap-2 mt-0.5">
                 <ActiveIcon className="w-4 h-4 text-[#002C5F] shrink-0" />
@@ -72,10 +70,10 @@ export default function ProfilSidebar() {
           <div className="w-1.5 h-10 bg-[#E5B80B] mr-3 rounded-full flex-shrink-0" />
           <div className="flex flex-col">
             <h3 className="text-xl font-bold text-[#002347] leading-tight uppercase font-sans">
-              PROFIL
+              MENU
             </h3>
             <h3 className="text-xl font-bold text-[#002347] leading-tight uppercase font-sans">
-              FAKULTAS
+              AKADEMIK
             </h3>
           </div>
         </div>
@@ -86,7 +84,7 @@ export default function ProfilSidebar() {
             mobileOpen ? "flex mt-4 pt-4 border-t border-slate-200" : "hidden"
           } md:flex flex-col gap-1.5`}
         >
-          {profilNavItems.map((item) => {
+          {akademikNavItems.map((item) => {
             const Icon = item.icon;
             const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
             return (

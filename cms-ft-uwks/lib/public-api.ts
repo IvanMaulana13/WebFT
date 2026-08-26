@@ -10,26 +10,19 @@ import {
   dosen,
   tenagaPendidikan,
   visitorLogs,
+  programStudi,
+  kalenderAkademik,
+  pedomanAkademik,
+  jadwalKuliah,
+  akreditasi,
+  prosedurAkademik,
 } from "@/lib/db/schema";
 import { and, isNull, asc, desc, eq, sql } from "drizzle-orm";
 
 /**
  * Helper untuk mengambil data publik langsung dari database.
- *
- * Semua endpoint GET memerlukan session auth, sehingga request dari
- * Server Component (tanpa cookie) selalu mendapat 401. Karena itu
- * kita langsung query DB dengan filter yang IDENTIK dengan API handler:
- *   - AND(isNull(deletedAt), ...) → exclude soft-deleted records
- *   - AND status = 'published'    → hanya data yang dipublikasikan
- *   - Urutan sesuai API masing-masing
  */
 export async function fetchPublicData<T>(path: string): Promise<T | null> {
-
-  // ── Direct DB query (primary path untuk halaman publik) ──
-  // Semua query menggunakan filter yang IDENTIK dengan API handler:
-  // - isNull(*.deletedAt) → exclude soft-deleted records
-  // - status filter → hanya tampilkan yang published
-  // - urutan sesuai API
   try {
     if (path.includes("/api/settings")) {
       const [record] = await db.select().from(siteSettings).limit(1);
@@ -37,7 +30,6 @@ export async function fetchPublicData<T>(path: string): Promise<T | null> {
     }
 
     if (path.includes("/api/informasi")) {
-      // Filter: deletedAt IS NULL AND status='published' + order orderIndex ASC
       const records = await db
         .select()
         .from(informasi)
@@ -63,9 +55,6 @@ export async function fetchPublicData<T>(path: string): Promise<T | null> {
     }
 
     if (path.includes("/api/berita")) {
-      // Filter: deletedAt IS NULL AND status='published' + order publishedAt DESC
-      // PENTING: kedua kondisi harus AND — berita yg di-soft-delete tidak boleh muncul
-      // meski sebelumnya berstatus 'published'
       const records = await db
         .select()
         .from(berita)
@@ -87,7 +76,6 @@ export async function fetchPublicData<T>(path: string): Promise<T | null> {
     }
 
     if (path.includes("/api/prestasi")) {
-      // Identik dengan GET /api/prestasi: filter deletedAt IS NULL + order year DESC
       const records = await db
         .select()
         .from(prestasi)
@@ -97,7 +85,6 @@ export async function fetchPublicData<T>(path: string): Promise<T | null> {
     }
 
     if (path.includes("/api/kemitraan")) {
-      // Identik dengan GET /api/kemitraan: filter deletedAt IS NULL + order orderIndex ASC
       const records = await db
         .select()
         .from(kemitraan)
@@ -107,7 +94,6 @@ export async function fetchPublicData<T>(path: string): Promise<T | null> {
     }
 
     if (path.includes("/api/pimpinan")) {
-      // Filter deletedAt IS NULL
       const records = await db
         .select()
         .from(pimpinanFakultas)
@@ -122,7 +108,6 @@ export async function fetchPublicData<T>(path: string): Promise<T | null> {
     }
 
     if (path.includes("/api/dosen")) {
-      // Filter deletedAt IS NULL
       const records = await db
         .select()
         .from(dosen)
@@ -132,12 +117,73 @@ export async function fetchPublicData<T>(path: string): Promise<T | null> {
     }
 
     if (path.includes("/api/tenaga-pendidikan")) {
-      // Filter deletedAt IS NULL
       const records = await db
         .select()
         .from(tenagaPendidikan)
         .where(isNull(tenagaPendidikan.deletedAt))
         .orderBy(asc(tenagaPendidikan.name));
+      return records as T;
+    }
+
+    // ── Akademik ──
+    if (path.includes("/api/akademik/kalender")) {
+      const [record] = await db.select().from(kalenderAkademik).limit(1);
+      return (record ?? null) as T;
+    }
+
+    if (path.includes("/api/akademik/pedoman")) {
+      const [record] = await db.select().from(pedomanAkademik).limit(1);
+      return (record ?? null) as T;
+    }
+
+    if (path.includes("/api/akademik/program-studi")) {
+      const records = await db.select().from(programStudi).orderBy(asc(programStudi.nama));
+      return records as T;
+    }
+
+    if (path.includes("/api/akademik/jadwal")) {
+      const records = await db
+        .select({
+          id: jadwalKuliah.id,
+          prodiId: jadwalKuliah.prodiId,
+          prodiNama: programStudi.nama,
+          fileUrl: jadwalKuliah.fileUrl,
+          semester: jadwalKuliah.semester,
+          tahunAjaran: jadwalKuliah.tahunAjaran,
+          createdAt: jadwalKuliah.createdAt,
+        })
+        .from(jadwalKuliah)
+        .leftJoin(programStudi, eq(jadwalKuliah.prodiId, programStudi.id))
+        .where(isNull(jadwalKuliah.deletedAt))
+        .orderBy(desc(jadwalKuliah.createdAt));
+      return records as T;
+    }
+
+    if (path.includes("/api/akademik/akreditasi")) {
+      const records = await db
+        .select({
+          id: akreditasi.id,
+          prodiId: akreditasi.prodiId,
+          prodiNama: programStudi.nama,
+          peringkat: akreditasi.peringkat,
+          noSk: akreditasi.noSk,
+          tanggalBerlaku: akreditasi.tanggalBerlaku,
+          fileSertifikat: akreditasi.fileSertifikat,
+          createdAt: akreditasi.createdAt,
+        })
+        .from(akreditasi)
+        .leftJoin(programStudi, eq(akreditasi.prodiId, programStudi.id))
+        .where(isNull(akreditasi.deletedAt))
+        .orderBy(desc(akreditasi.tanggalBerlaku));
+      return records as T;
+    }
+
+    if (path.includes("/api/akademik/prosedur")) {
+      const records = await db
+        .select()
+        .from(prosedurAkademik)
+        .where(isNull(prosedurAkademik.deletedAt))
+        .orderBy(asc(prosedurAkademik.createdAt));
       return records as T;
     }
   } catch (dbErr) {
@@ -153,6 +199,51 @@ export async function fetchPublicBeritaBySlug(slug: string) {
 
 export async function fetchPublicPrestasiById(id: number | string) {
   return fetchPublicData<typeof prestasi.$inferSelect>(`/api/prestasi/${id}`);
+}
+
+export async function fetchPublicKalender() {
+  return fetchPublicData<typeof kalenderAkademik.$inferSelect>("/api/akademik/kalender");
+}
+
+export async function fetchPublicPedoman() {
+  return fetchPublicData<typeof pedomanAkademik.$inferSelect>("/api/akademik/pedoman");
+}
+
+export async function fetchPublicProgramStudi() {
+  return fetchPublicData<Array<typeof programStudi.$inferSelect>>("/api/akademik/program-studi");
+}
+
+export async function fetchPublicJadwal() {
+  return fetchPublicData<
+    Array<{
+      id: number;
+      prodiId: number;
+      prodiNama: string | null;
+      fileUrl: string;
+      semester: "ganjil" | "genap";
+      tahunAjaran: string;
+      createdAt: Date;
+    }>
+  >("/api/akademik/jadwal");
+}
+
+export async function fetchPublicAkreditasi() {
+  return fetchPublicData<
+    Array<{
+      id: number;
+      prodiId: number;
+      prodiNama: string | null;
+      peringkat: string;
+      noSk: string;
+      tanggalBerlaku: string;
+      fileSertifikat: string;
+      createdAt: Date;
+    }>
+  >("/api/akademik/akreditasi");
+}
+
+export async function fetchPublicProsedur() {
+  return fetchPublicData<Array<typeof prosedurAkademik.$inferSelect>>("/api/akademik/prosedur");
 }
 
 /**

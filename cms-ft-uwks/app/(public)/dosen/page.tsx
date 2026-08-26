@@ -42,10 +42,10 @@ export default async function DosenPage() {
       </section>
 
       {/* ── Main Content Grid ── */}
-      <div className="max-w-6xl mx-auto px-6 py-16 grid grid-cols-12 gap-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 md:py-16 grid grid-cols-12 gap-6 md:gap-8">
         <ProfilSidebar />
 
-        <article className="col-span-12 lg:col-span-9 bg-white rounded-xl p-8 lg:p-12 shadow-sm border border-slate-200">
+        <article className="col-span-12 md:col-span-8 lg:col-span-9 bg-white rounded-xl p-6 sm:p-8 lg:p-12 shadow-sm border border-slate-200">
           <div className="space-y-6">
             <div className="flex items-center gap-3 border-b border-slate-200 pb-3">
               <h2 className="text-xl font-bold text-[#002347] font-sans">

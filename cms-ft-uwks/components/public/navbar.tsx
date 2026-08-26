@@ -178,11 +178,41 @@ export default function PublicNavbar() {
                       >
                         • Teknologi Industri Pertanian
                       </a>
-                      <span className="py-1.5 text-xs text-white/80">Kalender Akademik</span>
-                      <span className="py-1.5 text-xs text-white/80">Pedoman Akademik</span>
-                      <span className="py-1.5 text-xs text-white/80">Jadwal Perkuliahan</span>
-                      <span className="py-1.5 text-xs text-white/80">Akreditasi</span>
-                      <span className="py-1.5 text-xs text-white/80">Prosedur Akademik</span>
+                      <Link
+                        href="/akademik/kalender"
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="py-1.5 text-xs text-white/80 hover:text-[#E5B80B] transition-colors"
+                      >
+                        Kalender Akademik
+                      </Link>
+                      <Link
+                        href="/akademik/pedoman"
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="py-1.5 text-xs text-white/80 hover:text-[#E5B80B] transition-colors"
+                      >
+                        Pedoman Akademik
+                      </Link>
+                      <Link
+                        href="/akademik/jadwal-perkuliahan"
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="py-1.5 text-xs text-white/80 hover:text-[#E5B80B] transition-colors"
+                      >
+                        Jadwal Perkuliahan
+                      </Link>
+                      <Link
+                        href="/akademik/akreditasi"
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="py-1.5 text-xs text-white/80 hover:text-[#E5B80B] transition-colors"
+                      >
+                        Akreditasi
+                      </Link>
+                      <Link
+                        href="/akademik/prosedur"
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="py-1.5 text-xs text-white/80 hover:text-[#E5B80B] transition-colors"
+                      >
+                        Prosedur Akademik
+                      </Link>
                     </div>
                   )}
                 </div>
@@ -454,21 +484,36 @@ export default function PublicNavbar() {
                     </a>
                   </div>
                 </div>
-                <span className="block px-4 py-2 text-slate-700 hover:bg-slate-50 transition-colors text-xs font-medium">
+                <Link
+                  href="/akademik/kalender"
+                  className="block px-4 py-2 text-slate-800 hover:bg-slate-50 hover:text-[#002347] transition-colors text-xs font-medium"
+                >
                   Kalender Akademik
-                </span>
-                <span className="block px-4 py-2 text-slate-700 hover:bg-slate-50 transition-colors text-xs font-medium">
+                </Link>
+                <Link
+                  href="/akademik/pedoman"
+                  className="block px-4 py-2 text-slate-800 hover:bg-slate-50 hover:text-[#002347] transition-colors text-xs font-medium"
+                >
                   Pedoman Akademik
-                </span>
-                <span className="block px-4 py-2 text-slate-700 hover:bg-slate-50 transition-colors text-xs font-medium">
+                </Link>
+                <Link
+                  href="/akademik/jadwal-perkuliahan"
+                  className="block px-4 py-2 text-slate-800 hover:bg-slate-50 hover:text-[#002347] transition-colors text-xs font-medium"
+                >
                   Jadwal Perkuliahan
-                </span>
-                <span className="block px-4 py-2 text-slate-700 hover:bg-slate-50 transition-colors text-xs font-medium">
+                </Link>
+                <Link
+                  href="/akademik/akreditasi"
+                  className="block px-4 py-2 text-slate-800 hover:bg-slate-50 hover:text-[#002347] transition-colors text-xs font-medium"
+                >
                   Akreditasi
-                </span>
-                <span className="block px-4 py-2 text-slate-700 hover:bg-slate-50 transition-colors text-xs font-medium">
+                </Link>
+                <Link
+                  href="/akademik/prosedur"
+                  className="block px-4 py-2 text-slate-800 hover:bg-slate-50 hover:text-[#002347] transition-colors text-xs font-medium"
+                >
                   Prosedur Akademik
-                </span>
+                </Link>
               </div>
             </div>
 
