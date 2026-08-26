@@ -7,17 +7,12 @@ import { and, eq, isNull } from "drizzle-orm";
 import { logActivity } from "@/lib/activity-log";
 
 // ─────────────────────────────────────────────
-// GET /api/prestasi/[id] — Fetch single for edit form
+// GET /api/prestasi/[id] — Public endpoint (tidak perlu auth)
 // ─────────────────────────────────────────────
 export async function GET(
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const session = await auth();
-  if (!session?.user) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
   const { id } = await params;
   const prestasiId = parseInt(id, 10);
   if (isNaN(prestasiId)) return NextResponse.json({ error: "ID tidak valid" }, { status: 400 });

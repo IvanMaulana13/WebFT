@@ -11,6 +11,7 @@ import {
   activityLogs,
   users,
   strukturOrganisasi,
+  visitorLogs,
 } from "@/lib/db/schema";
 import { and, eq, isNull, sql, desc } from "drizzle-orm";
 
@@ -31,6 +32,8 @@ export async function GET() {
       informasiCount,
       recentLogs,
       strukturRow,
+      totalVisitorsRow,
+      todayVisitorsRow,
     ] = await Promise.all([
       // Berita published
       db
@@ -99,6 +102,17 @@ export async function GET() {
 
       // Struktur organisasi (single row)
       db.select({ imageUrl: strukturOrganisasi.imageUrl }).from(strukturOrganisasi).limit(1),
+
+      // Total unique visitors (all-time)
+      db
+        .select({ count: sql<number>`COUNT(DISTINCT visitor_id)` })
+        .from(visitorLogs),
+
+      // Unique visitors hari ini
+      db
+        .select({ count: sql<number>`COUNT(DISTINCT visitor_id)` })
+        .from(visitorLogs)
+        .where(sql`DATE(created_at) = CURDATE()`),
     ]);
 
     return NextResponse.json({
@@ -111,6 +125,8 @@ export async function GET() {
         tenagaPendidikan: Number(tenagaCount[0]?.count ?? 0),
         pimpinan: Number(pimpinanCount[0]?.count ?? 0),
         informasiPublished: Number(informasiCount[0]?.count ?? 0),
+        totalVisitors: Number(totalVisitorsRow[0]?.count ?? 0),
+        todayVisitors: Number(todayVisitorsRow[0]?.count ?? 0),
       },
       recentActivity: recentLogs,
       strukturImage: strukturRow[0]?.imageUrl ?? null,

@@ -127,9 +127,6 @@ export default function PublicNavbar() {
                       <Link href="/tenaga-kependidikan" onClick={() => setMobileMenuOpen(false)} className="py-1.5 text-xs text-white/80 hover:text-[#E5B80B]">
                         Tenaga Kependidikan
                       </Link>
-                      <span className="py-1.5 text-xs text-white/70">
-                        Kerja Sama
-                      </span>
                     </div>
                   )}
                 </div>
@@ -154,9 +151,33 @@ export default function PublicNavbar() {
                       <span className="py-1 text-xs font-bold text-[#E5B80B] uppercase">
                         Program Studi
                       </span>
-                      <span className="py-1 pl-2 text-xs text-white/80">• Teknik Sipil</span>
-                      <span className="py-1 pl-2 text-xs text-white/80">• Informatika</span>
-                      <span className="py-1 pl-2 text-xs text-white/80">• Teknologi Industri Pertanian</span>
+                      <a
+                        href="https://ts.uwks.ac.id"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="py-1 pl-2 text-xs text-white/80 hover:text-[#E5B80B] transition-colors"
+                      >
+                        • Teknik Sipil
+                      </a>
+                      <a
+                        href="https://if.uwks.ac.id"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="py-1 pl-2 text-xs text-white/80 hover:text-[#E5B80B] transition-colors"
+                      >
+                        • Informatika
+                      </a>
+                      <a
+                        href="https://tip.uwks.ac.id"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="py-1 pl-2 text-xs text-white/80 hover:text-[#E5B80B] transition-colors"
+                      >
+                        • Teknologi Industri Pertanian
+                      </a>
                       <span className="py-1.5 text-xs text-white/80">Kalender Akademik</span>
                       <span className="py-1.5 text-xs text-white/80">Pedoman Akademik</span>
                       <span className="py-1.5 text-xs text-white/80">Jadwal Perkuliahan</span>
@@ -392,9 +413,6 @@ export default function PublicNavbar() {
                 >
                   Tenaga Kependidikan
                 </Link>
-                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">
-                  Kerja Sama
-                </span>
               </div>
             </div>
 
@@ -410,15 +428,30 @@ export default function PublicNavbar() {
                     <ChevronRight className="w-3.5 h-3.5 opacity-60" />
                   </div>
                   <div className="submenu-menu hidden group-hover/sub:block absolute top-0 left-full w-64 bg-white shadow-xl py-2 z-50 border-l-2 border-[#E5B80B] border-y border-r border-slate-100 rounded-r-lg">
-                    <span className="block px-4 py-2 text-xs font-bold text-[#002347]">
+                    <a
+                      href="https://ts.uwks.ac.id"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block px-4 py-2 text-xs font-bold text-[#002347] hover:bg-slate-50 hover:text-[#E5B80B] transition-colors"
+                    >
                       Teknik Sipil
-                    </span>
-                    <span className="block px-4 py-2 text-xs font-bold text-[#002347]">
+                    </a>
+                    <a
+                      href="https://if.uwks.ac.id"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block px-4 py-2 text-xs font-bold text-[#002347] hover:bg-slate-50 hover:text-[#E5B80B] transition-colors"
+                    >
                       Informatika
-                    </span>
-                    <span className="block px-4 py-2 text-xs font-bold text-[#002347]">
+                    </a>
+                    <a
+                      href="https://tip.uwks.ac.id"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block px-4 py-2 text-xs font-bold text-[#002347] hover:bg-slate-50 hover:text-[#E5B80B] transition-colors"
+                    >
                       Teknologi Industri Pertanian
-                    </span>
+                    </a>
                   </div>
                 </div>
                 <span className="block px-4 py-2 text-slate-700 hover:bg-slate-50 transition-colors text-xs font-medium">

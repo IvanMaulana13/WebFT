@@ -9,7 +9,6 @@ import {
   Users,
   GraduationCap,
   BadgeCheck,
-  Handshake,
 } from "lucide-react";
 
 const profilNavItems = [
@@ -19,15 +18,14 @@ const profilNavItems = [
   { href: "/pimpinan-fakultas", label: "Pimpinan Fakultas", icon: Users },
   { href: "/dosen", label: "Dosen Pengajar", icon: GraduationCap },
   { href: "/tenaga-kependidikan", label: "Tenaga Kependidikan", icon: BadgeCheck },
-  { href: "#", label: "Kerja Sama", icon: Handshake },
 ];
 
 export default function ProfilSidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="col-span-12 lg:col-span-3">
-      <div className="bg-[#F8F9FA] rounded-xl p-6 sticky top-24 border border-slate-200 shadow-sm flex flex-col">
+    <aside className="col-span-12 lg:col-span-3 self-start sticky top-24">
+      <div className="bg-[#F8F9FA] rounded-xl p-6 border border-slate-200 shadow-sm flex flex-col">
         <div className="flex items-center mb-6">
           <div className="w-1.5 h-10 bg-[#E5B80B] mr-3 rounded-full flex-shrink-0" />
           <div className="flex flex-col">

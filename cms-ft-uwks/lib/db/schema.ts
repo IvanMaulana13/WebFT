@@ -231,3 +231,20 @@ export const activityLogs = mysqlTable("activity_logs", {
 
 export type ActivityLog = typeof activityLogs.$inferSelect;
 export type NewActivityLog = typeof activityLogs.$inferInsert;
+
+// ─────────────────────────────────────────────
+// 12. visitor_logs
+// Anonymous visitor tracking — tidak menyimpan data pribadi.
+// visitor_id = UUID dari cookie 'visitor_id' yang di-set client-side.
+// ─────────────────────────────────────────────
+export const visitorLogs = mysqlTable("visitor_logs", {
+  id: int("id").primaryKey().autoincrement(),
+  /** UUID v4 dari cookie 'visitor_id' — tidak ada data pribadi */
+  visitorId: varchar("visitor_id", { length: 36 }).notNull(),
+  /** Path halaman yang dikunjungi, contoh: "/" atau "/berita/judul-berita" */
+  path: varchar("path", { length: 500 }).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export type VisitorLog = typeof visitorLogs.$inferSelect;
+export type NewVisitorLog = typeof visitorLogs.$inferInsert;

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import { fetchPublicData } from "@/lib/public-api";
-import { Phone, Mail } from "lucide-react";
+import { fetchPublicData, fetchPublicVisitorStats } from "@/lib/public-api";
+import { Phone, Mail, Users } from "lucide-react";
 
 interface SiteSettings {
   socialInstagram?: string | null;
@@ -12,7 +12,10 @@ interface SiteSettings {
 }
 
 export default async function PublicFooter() {
-  const settings = await fetchPublicData<SiteSettings>("/api/settings");
+  const [settings, visitorStats] = await Promise.all([
+    fetchPublicData<SiteSettings>("/api/settings"),
+    fetchPublicVisitorStats(),
+  ]);
 
   const currentYear = new Date().getFullYear();
 
@@ -95,7 +98,7 @@ export default async function PublicFooter() {
           <div className="flex flex-col gap-2 mt-2 text-xs text-white/80">
             <div className="flex items-center gap-2">
               <Phone className="w-4 h-4 text-[#E5B80B]" />
-              <span>+62 31 5674667</span>
+              <span>085117654320</span>
             </div>
             <div className="flex items-center gap-2">
               <Mail className="w-4 h-4 text-[#E5B80B]" />
@@ -134,9 +137,30 @@ export default async function PublicFooter() {
           <h4 className="text-xs font-bold uppercase tracking-wider text-[#E5B80B] mb-1">
             Program Studi
           </h4>
-          <span className="text-xs text-white/70">Teknik Sipil</span>
-          <span className="text-xs text-white/70">Informatika</span>
-          <span className="text-xs text-white/70">Teknologi Industri Pertanian</span>
+          <a
+            href="https://ts.uwks.ac.id"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs text-white/70 hover:text-[#E5B80B] transition-colors"
+          >
+            Teknik Sipil
+          </a>
+          <a
+            href="https://if.uwks.ac.id"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs text-white/70 hover:text-[#E5B80B] transition-colors"
+          >
+            Informatika
+          </a>
+          <a
+            href="https://tip.uwks.ac.id"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs text-white/70 hover:text-[#E5B80B] transition-colors"
+          >
+            Teknologi Industri Pertanian
+          </a>
         </div>
 
         {/* Social Media & Stats */}
@@ -167,9 +191,22 @@ export default async function PublicFooter() {
           <h4 className="text-xs font-bold uppercase tracking-wider text-[#E5B80B] mt-2 mb-1">
             Statistik
           </h4>
-          <div className="bg-white/10 p-3 rounded-lg flex items-center justify-between border border-white/10">
-            <span className="text-xs text-white/80">Total Pengunjung</span>
-            <span className="text-xs font-bold text-[#E5B80B]">124,592</span>
+          <div className="bg-white/10 p-3 rounded-lg border border-white/10 flex flex-col gap-2">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-1.5 text-xs text-white/80">
+                <Users className="w-3.5 h-3.5 text-[#E5B80B]" />
+                <span>Total Pengunjung</span>
+              </div>
+              <span className="text-xs font-bold text-[#E5B80B]">
+                {visitorStats.totalVisitors.toLocaleString("id-ID")}
+              </span>
+            </div>
+            <div className="flex items-center justify-between border-t border-white/10 pt-2">
+              <span className="text-xs text-white/60">Hari ini</span>
+              <span className="text-xs font-semibold text-white/80">
+                {visitorStats.todayVisitors.toLocaleString("id-ID")}
+              </span>
+            </div>
           </div>
         </div>
       </div>

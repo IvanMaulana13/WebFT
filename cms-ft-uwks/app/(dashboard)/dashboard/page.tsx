@@ -18,6 +18,7 @@ import {
   Loader2,
   ImageIcon,
   ExternalLink,
+  Globe,
 } from "lucide-react";
 
 // ─────────────────────────────────────────────
@@ -32,6 +33,8 @@ interface DashboardStats {
   tenagaPendidikan: number;
   pimpinan: number;
   informasiPublished: number;
+  totalVisitors: number;
+  todayVisitors: number;
 }
 
 interface ActivityItem {
@@ -267,6 +270,14 @@ export default function DashboardOverviewPage() {
           iconBg: "bg-red-50",
           iconColor: "text-red-600",
           href: "/dashboard/pimpinan",
+        },
+        {
+          icon: Globe,
+          value: stats.totalVisitors.toLocaleString("id-ID"),
+          label: "Total Pengunjung",
+          sub: `Hari ini: ${stats.todayVisitors.toLocaleString("id-ID")} pengunjung unik`,
+          iconBg: "bg-teal-50",
+          iconColor: "text-teal-600",
         },
       ]
     : [];

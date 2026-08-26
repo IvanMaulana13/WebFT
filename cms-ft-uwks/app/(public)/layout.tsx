@@ -1,6 +1,7 @@
 import PublicNavbar from "@/components/public/navbar";
 import PublicFooter from "@/components/public/footer";
 import WhatsappBubble from "@/components/public/whatsapp-bubble";
+import VisitorTracker from "@/components/public/visitor-tracker";
 
 export default function PublicLayout({
   children,
@@ -19,6 +20,7 @@ export default function PublicLayout({
         rel="stylesheet"
       />
 
+      <VisitorTracker />
       <PublicNavbar />
       <div className="flex-grow w-full">{children}</div>
       <PublicFooter />
