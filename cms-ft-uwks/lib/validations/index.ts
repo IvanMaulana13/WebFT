@@ -377,6 +377,7 @@ export const lombaSchema = z
       .string()
       .url("Format URL tidak valid")
       .max(500, "URL terlalu panjang"),
+    posterUrl: z.string().max(500).optional().or(z.literal("")),
     deskripsi: z.string().min(1, "Deskripsi wajib diisi"),
   })
   .refine(

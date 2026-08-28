@@ -51,6 +51,7 @@ export async function PUT(
         tanggalMulaiPendaftaran: new Date(data.tanggalMulaiPendaftaran),
         tanggalSelesaiPendaftaran: new Date(data.tanggalSelesaiPendaftaran),
         linkPendaftaran: data.linkPendaftaran,
+        posterUrl: data.posterUrl || null,
         deskripsi: data.deskripsi,
       })
       .where(eq(lomba.id, lombaId));

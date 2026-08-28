@@ -50,6 +50,7 @@ export async function POST(request: NextRequest) {
         tanggalMulaiPendaftaran: new Date(data.tanggalMulaiPendaftaran),
         tanggalSelesaiPendaftaran: new Date(data.tanggalSelesaiPendaftaran),
         linkPendaftaran: data.linkPendaftaran,
+        posterUrl: data.posterUrl || null,
         deskripsi: data.deskripsi,
       })
       .$returningId();

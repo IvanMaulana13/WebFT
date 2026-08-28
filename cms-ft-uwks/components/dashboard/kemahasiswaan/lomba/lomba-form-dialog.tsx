@@ -34,6 +34,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { format } from "date-fns";
+import { LogoUpload } from "@/components/dashboard/kemitraan/logo-upload";
 
 interface LombaFormDialogProps {
   open: boolean;
@@ -57,6 +58,7 @@ export function LombaFormDialog({
       tanggalMulaiPendaftaran: "",
       tanggalSelesaiPendaftaran: "",
       linkPendaftaran: "",
+      posterUrl: "",
       deskripsi: "",
     },
   });
@@ -75,6 +77,7 @@ export function LombaFormDialog({
           tanggalMulaiPendaftaran: startStr,
           tanggalSelesaiPendaftaran: endStr,
           linkPendaftaran: lomba.linkPendaftaran,
+          posterUrl: lomba.posterUrl ?? "",
           deskripsi: lomba.deskripsi,
         });
       } else {
@@ -84,6 +87,7 @@ export function LombaFormDialog({
           tanggalMulaiPendaftaran: "",
           tanggalSelesaiPendaftaran: "",
           linkPendaftaran: "",
+          posterUrl: "",
           deskripsi: "",
         });
       }
@@ -128,6 +132,24 @@ export function LombaFormDialog({
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 py-1">
+            <FormField
+              control={form.control}
+              name="posterUrl"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Poster / Gambar Lomba</FormLabel>
+                  <FormControl>
+                    <LogoUpload
+                      value={field.value ?? ""}
+                      onChange={field.onChange}
+                      disabled={mutation.isPending}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <FormField
               control={form.control}
               name="namaLomba"

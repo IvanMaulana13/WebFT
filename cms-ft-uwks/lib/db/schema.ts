@@ -375,6 +375,7 @@ export const lomba = mysqlTable("lomba", {
   tanggalMulaiPendaftaran: date("tanggal_mulai_pendaftaran").notNull(),
   tanggalSelesaiPendaftaran: date("tanggal_selesai_pendaftaran").notNull(),
   linkPendaftaran: varchar("link_pendaftaran", { length: 500 }).notNull(),
+  posterUrl: text("poster_url"),
   deskripsi: text("deskripsi").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
