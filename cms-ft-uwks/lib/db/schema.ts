@@ -343,3 +343,80 @@ export const prosedurAkademik = mysqlTable("prosedur_akademik", {
 
 export type ProsedurAkademik = typeof prosedurAkademik.$inferSelect;
 export type NewProsedurAkademik = typeof prosedurAkademik.$inferInsert;
+
+// ─────────────────────────────────────────────
+// 19. ormawa
+// Organisasi Kemahasiswaan — soft delete.
+// ─────────────────────────────────────────────
+export const ormawa = mysqlTable("ormawa", {
+  id: int("id").primaryKey().autoincrement(),
+  nama: varchar("nama", { length: 255 }).notNull(),
+  logoUrl: varchar("logo_url", { length: 500 }),
+  deskripsi: text("deskripsi").notNull(),
+  websiteUrl: varchar("website_url", { length: 500 }),
+  instagramUrl: varchar("instagram_url", { length: 500 }),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+  deletedAt: datetime("deleted_at"),
+});
+
+export type Ormawa = typeof ormawa.$inferSelect;
+export type NewOrmawa = typeof ormawa.$inferInsert;
+
+// ─────────────────────────────────────────────
+// 20. lomba
+// Informasi lomba mahasiswa — soft delete.
+// Status "dibuka"/"ditutup" dihitung runtime (tanggal_selesai >= NOW), BUKAN kolom tersimpan.
+// ─────────────────────────────────────────────
+export const lomba = mysqlTable("lomba", {
+  id: int("id").primaryKey().autoincrement(),
+  namaLomba: varchar("nama_lomba", { length: 500 }).notNull(),
+  tingkat: mysqlEnum("tingkat", ["nasional", "internasional"]).notNull(),
+  tanggalMulaiPendaftaran: date("tanggal_mulai_pendaftaran").notNull(),
+  tanggalSelesaiPendaftaran: date("tanggal_selesai_pendaftaran").notNull(),
+  linkPendaftaran: varchar("link_pendaftaran", { length: 500 }).notNull(),
+  deskripsi: text("deskripsi").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+  deletedAt: datetime("deleted_at"),
+});
+
+export type Lomba = typeof lomba.$inferSelect;
+export type NewLomba = typeof lomba.$inferInsert;
+
+// ─────────────────────────────────────────────
+// 21. konseling_layanan
+// Single-record table — info layanan konseling mahasiswa.
+// Seed: 1 baris id=1, semua nullable/false siap diisi admin.
+// ─────────────────────────────────────────────
+export const konselingLayanan = mysqlTable("konseling_layanan", {
+  id: int("id").primaryKey().autoincrement(),
+  narasi: text("narasi"),
+  offlineAktif: boolean("offline_aktif").notNull().default(false),
+  lokasi: text("lokasi"),
+  jamLayananOffline: varchar("jam_layanan_offline", { length: 255 }),
+  onlineAktif: boolean("online_aktif").notNull().default(false),
+  kontakPenanggungJawab: varchar("kontak_penanggung_jawab", { length: 255 }),
+  updatedBy: int("updated_by").references(() => users.id, { onDelete: "set null" }),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+});
+
+export type KonselingLayanan = typeof konselingLayanan.$inferSelect;
+export type NewKonselingLayanan = typeof konselingLayanan.$inferInsert;
+
+// ─────────────────────────────────────────────
+// 22. jadwal_konseling
+// Slot jadwal konseling online — soft delete.
+// ─────────────────────────────────────────────
+export const jadwalKonseling = mysqlTable("jadwal_konseling", {
+  id: int("id").primaryKey().autoincrement(),
+  tanggal: date("tanggal").notNull(),
+  jam: varchar("jam", { length: 50 }).notNull(),
+  status: mysqlEnum("status", ["tersedia", "terisi"]).notNull().default("tersedia"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+  deletedAt: datetime("deleted_at"),
+});
+
+export type JadwalKonseling = typeof jadwalKonseling.$inferSelect;
+export type NewJadwalKonseling = typeof jadwalKonseling.$inferInsert;

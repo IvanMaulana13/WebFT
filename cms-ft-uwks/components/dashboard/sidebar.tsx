@@ -29,6 +29,8 @@ import {
   Award,
   ClipboardList,
   Database,
+  Medal,
+  HeartHandshake,
 } from "lucide-react";
 
 const navItems = [
@@ -102,6 +104,24 @@ const akademikSubItems = [
   },
 ];
 
+const kemahasiswaanSubItems = [
+  {
+    title: "Organisasi Kemahasiswaan",
+    href: "/dashboard/kemahasiswaan/ormawa",
+    icon: Users2,
+  },
+  {
+    title: "Informasi Lomba",
+    href: "/dashboard/kemahasiswaan/lomba",
+    icon: Medal,
+  },
+  {
+    title: "Layanan Konseling",
+    href: "/dashboard/kemahasiswaan/konseling",
+    icon: HeartHandshake,
+  },
+];
+
 const adminItems = [
   {
     title: "Manajemen User",
@@ -123,6 +143,10 @@ export function DashboardSidebar() {
   // Auto-expand Akademik group jika sedang di halaman akademik
   const isInAkademik = pathname.startsWith("/dashboard/akademik");
   const [akademikOpen, setAkademikOpen] = useState(isInAkademik);
+
+  // Auto-expand Kemahasiswaan group jika sedang di halaman kemahasiswaan
+  const isInKemahasiswaan = pathname.startsWith("/dashboard/kemahasiswaan");
+  const [kemahasiswaanOpen, setKemahasiswaanOpen] = useState(isInKemahasiswaan);
 
   return (
     <aside className="w-64 bg-gray-900 text-white min-h-screen flex flex-col">
@@ -230,6 +254,52 @@ export function DashboardSidebar() {
                     Program Studi
                   </Link>
                 )}
+              </div>
+            )}
+          </div>
+
+          {/* ─── Kemahasiswaan Collapsible Group ─── */}
+          <div>
+            <button
+              id="sidebar-kemahasiswaan-toggle"
+              onClick={() => setKemahasiswaanOpen((o) => !o)}
+              className={cn(
+                "w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors",
+                isInKemahasiswaan
+                  ? "bg-blue-600/20 text-blue-300"
+                  : "text-gray-400 hover:bg-gray-800 hover:text-white"
+              )}
+            >
+              <Users2 className="w-4 h-4 flex-shrink-0" />
+              <span className="flex-1 text-left">Kemahasiswaan</span>
+              {kemahasiswaanOpen ? (
+                <ChevronDown className="w-3.5 h-3.5" />
+              ) : (
+                <ChevronRight className="w-3.5 h-3.5" />
+              )}
+            </button>
+
+            {kemahasiswaanOpen && (
+              <div className="ml-3 mt-0.5 pl-3 border-l border-gray-700 space-y-0.5">
+                {kemahasiswaanSubItems.map((item) => {
+                  const Icon = item.icon;
+                  const isActive = pathname.startsWith(item.href);
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className={cn(
+                        "flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-sm transition-colors",
+                        isActive
+                          ? "bg-blue-600 text-white font-medium"
+                          : "text-gray-400 hover:bg-gray-800 hover:text-white"
+                      )}
+                    >
+                      <Icon className="w-3.5 h-3.5 flex-shrink-0" />
+                      {item.title}
+                    </Link>
+                  );
+                })}
               </div>
             )}
           </div>
