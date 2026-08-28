@@ -74,7 +74,7 @@ export async function POST(request: NextRequest) {
 
     const [inserted] = await db
       .insert(akreditasi)
-      .values({ prodiId, peringkat, noSk, tanggalBerlaku, fileSertifikat })
+      .values({ prodiId, peringkat, noSk, tanggalBerlaku: new Date(tanggalBerlaku), fileSertifikat })
       .$returningId();
 
     await logActivity({

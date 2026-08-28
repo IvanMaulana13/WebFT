@@ -7,12 +7,10 @@ import {
   Users,
   Building2,
   Trophy,
-  Calendar,
-  ArrowRight,
-  ExternalLink,
   Medal,
   User,
 } from "lucide-react";
+import { BeritaSection } from "@/components/public/berita-section";
 
 export const metadata: Metadata = {
   title: "Beranda",
@@ -23,15 +21,6 @@ export const metadata: Metadata = {
 interface SiteSettings {
   heroVideoUrl?: string | null;
   heroPosterUrl?: string | null;
-}
-
-interface InformasiItem {
-  id: number;
-  title: string;
-  category?: string | null;
-  createdAt: string;
-  orderIndex: number;
-  status: string;
 }
 
 interface BeritaItem {
@@ -65,20 +54,15 @@ interface KemitraanItem {
 }
 
 export default async function HomePage() {
-  const [settings, informasiData, beritaData, prestasiData, kemitraanData] =
+  const [settings, beritaData, prestasiData, kemitraanData] =
     await Promise.all([
       fetchPublicData<SiteSettings>("/api/settings"),
-      fetchPublicData<InformasiItem[]>("/api/informasi"),
       fetchPublicData<BeritaItem[]>("/api/berita"),
       fetchPublicData<PrestasiItem[]>("/api/prestasi"),
       fetchPublicData<KemitraanItem[]>("/api/kemitraan"),
     ]);
 
-  // Filter published & sort
-  const publishedInformasi = (informasiData || [])
-    .filter((i) => i.status === "published")
-    .sort((a, b) => (a.orderIndex ?? 0) - (b.orderIndex ?? 0));
-
+  // Berita: filter published & sort terbaru (maks 6 untuk tab filter)
   const publishedBerita = (beritaData || [])
     .filter((b) => b.status === "published")
     .sort(
@@ -86,7 +70,7 @@ export default async function HomePage() {
         new Date(b.publishedAt || b.createdAt).getTime() -
         new Date(a.publishedAt || a.createdAt).getTime()
     )
-    .slice(0, 3);
+    .slice(0, 6);
 
   const sortedPrestasi = (prestasiData || [])
     .sort((a, b) => (b.year || 0) - (a.year || 0))
@@ -159,111 +143,10 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ── 3. INFORMASI SECTION (Dynamic API) ── */}
-      <section className="py-16 bg-[#f8f9fa]">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="flex items-center gap-4 mb-8">
-            <h2 className="text-2xl md:text-3xl font-bold text-[#002347] font-sans">
-              Informasi Terkini
-            </h2>
-            <div className="flex-grow h-px bg-slate-200" />
-          </div>
+      {/* ── 3. BERITA SECTION (Client Component with category tabs) ── */}
+      <BeritaSection items={publishedBerita} />
 
-          {publishedInformasi.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {publishedInformasi.map((item) => (
-                <div
-                  key={item.id}
-                  className="bg-white p-5 border border-slate-200 rounded-xl flex flex-col gap-2 hover:shadow-md hover:border-[#E5B80B] hover:-translate-y-0.5 transition-all group"
-                >
-                  <div className="flex items-center gap-2 text-xs text-slate-400">
-                    <Calendar className="w-3.5 h-3.5" />
-                    <span>
-                      {new Date(item.createdAt).toLocaleDateString("id-ID", {
-                        day: "numeric",
-                        month: "long",
-                        year: "numeric",
-                      })}
-                    </span>
-                    {item.category && (
-                      <span className="bg-slate-100 text-slate-700 text-[10px] font-bold px-2 py-0.5 rounded-full ml-auto">
-                        {item.category}
-                      </span>
-                    )}
-                  </div>
-                  <h3 className="text-base font-bold text-[#002347] group-hover:text-[#E5B80B] transition-colors">
-                    {item.title}
-                  </h3>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-8 text-slate-500 text-sm">
-              Belum ada data informasi dipublikasikan.
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* ── 4. BERITA SECTION (Dynamic API) ── */}
-      <section className="py-16 bg-white border-t border-slate-200">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="flex items-center gap-4 mb-8">
-            <h2 className="text-2xl md:text-3xl font-bold text-[#002347] font-sans">
-              Berita & Kegiatan
-            </h2>
-            <div className="flex-grow h-px bg-slate-200" />
-          </div>
-
-          {publishedBerita.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {publishedBerita.map((item) => (
-                <Link
-                  key={item.id}
-                  href={`/berita/${item.slug}`}
-                  className="flex flex-col gap-3 group bg-white rounded-xl border border-slate-200 overflow-hidden hover:shadow-xl hover:border-[#E5B80B]/60 hover:-translate-y-1 transition-all duration-300 cursor-pointer"
-                >
-                  <div className="aspect-video relative overflow-hidden bg-slate-100">
-                    {item.thumbnailUrl ? (
-                      <Image
-                        src={item.thumbnailUrl}
-                        alt={item.title}
-                        fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-500"
-                        sizes="(max-width: 768px) 100vw, 33vw"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-slate-300">
-                        <Building2 className="w-12 h-12 opacity-40" />
-                      </div>
-                    )}
-                  </div>
-                  <div className="p-5 flex flex-col gap-2 flex-grow">
-                    <span className="text-xs text-slate-400 font-medium">
-                      {new Date(
-                        item.publishedAt || item.createdAt
-                      ).toLocaleDateString("id-ID", {
-                        day: "numeric",
-                        month: "long",
-                        year: "numeric",
-                      })}
-                    </span>
-                    <h3 className="text-base font-bold text-[#002347] group-hover:text-[#E5B80B] transition-colors leading-snug line-clamp-2">
-                      {item.title}
-                    </h3>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-8 text-slate-500 text-sm">
-              Belum ada berita dipublikasikan.
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* ── 5. PRESTASI SECTION (Dynamic API) ── */}
+      {/* ── 4. PRESTASI SECTION (Dynamic API) ── */}
       <section className="py-16 bg-[#f8f9fa] border-t border-slate-200">
         <div className="max-w-6xl mx-auto px-6">
           <div className="flex items-center gap-4 mb-8">
@@ -331,7 +214,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ── 6. KEMITRAAN SECTION (Dynamic API) ── */}
+      {/* ── 5. KEMITRAAN SECTION (Dynamic API) ── */}
       <section className="py-16 bg-white border-t border-slate-200">
         <div className="max-w-6xl mx-auto px-6">
           <div className="flex items-center gap-4 mb-10">

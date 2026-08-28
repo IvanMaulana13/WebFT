@@ -3,20 +3,24 @@ import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { programStudi } from "@/lib/db/schema";
 import { programStudiSchema } from "@/lib/validations";
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import { logActivity } from "@/lib/activity-log";
 
 // ─────────────────────────────────────────────
 // GET /api/akademik/program-studi — Public (dropdown)
 // ─────────────────────────────────────────────
 export async function GET() {
+  // Urutan custom: Teknik Sipil → Informatika → Teknologi Industri Pertanian
   const data = await db
     .select()
     .from(programStudi)
-    .orderBy(programStudi.nama);
+    .orderBy(
+      sql`FIELD(${programStudi.kode}, 'TS', 'IF', 'TIP')`
+    );
 
   return NextResponse.json({ data });
 }
+
 
 // ─────────────────────────────────────────────
 // POST /api/akademik/program-studi — Super Admin only

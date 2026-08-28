@@ -28,28 +28,7 @@ export type User = typeof users.$inferSelect;
 export type NewUser = typeof users.$inferInsert;
 
 // ─────────────────────────────────────────────
-// 2. informasi
-// ─────────────────────────────────────────────
-export const informasi = mysqlTable("informasi", {
-  id: int("id").primaryKey().autoincrement(),
-  title: varchar("title", { length: 500 }).notNull(),
-  content: text("content").notNull(),
-  category: varchar("category", { length: 100 }),
-  orderIndex: int("order_index").notNull().default(0),
-  status: mysqlEnum("status", ["draft", "published"]).notNull().default("draft"),
-  createdBy: int("created_by")
-    .notNull()
-    .references(() => users.id, { onDelete: "restrict" }),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
-  deletedAt: datetime("deleted_at"),
-});
-
-export type Informasi = typeof informasi.$inferSelect;
-export type NewInformasi = typeof informasi.$inferInsert;
-
-// ─────────────────────────────────────────────
-// 3. berita
+// 2. berita
 // ─────────────────────────────────────────────
 export const berita = mysqlTable("berita", {
   id: int("id").primaryKey().autoincrement(),
@@ -57,7 +36,9 @@ export const berita = mysqlTable("berita", {
   slug: varchar("slug", { length: 500 }).notNull().unique(),
   content: text("content").notNull(),
   thumbnailUrl: varchar("thumbnail_url", { length: 500 }),
-  category: varchar("category", { length: 100 }),
+  category: mysqlEnum("category", ["berita", "kegiatan", "beasiswa"])
+    .notNull()
+    .default("berita"),
   status: mysqlEnum("status", ["draft", "published", "archived"])
     .notNull()
     .default("draft"),

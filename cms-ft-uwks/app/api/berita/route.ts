@@ -36,7 +36,9 @@ export async function GET(request: NextRequest) {
             like(berita.slug, `%${search}%`)
           )
         : undefined,
-      category ? like(berita.category, `%${category}%`) : undefined,
+      category && ["berita", "kegiatan", "beasiswa"].includes(category)
+        ? eq(berita.category, category as "berita" | "kegiatan" | "beasiswa")
+        : undefined,
       status && ["draft", "published", "archived"].includes(status)
         ? eq(berita.status, status as "draft" | "published" | "archived")
         : undefined,
@@ -118,7 +120,7 @@ export async function POST(request: NextRequest) {
       slug,
       content,
       thumbnailUrl: thumbnailUrl && thumbnailUrl.trim() !== "" ? thumbnailUrl : null,
-      category: category && category.trim() !== "" ? category : null,
+      category,
       status,
       publishedAt: resolvedPublishedAt,
       createdBy: userId,

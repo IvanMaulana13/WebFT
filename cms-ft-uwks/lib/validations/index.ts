@@ -97,24 +97,8 @@ export const updateUserSchema = z.object({
 export type UpdateUserInput = z.infer<typeof updateUserSchema>;
 
 // ─────────────────────────────────────────────
-// Informasi
+// Reorder (generic — dipakai oleh kemitraan/reorder)
 // ─────────────────────────────────────────────
-export const informasiSchema = z.object({
-  title: z.string().min(1, "Judul wajib diisi").max(500, "Judul maksimal 500 karakter"),
-  content: z.string().min(1, "Konten wajib diisi"),
-  category: z.string().max(100, "Kategori maksimal 100 karakter").optional().or(z.literal("")),
-  status: z.enum(["draft", "published"]),
-});
-
-export type InformasiInput = z.infer<typeof informasiSchema>;
-
-export const informasiUpdateSchema = informasiSchema.partial().extend({
-  title: z.string().min(1, "Judul wajib diisi").max(500),
-  content: z.string().min(1, "Konten wajib diisi"),
-});
-
-export type InformasiUpdateInput = z.infer<typeof informasiUpdateSchema>;
-
 export const reorderSchema = z.object({
   items: z.array(
     z.object({
@@ -129,6 +113,8 @@ export type ReorderInput = z.infer<typeof reorderSchema>;
 // ─────────────────────────────────────────────
 // Berita
 // ─────────────────────────────────────────────
+export const BERITA_KATEGORI = ["berita", "kegiatan", "beasiswa"] as const;
+export type BeritaKategori = typeof BERITA_KATEGORI[number];
 export const beritaSchema = z.object({
   title: z.string().min(1, "Judul wajib diisi").max(500, "Judul maksimal 500 karakter"),
   slug: z
@@ -138,7 +124,9 @@ export const beritaSchema = z.object({
     .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Slug hanya boleh berisi huruf kecil, angka, dan tanda hubung"),
   content: z.string().min(1, "Konten wajib diisi"),
   thumbnailUrl: z.string().url("URL thumbnail tidak valid").max(500).optional().or(z.literal("")),
-  category: z.string().max(100).optional().or(z.literal("")),
+  category: z.enum(["berita", "kegiatan", "beasiswa"], {
+    error: "Kategori harus salah satu dari: berita, kegiatan, beasiswa",
+  }),
   status: z.enum(["draft", "published", "archived"]),
   publishedAt: z.string().optional().or(z.literal("")),
 });

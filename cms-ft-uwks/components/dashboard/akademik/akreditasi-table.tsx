@@ -335,7 +335,7 @@ export function AkreditasiTable() {
           <div className="space-y-4 py-2">
             <div className="space-y-2">
               <Label>Program Studi</Label>
-              <Select value={form.prodiId} onValueChange={(v) => setForm((f) => ({ ...f, prodiId: v }))}>
+              <Select value={form.prodiId} onValueChange={(v) => setForm((f) => ({ ...f, prodiId: v ?? "" }))}>
                 <SelectTrigger><SelectValue placeholder="Pilih program studi..." /></SelectTrigger>
                 <SelectContent>
                   {prodiList.map((p) => (
@@ -347,7 +347,7 @@ export function AkreditasiTable() {
 
             <div className="space-y-2">
               <Label>Peringkat</Label>
-              <Select value={form.peringkat} onValueChange={(v) => setForm((f) => ({ ...f, peringkat: v }))}>
+              <Select value={form.peringkat} onValueChange={(v) => setForm((f) => ({ ...f, peringkat: v ?? "" }))}>
                 <SelectTrigger><SelectValue placeholder="Pilih peringkat..." /></SelectTrigger>
                 <SelectContent>
                   {PERINGKAT_OPTIONS.map((p) => (
