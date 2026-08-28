@@ -15,10 +15,11 @@
 Website FT UWKS saat ini berisi halaman publik (Beranda, Visi & Misi, Sejarah Fakultas, Pimpinan Fakultas, Struktur Organisasi) yang kontennya masih dikelola secara manual/hardcode. Dibutuhkan **dashboard admin (CMS)** agar staf fakultas dapat mengelola konten website secara mandiri tanpa bantuan developer, dengan sistem login yang aman dan hak akses yang jelas.
 
 Dashboard ini akan menangani:
-- **CRUD** untuk konten: **Informasi, Berita, Prestasi, Kemitraan**
+- **CRUD** untuk konten: **Berita** (dengan kategori tetap: Berita/Kegiatan/Beasiswa), **Prestasi, Kemitraan**
 - **CRUD** untuk **Data Dosen** dan **Data Tenaga Pendidikan**
 - **CRUD** untuk **Data Pimpinan Fakultas**, serta pengelolaan gambar **Struktur Organisasi** (gambar statis)
 - **Modul Akademik**: Kalender Akademik & Pedoman Akademik (upload file), Jadwal Perkuliahan & Akreditasi (relasi ke Program Studi), Prosedur Akademik
+- **Modul Kemahasiswaan**: Organisasi Kemahasiswaan (Ormawa), Informasi Lomba Mahasiswa, Layanan Konseling Mahasiswa
 - **Pengaturan Situs**: hero video, nomor WhatsApp (floating bubble), dan link media sosial di footer
 - **Sistem autentikasi (login)** untuk admin
 
@@ -92,63 +93,58 @@ Berdasarkan desain front-end yang sudah ada (masih tahap proses), halaman publik
 
 ---
 
-### 5.2 Modul Informasi
-Section "Informasi" tampak di Beranda (kontak, akreditasi, dsb).
+### 5.2 Modul Berita
+> **Catatan (revisi):** Modul "Informasi" yang sebelumnya ada di section ini **sudah dihapus** dari sistem (backend, dashboard, dan halaman publik) berdasarkan keputusan terbaru. Section "Informasi" tidak lagi tampil di Beranda.
 
-- **List**: tabel semua entri informasi dengan pencarian & pagination.
-- **Create**: form tambah info baru (judul, deskripsi/isi, kategori, urutan tampil).
-- **Update**: edit info yang ada.
-- **Delete**: hapus dengan konfirmasi (soft delete disarankan, bukan hapus permanen).
-- **Reorder**: kemampuan mengatur urutan tampilan (drag-and-drop) karena section ini biasanya berupa daftar poin (mis. jumlah mahasiswa, akreditasi, dsb pada gambar).
-- Status: **Published / Draft** agar bisa disiapkan dulu sebelum tayang.
-
-### 5.3 Modul Berita
 - **List**: tabel berita dengan filter (kategori, status, tanggal).
+- **Kategori**: kategori berita **tetap/enum**, bukan text bebas — hanya 3 pilihan: **Berita, Kegiatan, Beasiswa**. Ditampilkan sebagai Badge warna berbeda per kategori baik di dashboard maupun halaman publik.
 - **Create/Edit**: form dengan:
   - Judul, slug (auto-generate, bisa diedit manual untuk SEO).
   - Rich text editor (WYSIWYG) untuk isi berita.
   - Upload gambar sampul (thumbnail).
-  - Kategori/tag.
+  - Kategori (select: Berita/Kegiatan/Beasiswa).
   - Tanggal publish (bisa dijadwalkan/scheduled publish).
   - Status: Draft / Published / Archived.
 - **Delete**: soft delete + konfirmasi.
 - **Preview**: tombol preview sebelum publish.
+- **Tampilan publik**: section "Berita" di Beranda dan halaman detail berita menyediakan filter/tab kategori (Semua, Berita, Kegiatan, Beasiswa).
 
-### 5.4 Modul Prestasi
+### 5.3 Modul Prestasi
 - Struktur mirip Berita namun lebih ringkas: judul prestasi, nama peraih (mahasiswa/dosen/tim), tingkat (nasional/internasional), tahun, gambar/sertifikat, deskripsi singkat.
 - CRUD penuh + upload gambar.
 - Filter berdasarkan tahun/tingkat pada tampilan publik.
+- Setiap prestasi dapat dibuka sebagai halaman detail tersendiri (`/prestasi/[id]`), begitu juga berita (`/berita/[slug]`).
 
-### 5.5 Modul Kemitraan
+### 5.4 Modul Kemitraan
 - Data mitra: nama instansi, logo, jenis kerja sama, tanggal MoU, deskripsi singkat, link/website mitra (opsional).
 - CRUD penuh + upload logo mitra.
 - Urutan tampil (reorder) untuk logo yang tampil di Beranda.
 
-### 5.6 Modul Data Dosen
+### 5.5 Modul Data Dosen
 - Field: **Foto, NIK, Kode Dosen, NIDN, Nama, Program Studi, Email**.
 - CRUD penuh (create, list dengan search & filter, update, hapus).
 - Pencarian & filter berdasarkan Program Studi.
 - Validasi: NIK, Kode Dosen, dan NIDN masing-masing unik (tidak boleh duplikat), Email harus format email valid.
 - Data ini nantinya dapat ditampilkan di halaman "Dosen" (jika ada) maupun direferensikan di halaman lain.
 
-### 5.7 Modul Data Tenaga Pendidikan *(baru)*
+### 5.6 Modul Data Tenaga Pendidikan
 - Field: **Foto, NUPTK, Nama, Jabatan, Email**.
 - CRUD penuh (create, list dengan search, update, hapus).
 - Validasi: NUPTK unik (jika diisi), Email format valid.
 - Modul ini terpisah dari Data Dosen karena Tenaga Pendidikan (tenaga kependidikan/staf non-dosen) memiliki struktur data yang berbeda.
 
-### 5.8 Modul Data Pimpinan Fakultas
+### 5.7 Modul Data Pimpinan Fakultas
 - Field: Nama, foto, jabatan (Dekan, Wakil Dekan I/II/III, Kaprodi, dst), periode jabatan, deskripsi singkat/sambutan (khusus Dekan sesuai contoh gambar).
 - CRUD penuh + upload foto.
 - **Tidak ada** relasi hierarki/atasan-bawahan yang disimpan di database — modul ini murni daftar profil pimpinan yang tampil di halaman "Pimpinan Fakultas".
 
-### 5.9 Modul Struktur Organisasi *(gambar statis)*
+### 5.8 Modul Struktur Organisasi *(gambar statis)*
 - Berbeda dari rencana awal, **Struktur Organisasi dikelola sebagai satu gambar statis** (bukan bagan otomatis yang terhubung ke data Pimpinan Fakultas).
 - Admin dapat **upload/ganti (replace) gambar** bagan struktur organisasi kapan saja saat ada perubahan, melalui satu halaman sederhana di dashboard (upload gambar baru akan menggantikan gambar sebelumnya).
 - Tidak perlu form kompleks — cukup: preview gambar saat ini, tombol "Ganti Gambar" (upload baru), dan tombol hapus (opsional, mengembalikan ke kosong/placeholder).
 - Validasi upload: tipe file gambar (jpg/png/webp), ukuran maksimal (mis. 5MB agar bagan tetap jelas terbaca).
 
-### 5.10 Modul Pengaturan Situs *(baru)*
+### 5.9 Modul Pengaturan Situs
 Modul ini mengelola elemen-elemen global yang tampil di halaman publik (Beranda & footer), agar admin bisa mengubahnya tanpa edit kode. Dirancang sebagai **single-record settings** (satu baris data, selalu di-update, bukan ditambah baru), sama seperti modul Struktur Organisasi.
 
 Dibagi menjadi 3 bagian dalam satu halaman `/dashboard/pengaturan`:
@@ -171,7 +167,7 @@ Dibagi menjadi 3 bagian dalam satu halaman `/dashboard/pengaturan`:
 
 Semua perubahan pada modul ini dicatat ke `activity_logs` (module = `site_settings`).
 
-### 5.11 Modul Akademik *(baru)*
+### 5.10 Modul Akademik
 Menu "Akademik" di sidebar dashboard berupa dropdown/submenu berisi 5 sub-modul berikut. Empat di antaranya membutuhkan tabel master **Program Studi** (nama, kode) sebagai referensi relasi, di-seed 3 data sesuai jumlah prodi di FT UWKS, dengan CRUD sederhana khusus Super Admin agar bisa disesuaikan.
 
 **a. Kalender Akademik** *(single-record, upload file)*
@@ -192,6 +188,22 @@ Menu "Akademik" di sidebar dashboard berupa dropdown/submenu berisi 5 sub-modul 
 **e. Prosedur Akademik** *(CRUD)*
 - Setiap entri berisi: judul SOP, narasi/deskripsi, file SOP **atau** link eksternal (minimal salah satu wajib diisi), penanggung jawab.
 - CRUD penuh dengan pencarian berdasarkan judul/penanggung jawab.
+
+### 5.11 Modul Kemahasiswaan *(baru)*
+Menu "Kemahasiswaan" di sidebar dashboard berupa dropdown/submenu berisi 3 sub-modul berikut.
+
+**a. Organisasi Kemahasiswaan (Ormawa)** *(CRUD, tampilan kartu)*
+- Setiap entri berisi: nama organisasi, logo (upload), deskripsi singkat, link website/media sosial.
+- Admin tinggal tambah/hapus kartu ormawa beserta urutan tampilnya (reorder); di halaman publik, tiap kartu bisa diklik untuk redirect ke link eksternal ormawa terkait.
+
+**b. Informasi Lomba Mahasiswa** *(CRUD, terurut otomatis)*
+- Setiap entri berisi: nama lomba, tingkat (Nasional/Internasional), tanggal mulai & selesai pendaftaran, link pendaftaran, deskripsi.
+- Ditampilkan sebagai daftar/agenda yang otomatis terurut berdasarkan tanggal deadline pendaftaran terdekat; status "Masih Dibuka"/"Sudah Berakhir" dihitung otomatis dari tanggal hari ini dibanding tanggal selesai pendaftaran (tidak disimpan sebagai field terpisah).
+
+**c. Layanan Konseling Mahasiswa** *(single-record deskripsi + CRUD jadwal)*
+- **Deskripsi layanan** (single-record, seperti Pengaturan Situs): narasi umum layanan, kontak penanggung jawab untuk sesi online, serta lokasi & jam layanan untuk sesi offline.
+- **Jadwal konseling** (tabel terpisah, CRUD penuh oleh admin): tanggal, jam mulai-selesai, status (Tersedia/Terisi). Karena sistem belum memiliki akun login untuk mahasiswa, alur janji temu bersifat **semi-manual**: admin membuka slot jadwal, mahasiswa melihat slot yang tersedia di halaman publik lalu menghubungi kontak penanggung jawab secara langsung untuk konfirmasi, dan admin yang memperbarui status slot menjadi "Terisi" setelah dikonfirmasi.
+- *(Opsional pengembangan lanjutan: booking mandiri oleh mahasiswa via form publik, jika ke depan sistem akun mahasiswa sudah tersedia.)*
 
 ### 5.12 Dashboard Overview (Beranda Admin)
 - Ringkasan jumlah data (jumlah berita, prestasi, mitra, dosen) dalam bentuk card statistik.
@@ -274,11 +286,8 @@ Beberapa hal berikut **belum disebutkan** namun sangat berpengaruh terhadap kela
 users
   id, name, email, password_hash, role (super_admin/admin), is_active, created_at, updated_at
 
-informasi
-  id, title, content, category, order_index, status (draft/published), created_by, created_at, updated_at
-
 berita
-  id, title, slug, content, thumbnail_url, category, status, published_at, created_by, created_at, updated_at
+  id, title, slug, content, thumbnail_url, category (enum: 'berita','kegiatan','beasiswa'), status, published_at, created_by, created_at, updated_at
 
 prestasi
   id, title, achiever_name, level (nasional/internasional), year, image_url, description, created_at, updated_at
@@ -330,6 +339,22 @@ prosedur_akademik
   id, judul_sop, narasi, file_url (nullable), link_url (nullable), penanggung_jawab, created_at, updated_at, deleted_at
   (minimal salah satu dari file_url/link_url wajib diisi — divalidasi di aplikasi)
 
+ormawa
+  id, nama_organisasi, logo_url, deskripsi_singkat, link_website, order_index, created_at, updated_at, deleted_at
+
+lomba
+  id, nama_lomba, tingkat (enum: 'nasional','internasional'), tanggal_mulai_pendaftaran, tanggal_selesai_pendaftaran,
+  link_pendaftaran, deskripsi, created_at, updated_at, deleted_at
+  (status "Masih Dibuka"/"Sudah Berakhir" dihitung otomatis dari tanggal_selesai_pendaftaran vs hari ini, tidak disimpan)
+
+konseling
+  id, narasi, kontak_online, lokasi_offline, jam_layanan_offline, updated_by (FK ke users.id), updated_at
+  (single-record, sama pola dengan struktur_organisasi/site_settings)
+
+jadwal_konseling
+  id, tanggal, jam_mulai, jam_selesai, status (enum: 'tersedia','terisi'), nama_pemesan (nullable),
+  nim_pemesan (nullable), keperluan (nullable), created_at, updated_at
+
 activity_logs
   id, user_id, action, module, record_id, detail, created_at
 
@@ -348,14 +373,13 @@ POST   /api/auth/login
 POST   /api/auth/logout
 POST   /api/auth/forgot-password
 
-GET    /api/informasi          POST /api/informasi
-PUT    /api/informasi/:id      DELETE /api/informasi/:id
-
 GET    /api/berita             POST /api/berita
 PUT    /api/berita/:id         DELETE /api/berita/:id
+GET    /api/berita/[slug]      (publik, tanpa auth, hanya status='published')
 
 GET    /api/prestasi           POST /api/prestasi
 PUT    /api/prestasi/:id       DELETE /api/prestasi/:id
+GET    /api/prestasi/[id]      (publik, tanpa auth)
 
 GET    /api/kemitraan          POST /api/kemitraan
 PUT    /api/kemitraan/:id      DELETE /api/kemitraan/:id
@@ -393,6 +417,19 @@ PUT    /api/akademik/akreditasi/:id    DELETE /api/akademik/akreditasi/:id
 
 GET    /api/akademik/prosedur          POST /api/akademik/prosedur
 PUT    /api/akademik/prosedur/:id      DELETE /api/akademik/prosedur/:id
+
+GET    /api/kemahasiswaan/ormawa       POST /api/kemahasiswaan/ormawa
+PUT    /api/kemahasiswaan/ormawa/:id   DELETE /api/kemahasiswaan/ormawa/:id
+PATCH  /api/kemahasiswaan/ormawa/reorder
+
+GET    /api/kemahasiswaan/lomba        POST /api/kemahasiswaan/lomba
+PUT    /api/kemahasiswaan/lomba/:id    DELETE /api/kemahasiswaan/lomba/:id
+
+GET    /api/kemahasiswaan/konseling    PUT /api/kemahasiswaan/konseling
+
+GET    /api/kemahasiswaan/jadwal-konseling         POST /api/kemahasiswaan/jadwal-konseling
+PUT    /api/kemahasiswaan/jadwal-konseling/:id     DELETE /api/kemahasiswaan/jadwal-konseling/:id
+POST   /api/kemahasiswaan/jadwal-konseling/:id/booking   (publik, tanpa auth — satu-satunya endpoint booking oleh mahasiswa)
 
 GET    /api/users (super admin only)  POST /api/users
 PUT    /api/users/:id                 DELETE /api/users/:id
@@ -440,6 +477,7 @@ Desain front-end publik yang dilampirkan (masih proses) menjadi acuan tampilan *
 | **Fase 2** | CRUD Informasi, Berita, Prestasi, Kemitraan + upload gambar |
 | **Fase 3** | CRUD Data Dosen, Tenaga Pendidikan, Pimpinan Fakultas + fitur upload/ganti gambar Struktur Organisasi + Modul Pengaturan Situs (hero video, WhatsApp, media sosial) |
 | **Fase 3b** | Modul Akademik: Program Studi (master data), Kalender Akademik, Pedoman Akademik, Jadwal Perkuliahan, Akreditasi, Prosedur Akademik |
+| **Fase 3c** | Modul Kemahasiswaan: Organisasi Kemahasiswaan, Informasi Lomba Mahasiswa, Layanan Konseling (deskripsi + jadwal) |
 | **Fase 4** | Integrasi ke halaman publik (dynamic rendering), testing, hardening keamanan |
 | **Fase 5** | UAT (User Acceptance Test) bersama staf fakultas, deployment produksi |
 

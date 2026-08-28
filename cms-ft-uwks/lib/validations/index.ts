@@ -324,3 +324,126 @@ export const prosedurAkademikSchema = z
 export type ProsedurAkademikInput = z.infer<typeof prosedurAkademikSchema>;
 export const prosedurAkademikUpdateSchema = prosedurAkademikSchema;
 export type ProsedurAkademikUpdateInput = z.infer<typeof prosedurAkademikUpdateSchema>;
+
+// ─────────────────────────────────────────────
+// Ormawa (Organisasi Kemahasiswaan)
+// ─────────────────────────────────────────────
+const urlOrEmpty = z
+  .string()
+  .url("Format URL tidak valid (harus diawali https:// atau http://)")
+  .optional()
+  .or(z.literal(""));
+
+export const ormawaSchema = z
+  .object({
+    nama: z.string().min(1, "Nama ormawa wajib diisi").max(255),
+    logoUrl: z.string().max(500).optional().or(z.literal("")),
+    deskripsi: z.string().min(1, "Deskripsi wajib diisi"),
+    websiteUrl: urlOrEmpty,
+    instagramUrl: urlOrEmpty,
+  })
+  .refine(
+    (data) => {
+      const hasWeb = data.websiteUrl && data.websiteUrl.trim() !== "";
+      const hasIg = data.instagramUrl && data.instagramUrl.trim() !== "";
+      return hasWeb || hasIg;
+    },
+    {
+      message: "Minimal salah satu dari Website URL atau Instagram URL wajib diisi",
+      path: ["websiteUrl"],
+    }
+  );
+
+export type OrmawaInput = z.infer<typeof ormawaSchema>;
+
+// ─────────────────────────────────────────────
+// Lomba (Informasi Lomba Mahasiswa)
+// ─────────────────────────────────────────────
+export const lombaSchema = z
+  .object({
+    namaLomba: z.string().min(1, "Nama lomba wajib diisi").max(500),
+    tingkat: z.enum(["nasional", "internasional"], {
+      error: "Tingkat harus 'nasional' atau 'internasional'",
+    }),
+    tanggalMulaiPendaftaran: z
+      .string()
+      .min(1, "Tanggal mulai pendaftaran wajib diisi")
+      .regex(/^\d{4}-\d{2}-\d{2}$/, "Format tanggal tidak valid (YYYY-MM-DD)"),
+    tanggalSelesaiPendaftaran: z
+      .string()
+      .min(1, "Tanggal selesai pendaftaran wajib diisi")
+      .regex(/^\d{4}-\d{2}-\d{2}$/, "Format tanggal tidak valid (YYYY-MM-DD)"),
+    linkPendaftaran: z
+      .string()
+      .url("Format URL tidak valid")
+      .max(500, "URL terlalu panjang"),
+    deskripsi: z.string().min(1, "Deskripsi wajib diisi"),
+  })
+  .refine(
+    (data) => {
+      if (!data.tanggalMulaiPendaftaran || !data.tanggalSelesaiPendaftaran) return true;
+      return data.tanggalSelesaiPendaftaran >= data.tanggalMulaiPendaftaran;
+    },
+    {
+      message: "Tanggal selesai pendaftaran harus sama atau setelah tanggal mulai",
+      path: ["tanggalSelesaiPendaftaran"],
+    }
+  );
+
+export type LombaInput = z.infer<typeof lombaSchema>;
+
+// ─────────────────────────────────────────────
+// Konseling Layanan (single-record)
+// ─────────────────────────────────────────────
+export const konselingLayananSchema = z
+  .object({
+    narasi: z.string().optional().or(z.literal("")),
+    offlineAktif: z.boolean(),
+    lokasi: z.string().optional().or(z.literal("")),
+    jamLayananOffline: z.string().optional().or(z.literal("")),
+    onlineAktif: z.boolean(),
+    kontakPenanggungJawab: z.string().optional().or(z.literal("")),
+  })
+  .refine((data) => data.offlineAktif || data.onlineAktif, {
+    message: "Minimal salah satu layanan (offline atau online) harus diaktifkan",
+    path: ["offlineAktif"],
+  })
+  .refine(
+    (data) => {
+      if (!data.offlineAktif) return true;
+      return (
+        data.lokasi && data.lokasi.trim() !== "" &&
+        data.jamLayananOffline && data.jamLayananOffline.trim() !== ""
+      );
+    },
+    {
+      message: "Lokasi dan jam layanan wajib diisi jika layanan offline diaktifkan",
+      path: ["lokasi"],
+    }
+  )
+  .refine(
+    (data) => {
+      if (!data.onlineAktif) return true;
+      return data.kontakPenanggungJawab && data.kontakPenanggungJawab.trim() !== "";
+    },
+    {
+      message: "Kontak penanggung jawab wajib diisi jika layanan online diaktifkan",
+      path: ["kontakPenanggungJawab"],
+    }
+  );
+
+export type KonselingLayananInput = z.infer<typeof konselingLayananSchema>;
+
+// ─────────────────────────────────────────────
+// Jadwal Konseling
+// ─────────────────────────────────────────────
+export const jadwalKonselingSchema = z.object({
+  tanggal: z
+    .string()
+    .min(1, "Tanggal wajib diisi")
+    .regex(/^\d{4}-\d{2}-\d{2}$/, "Format tanggal tidak valid (YYYY-MM-DD)"),
+  jam: z.string().min(1, "Jam wajib diisi").max(50, "Format jam terlalu panjang"),
+  status: z.enum(["tersedia", "terisi"]).default("tersedia"),
+});
+
+export type JadwalKonselingInput = z.infer<typeof jadwalKonselingSchema>;
