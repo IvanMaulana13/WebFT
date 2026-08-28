@@ -45,12 +45,18 @@ interface BeritaApiResponse {
 }
 
 // ─────────────────────────────────────────────
-// Status badge config
+// Status & Kategori badge config
 // ─────────────────────────────────────────────
 const statusConfig = {
   published: { label: "Published", className: "bg-green-100 text-green-700 border-green-200 hover:bg-green-100" },
   draft: { label: "Draft", className: "bg-gray-100 text-gray-600 border-gray-300 hover:bg-gray-100" },
   archived: { label: "Archived", className: "bg-amber-100 text-amber-700 border-amber-200 hover:bg-amber-100" },
+};
+
+const kategoriConfig: Record<string, { label: string; className: string }> = {
+  berita:   { label: "Berita",   className: "bg-blue-100 text-blue-700 border-blue-200 hover:bg-blue-100" },
+  kegiatan: { label: "Kegiatan", className: "bg-green-100 text-green-700 border-green-200 hover:bg-green-100" },
+  beasiswa: { label: "Beasiswa", className: "bg-amber-100 text-amber-700 border-amber-200 hover:bg-amber-100" },
 };
 
 const columnHelper = createColumnHelper<Berita>();
@@ -111,11 +117,13 @@ export function BeritaTable() {
     }),
     columnHelper.accessor("category", {
       header: "Kategori",
-      cell: (info) => (
-        <span className="text-sm text-gray-500">
-          {info.getValue() ?? <span className="italic text-gray-300">—</span>}
-        </span>
-      ),
+      cell: (info) => {
+        const val = info.getValue();
+        const cfg = val ? (kategoriConfig[val] ?? { label: val, className: "bg-gray-100 text-gray-600 border-gray-200 hover:bg-gray-100" }) : null;
+        return cfg
+          ? <Badge className={cfg.className}>{cfg.label}</Badge>
+          : <span className="italic text-gray-300 text-xs">—</span>;
+      },
     }),
     columnHelper.accessor("status", {
       header: "Status",
@@ -204,12 +212,17 @@ export function BeritaTable() {
           </div>
 
           {/* Category */}
-          <Input
-            placeholder="Filter kategori..."
-            className="w-44"
-            value={categoryFilter}
-            onChange={(e) => { setCategoryFilter(e.target.value); resetPage(); }}
-          />
+          <Select value={categoryFilter || "all"} onValueChange={(v) => { setCategoryFilter((v ?? "all") === "all" ? "" : (v ?? "")); resetPage(); }}>
+            <SelectTrigger className="w-44">
+              <SelectValue placeholder="Semua Kategori" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Semua Kategori</SelectItem>
+              <SelectItem value="berita">Berita</SelectItem>
+              <SelectItem value="kegiatan">Kegiatan</SelectItem>
+              <SelectItem value="beasiswa">Beasiswa</SelectItem>
+            </SelectContent>
+          </Select>
 
           {/* Status */}
           <Select value={statusFilter} onValueChange={(v) => { setStatusFilter(v ?? "all"); resetPage(); }}>

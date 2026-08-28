@@ -32,7 +32,6 @@ interface DashboardStats {
   dosen: number;
   tenagaPendidikan: number;
   pimpinan: number;
-  informasiPublished: number;
   totalVisitors: number;
   todayVisitors: number;
 }
@@ -216,15 +215,6 @@ export default function DashboardOverviewPage() {
           iconBg: "bg-blue-50",
           iconColor: "text-blue-600",
           href: "/dashboard/berita",
-        },
-        {
-          icon: FileText,
-          value: stats.informasiPublished,
-          label: "Informasi",
-          sub: "Published",
-          iconBg: "bg-indigo-50",
-          iconColor: "text-indigo-600",
-          href: "/dashboard/informasi",
         },
         {
           icon: Trophy,

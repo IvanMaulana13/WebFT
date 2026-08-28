@@ -58,7 +58,7 @@ export async function PUT(
 
     await db
       .update(akreditasi)
-      .set({ prodiId, peringkat, noSk, tanggalBerlaku, fileSertifikat })
+      .set({ prodiId, peringkat, noSk, tanggalBerlaku: new Date(tanggalBerlaku), fileSertifikat })
       .where(eq(akreditasi.id, akreditasiId));
 
     await logActivity({

@@ -38,11 +38,6 @@ const navItems = [
     icon: LayoutDashboard,
   },
   {
-    title: "Informasi",
-    href: "/dashboard/informasi",
-    icon: FileText,
-  },
-  {
     title: "Berita",
     href: "/dashboard/berita",
     icon: Newspaper,

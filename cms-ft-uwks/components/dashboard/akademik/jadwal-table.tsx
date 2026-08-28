@@ -332,7 +332,7 @@ export function JadwalTable() {
           <div className="space-y-4 py-2">
             <div className="space-y-2">
               <Label>Program Studi</Label>
-              <Select value={form.prodiId} onValueChange={(v) => setForm((f) => ({ ...f, prodiId: v }))}>
+              <Select value={form.prodiId} onValueChange={(v) => setForm((f) => ({ ...f, prodiId: v ?? "" }))}>
                 <SelectTrigger>
                   <SelectValue placeholder="Pilih program studi..." />
                 </SelectTrigger>
@@ -346,7 +346,7 @@ export function JadwalTable() {
 
             <div className="space-y-2">
               <Label>Semester</Label>
-              <Select value={form.semester} onValueChange={(v) => setForm((f) => ({ ...f, semester: v }))}>
+              <Select value={form.semester} onValueChange={(v) => setForm((f) => ({ ...f, semester: v ?? "" }))}>
                 <SelectTrigger>
                   <SelectValue placeholder="Pilih semester..." />
                 </SelectTrigger>

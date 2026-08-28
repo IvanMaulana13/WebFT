@@ -7,7 +7,6 @@ import {
   dosen,
   tenagaPendidikan,
   pimpinanFakultas,
-  informasi,
   activityLogs,
   users,
   strukturOrganisasi,
@@ -29,7 +28,6 @@ export async function GET() {
       dosenCount,
       tenagaCount,
       pimpinanCount,
-      informasiCount,
       recentLogs,
       strukturRow,
       totalVisitorsRow,
@@ -77,14 +75,6 @@ export async function GET() {
         .from(pimpinanFakultas)
         .where(isNull(pimpinanFakultas.deletedAt)),
 
-      // Informasi published
-      db
-        .select({ count: sql<number>`count(*)` })
-        .from(informasi)
-        .where(
-          and(isNull(informasi.deletedAt), eq(informasi.status, "published"))
-        ),
-
       // Activity logs — 10 terbaru + join ke users untuk nama
       db
         .select({
@@ -124,7 +114,6 @@ export async function GET() {
         dosen: Number(dosenCount[0]?.count ?? 0),
         tenagaPendidikan: Number(tenagaCount[0]?.count ?? 0),
         pimpinan: Number(pimpinanCount[0]?.count ?? 0),
-        informasiPublished: Number(informasiCount[0]?.count ?? 0),
         totalVisitors: Number(totalVisitorsRow[0]?.count ?? 0),
         todayVisitors: Number(todayVisitorsRow[0]?.count ?? 0),
       },

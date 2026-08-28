@@ -105,9 +105,9 @@ async function seed() {
   console.log("🎓 Seeding program_studi (3 prodi generik FT)...");
 
   const prodiSeed = [
-    { nama: "Teknik Informatika", kode: "TI" },
     { nama: "Teknik Sipil", kode: "TS" },
-    { nama: "Teknik Elektro", kode: "TE" },
+    { nama: "Informatika", kode: "IF" },
+    { nama: "Teknologi Industri Pertanian", kode: "TIP" },
   ];
 
   for (const prodi of prodiSeed) {

@@ -1,7 +1,6 @@
 import { db } from "@/lib/db";
 import {
   siteSettings,
-  informasi,
   berita,
   prestasi,
   kemitraan,
@@ -27,15 +26,6 @@ export async function fetchPublicData<T>(path: string): Promise<T | null> {
     if (path.includes("/api/settings")) {
       const [record] = await db.select().from(siteSettings).limit(1);
       return (record ?? null) as T;
-    }
-
-    if (path.includes("/api/informasi")) {
-      const records = await db
-        .select()
-        .from(informasi)
-        .where(and(isNull(informasi.deletedAt), eq(informasi.status, "published")))
-        .orderBy(asc(informasi.orderIndex), asc(informasi.createdAt));
-      return records as T;
     }
 
     if (path.startsWith("/api/berita/")) {

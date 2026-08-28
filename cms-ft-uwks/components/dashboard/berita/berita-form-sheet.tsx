@@ -54,7 +54,7 @@ export function BeritaFormSheet({ open, onOpenChange, berita }: BeritaFormDialog
       slug: "",
       content: "",
       thumbnailUrl: "",
-      category: "",
+      category: "berita",
       status: "draft",
       publishedAt: "",
     },
@@ -94,7 +94,7 @@ export function BeritaFormSheet({ open, onOpenChange, berita }: BeritaFormDialog
           slug: "",
           content: "",
           thumbnailUrl: "",
-          category: "",
+          category: "berita",
           status: "draft",
           publishedAt: "",
         });
@@ -216,14 +216,23 @@ export function BeritaFormSheet({ open, onOpenChange, berita }: BeritaFormDialog
                 name="category"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Kategori</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="cth: Akademik, Kampus"
-                        disabled={mutation.isPending}
-                        {...field}
-                      />
-                    </FormControl>
+                    <FormLabel>Kategori <span className="text-red-500">*</span></FormLabel>
+                    <Select
+                      value={field.value}
+                      onValueChange={field.onChange}
+                      disabled={mutation.isPending}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Pilih kategori" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="berita">Berita</SelectItem>
+                        <SelectItem value="kegiatan">Kegiatan</SelectItem>
+                        <SelectItem value="beasiswa">Beasiswa</SelectItem>
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}

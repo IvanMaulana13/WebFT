@@ -108,7 +108,7 @@ export async function PUT(
         slug: newSlug,
         content,
         thumbnailUrl: thumbnailUrl && thumbnailUrl.trim() !== "" ? thumbnailUrl : null,
-        category: category && category.trim() !== "" ? category : null,
+        category,
         status,
         publishedAt: resolvedPublishedAt,
       })
