@@ -3,20 +3,28 @@ import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { jadwalKonseling } from "@/lib/db/schema";
 import { jadwalKonselingSchema } from "@/lib/validations";
-import { and, asc, isNull, eq } from "drizzle-orm";
+import { and, asc, isNull, eq, sql, gte } from "drizzle-orm";
 import { logActivity } from "@/lib/activity-log";
 
 export async function GET(request: NextRequest) {
-  const session = await auth();
-  if (!session?.user) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const { searchParams } = new URL(request.url);
+  const isPublic = searchParams.get("public") === "true";
+
+  if (!isPublic) {
+    const session = await auth();
+    if (!session?.user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
   }
 
-  const { searchParams } = new URL(request.url);
   const statusFilter = searchParams.get("status")?.trim();
 
   const conditions = [isNull(jadwalKonseling.deletedAt)];
-  if (statusFilter && (statusFilter === "tersedia" || statusFilter === "terisi")) {
+
+  if (isPublic) {
+    conditions.push(eq(jadwalKonseling.status, "tersedia"));
+    conditions.push(gte(jadwalKonseling.tanggal, sql`CURDATE()`));
+  } else if (statusFilter && (statusFilter === "tersedia" || statusFilter === "terisi")) {
     conditions.push(eq(jadwalKonseling.status, statusFilter));
   }
 

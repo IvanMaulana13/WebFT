@@ -15,8 +15,12 @@ import {
   jadwalKuliah,
   akreditasi,
   prosedurAkademik,
+  ormawa,
+  lomba,
+  konselingLayanan,
+  jadwalKonseling,
 } from "@/lib/db/schema";
-import { and, isNull, asc, desc, eq, sql } from "drizzle-orm";
+import { and, isNull, asc, desc, eq, sql, gte } from "drizzle-orm";
 
 /**
  * Helper untuk mengambil data publik langsung dari database.
@@ -45,10 +49,28 @@ export async function fetchPublicData<T>(path: string): Promise<T | null> {
     }
 
     if (path.includes("/api/berita")) {
+      const isBeasiswa = path.includes("category=beasiswa");
+      const isKegiatan = path.includes("category=kegiatan");
+      const isBerita = path.includes("category=berita");
+
+      const categoryFilter = isBeasiswa
+        ? eq(berita.category, "beasiswa")
+        : isKegiatan
+        ? eq(berita.category, "kegiatan")
+        : isBerita
+        ? eq(berita.category, "berita")
+        : undefined;
+
       const records = await db
         .select()
         .from(berita)
-        .where(and(isNull(berita.deletedAt), eq(berita.status, "published")))
+        .where(
+          and(
+            isNull(berita.deletedAt),
+            eq(berita.status, "published"),
+            categoryFilter
+          )
+        )
         .orderBy(desc(berita.publishedAt), desc(berita.createdAt));
       return records as T;
     }
@@ -176,6 +198,49 @@ export async function fetchPublicData<T>(path: string): Promise<T | null> {
         .orderBy(asc(prosedurAkademik.createdAt));
       return records as T;
     }
+
+    // ── Kemahasiswaan ──
+    if (path.includes("/api/kemahasiswaan/ormawa")) {
+      const records = await db
+        .select()
+        .from(ormawa)
+        .where(isNull(ormawa.deletedAt))
+        .orderBy(asc(ormawa.createdAt));
+      return records as T;
+    }
+
+    if (path.includes("/api/kemahasiswaan/lomba")) {
+      const records = await db
+        .select()
+        .from(lomba)
+        .where(isNull(lomba.deletedAt))
+        .orderBy(asc(lomba.tanggalSelesaiPendaftaran));
+      return records as T;
+    }
+
+    if (path.includes("/api/kemahasiswaan/konseling")) {
+      const [record] = await db
+        .select()
+        .from(konselingLayanan)
+        .where(eq(konselingLayanan.id, 1))
+        .limit(1);
+      return (record ?? null) as T;
+    }
+
+    if (path.includes("/api/kemahasiswaan/jadwal-konseling")) {
+      const records = await db
+        .select()
+        .from(jadwalKonseling)
+        .where(
+          and(
+            isNull(jadwalKonseling.deletedAt),
+            eq(jadwalKonseling.status, "tersedia"),
+            gte(jadwalKonseling.tanggal, sql`CURDATE()`)
+          )
+        )
+        .orderBy(asc(jadwalKonseling.tanggal), asc(jadwalKonseling.jam));
+      return records as T;
+    }
   } catch (dbErr) {
     console.error(`[public-api] DB query error for ${path}:`, dbErr);
   }
@@ -234,6 +299,26 @@ export async function fetchPublicAkreditasi() {
 
 export async function fetchPublicProsedur() {
   return fetchPublicData<Array<typeof prosedurAkademik.$inferSelect>>("/api/akademik/prosedur");
+}
+
+export async function fetchPublicOrmawa() {
+  return fetchPublicData<Array<typeof ormawa.$inferSelect>>("/api/kemahasiswaan/ormawa");
+}
+
+export async function fetchPublicLomba() {
+  return fetchPublicData<Array<typeof lomba.$inferSelect>>("/api/kemahasiswaan/lomba");
+}
+
+export async function fetchPublicKonseling() {
+  return fetchPublicData<typeof konselingLayanan.$inferSelect>("/api/kemahasiswaan/konseling");
+}
+
+export async function fetchPublicJadwalKonseling() {
+  return fetchPublicData<Array<typeof jadwalKonseling.$inferSelect>>("/api/kemahasiswaan/jadwal-konseling?public=true");
+}
+
+export async function fetchPublicBeritaByCategory(category: "beasiswa" | "kegiatan" | "berita") {
+  return fetchPublicData<Array<typeof berita.$inferSelect>>(`/api/berita?category=${category}`);
 }
 
 /**

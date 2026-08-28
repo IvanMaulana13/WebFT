@@ -252,13 +252,24 @@ export default function PublicNavbar() {
                   </button>
                   {mobileKemahasiswaanOpen && (
                     <div className="ml-4 pl-3 border-l border-white/20 flex flex-col gap-1 my-1 text-xs text-white/80">
-                      <span className="py-1.5">Organisasi Kemahasiswaan</span>
-                      <span className="py-1.5">Prestasi Mahasiswa</span>
-                      <span className="py-1.5">Informasi Beasiswa</span>
-                      <span className="py-1.5">Informasi Lomba Mahasiswa</span>
-                      <span className="py-1.5">Kegiatan Kemahasiswaan</span>
-                      <span className="py-1.5">Administrasi Kemahasiswaan</span>
-                      <span className="py-1.5">Layanan Konseling Mahasiswa</span>
+                      <Link href="/kemahasiswaan/ormawa" onClick={() => setMobileMenuOpen(false)} className="py-1.5 hover:text-[#E5B80B] transition-colors">
+                        Organisasi Kemahasiswaan
+                      </Link>
+                      <Link href="/kemahasiswaan/prestasi" onClick={() => setMobileMenuOpen(false)} className="py-1.5 hover:text-[#E5B80B] transition-colors">
+                        Prestasi Mahasiswa
+                      </Link>
+                      <Link href="/kemahasiswaan/beasiswa" onClick={() => setMobileMenuOpen(false)} className="py-1.5 hover:text-[#E5B80B] transition-colors">
+                        Informasi Beasiswa
+                      </Link>
+                      <Link href="/kemahasiswaan/lomba" onClick={() => setMobileMenuOpen(false)} className="py-1.5 hover:text-[#E5B80B] transition-colors">
+                        Informasi Lomba Mahasiswa
+                      </Link>
+                      <Link href="/kemahasiswaan/kegiatan" onClick={() => setMobileMenuOpen(false)} className="py-1.5 hover:text-[#E5B80B] transition-colors">
+                        Kegiatan Kemahasiswaan
+                      </Link>
+                      <Link href="/kemahasiswaan/konseling" onClick={() => setMobileMenuOpen(false)} className="py-1.5 hover:text-[#E5B80B] transition-colors">
+                        Layanan Konseling Mahasiswa
+                      </Link>
                     </div>
                   )}
                 </div>
@@ -537,13 +548,42 @@ export default function PublicNavbar() {
                 KEMAHASISWAAN
               </button>
               <div className="dropdown-menu hidden group-hover:block absolute top-full left-0 w-64 bg-white shadow-xl py-2 z-50 border-t-2 border-[#E5B80B] rounded-b-lg border-x border-b border-slate-100">
-                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">Organisasi Kemahasiswaan</span>
-                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">Prestasi Mahasiswa</span>
-                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">Informasi Beasiswa</span>
-                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">Informasi Lomba Mahasiswa</span>
-                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">Kegiatan Kemahasiswaan</span>
-                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">Administrasi Kemahasiswaan</span>
-                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">Layanan Konseling Mahasiswa</span>
+                <Link
+                  href="/kemahasiswaan/ormawa"
+                  className="block px-4 py-2 text-slate-800 hover:bg-slate-50 hover:text-[#002347] transition-colors text-xs font-medium"
+                >
+                  Organisasi Kemahasiswaan
+                </Link>
+                <Link
+                  href="/kemahasiswaan/prestasi"
+                  className="block px-4 py-2 text-slate-800 hover:bg-slate-50 hover:text-[#002347] transition-colors text-xs font-medium"
+                >
+                  Prestasi Mahasiswa
+                </Link>
+                <Link
+                  href="/kemahasiswaan/beasiswa"
+                  className="block px-4 py-2 text-slate-800 hover:bg-slate-50 hover:text-[#002347] transition-colors text-xs font-medium"
+                >
+                  Informasi Beasiswa
+                </Link>
+                <Link
+                  href="/kemahasiswaan/lomba"
+                  className="block px-4 py-2 text-slate-800 hover:bg-slate-50 hover:text-[#002347] transition-colors text-xs font-medium"
+                >
+                  Informasi Lomba Mahasiswa
+                </Link>
+                <Link
+                  href="/kemahasiswaan/kegiatan"
+                  className="block px-4 py-2 text-slate-800 hover:bg-slate-50 hover:text-[#002347] transition-colors text-xs font-medium"
+                >
+                  Kegiatan Kemahasiswaan
+                </Link>
+                <Link
+                  href="/kemahasiswaan/konseling"
+                  className="block px-4 py-2 text-slate-800 hover:bg-slate-50 hover:text-[#002347] transition-colors text-xs font-medium"
+                >
+                  Layanan Konseling Mahasiswa
+                </Link>
               </div>
             </div>
 
