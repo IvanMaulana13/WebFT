@@ -97,10 +97,18 @@ export async function fetchPublicData<T>(path: string): Promise<T | null> {
     }
 
     if (path.includes("/api/kemitraan")) {
+      const isUniversitas = path.includes("kategori_mitra=universitas") || path.includes("kategori=universitas");
+      const isLembaga = path.includes("kategori_mitra=lembaga") || path.includes("kategori=lembaga");
+      const kategoriFilter = isUniversitas
+        ? eq(kemitraan.kategoriMitra, "universitas")
+        : isLembaga
+        ? eq(kemitraan.kategoriMitra, "lembaga")
+        : undefined;
+
       const records = await db
         .select()
         .from(kemitraan)
-        .where(isNull(kemitraan.deletedAt))
+        .where(and(isNull(kemitraan.deletedAt), kategoriFilter))
         .orderBy(asc(kemitraan.orderIndex), asc(kemitraan.createdAt));
       return records as T;
     }

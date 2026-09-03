@@ -26,6 +26,13 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
@@ -55,6 +62,7 @@ export function KemitraanFormDialog({
     resolver: zodResolver(kemitraanSchema),
     defaultValues: {
       partnerName: "",
+      kategoriMitra: "universitas",
       logoUrl: "",
       partnershipType: "",
       mouDate: "",
@@ -80,6 +88,7 @@ export function KemitraanFormDialog({
         }
         form.reset({
           partnerName: kemitraan.partnerName,
+          kategoriMitra: (kemitraan.kategoriMitra as "universitas" | "lembaga") ?? "universitas",
           logoUrl: kemitraan.logoUrl ?? "",
           partnershipType: kemitraan.partnershipType ?? "",
           mouDate: mouDateStr,
@@ -89,6 +98,7 @@ export function KemitraanFormDialog({
       } else {
         form.reset({
           partnerName: "",
+          kategoriMitra: "universitas",
           logoUrl: "",
           partnershipType: "",
           mouDate: "",
@@ -176,6 +186,35 @@ export function KemitraanFormDialog({
                       {...field}
                     />
                   </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Kategori Mitra */}
+            <FormField
+              control={form.control}
+              name="kategoriMitra"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    Kategori Mitra <span className="text-red-500">*</span>
+                  </FormLabel>
+                  <Select
+                    value={field.value}
+                    onValueChange={field.onChange}
+                    disabled={mutation.isPending}
+                  >
+                    <FormControl>
+                      <SelectTrigger id="kemitraan-kategori-select" className="w-full">
+                        <SelectValue placeholder="Pilih kategori mitra" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="universitas">Universitas Mitra</SelectItem>
+                      <SelectItem value="lembaga">Lembaga Mitra</SelectItem>
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}

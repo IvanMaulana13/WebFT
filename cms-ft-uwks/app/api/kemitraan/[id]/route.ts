@@ -67,12 +67,13 @@ export async function PUT(
       );
     }
 
-    const { partnerName, logoUrl, partnershipType, mouDate, description, websiteUrl } = parsed.data;
+    const { partnerName, kategoriMitra, logoUrl, partnershipType, mouDate, description, websiteUrl } = parsed.data;
 
     await db
       .update(kemitraan)
       .set({
         partnerName,
+        kategoriMitra,
         logoUrl: logoUrl && logoUrl.trim() !== "" ? logoUrl : null,
         partnershipType: partnershipType && partnershipType.trim() !== "" ? partnershipType : null,
         mouDate: mouDate && mouDate.trim() !== "" ? new Date(mouDate) : null,
@@ -86,7 +87,7 @@ export async function PUT(
       action: "update",
       module: "kemitraan",
       recordId: kemitraanId,
-      detail: JSON.stringify({ partnerName }),
+      detail: JSON.stringify({ partnerName, kategoriMitra }),
     });
 
     const [updated] = await db

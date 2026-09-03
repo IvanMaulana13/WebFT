@@ -41,6 +41,13 @@ import Image from "next/image";
 import type { Kemitraan } from "@/lib/db/schema";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { KemitraanSortableRow } from "./kemitraan-sortable-row";
 import { KemitraanFormDialog } from "./kemitraan-form-dialog";
 import { KemitraanDeleteDialog } from "./kemitraan-delete-dialog";
@@ -63,6 +70,7 @@ export function KemitraanTable() {
 
   // Filter state
   const [search, setSearch] = useState("");
+  const [kategoriFilter, setKategoriFilter] = useState<string>("all");
   const [page, setPage] = useState(1);
   const limit = 20;
 
@@ -76,12 +84,15 @@ export function KemitraanTable() {
 
   // ─── Query ───────────────────────────────────
   const { data, isLoading, isError } = useQuery<KemitraanApiResponse>({
-    queryKey: ["kemitraan", search, page],
+    queryKey: ["kemitraan", search, kategoriFilter, page],
     queryFn: async () => {
       const params = new URLSearchParams();
       params.set("page", String(page));
       params.set("limit", String(limit));
       if (search) params.set("search", search);
+      if (kategoriFilter && kategoriFilter !== "all") {
+        params.set("kategori_mitra", kategoriFilter);
+      }
       const res = await fetch(`/api/kemitraan?${params}`);
       if (!res.ok) throw new Error("Gagal mengambil data");
       return res.json();
@@ -131,13 +142,24 @@ export function KemitraanTable() {
       const newIndex = currentRows.findIndex((r) => r.id === over.id);
       if (oldIndex === -1 || newIndex === -1) return;
 
+      // Larang drag antar kategori yang berbeda jika dalam view "Semua Kategori"
+      if (currentRows[oldIndex].kategoriMitra !== currentRows[newIndex].kategoriMitra) {
+        toast.error("Urutan drag-and-drop hanya berlaku di dalam kategori yang sama");
+        return;
+      }
+
       const reordered = arrayMove(currentRows, oldIndex, newIndex);
       setLocalData(reordered);
 
-      const items = reordered.map((item, idx) => ({
+      // Hitung orderIndex terpisah per kategori
+      const categoryItems = reordered.filter(
+        (item) => item.kategoriMitra === currentRows[oldIndex].kategoriMitra
+      );
+      const items = categoryItems.map((item, idx) => ({
         id: item.id,
         orderIndex: idx,
       }));
+
       reorderMutation.mutate(items);
     },
     [displayRows, reorderMutation]
@@ -192,6 +214,26 @@ export function KemitraanTable() {
           )}
         </div>
       ),
+    }),
+
+    // Kategori Mitra Badge
+    columnHelper.accessor("kategoriMitra", {
+      header: "Kategori",
+      cell: (info) => {
+        const val = info.getValue();
+        const isUniv = val === "universitas";
+        return (
+          <span
+            className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold border ${
+              isUniv
+                ? "bg-blue-50 text-blue-700 border-blue-200"
+                : "bg-purple-50 text-purple-700 border-purple-200"
+            }`}
+          >
+            {isUniv ? "Universitas" : "Lembaga"}
+          </span>
+        );
+      },
     }),
 
     // MoU Date
@@ -280,8 +322,8 @@ export function KemitraanTable() {
     <div className="space-y-4">
       {/* Toolbar */}
       <div className="flex flex-col sm:flex-row gap-3 justify-between">
-        <div className="flex gap-2 flex-1">
-          <div className="relative flex-1 max-w-xs">
+        <div className="flex flex-wrap gap-2 flex-1">
+          <div className="relative flex-1 max-w-xs min-w-[200px]">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
             <Input
               id="kemitraan-search"
@@ -295,6 +337,24 @@ export function KemitraanTable() {
               }}
             />
           </div>
+
+          <Select
+            value={kategoriFilter}
+            onValueChange={(val) => {
+              setKategoriFilter(val || "all");
+              setPage(1);
+              setLocalData([]);
+            }}
+          >
+            <SelectTrigger className="w-48" id="kemitraan-filter-kategori">
+              <SelectValue placeholder="Semua Kategori" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Semua Kategori</SelectItem>
+              <SelectItem value="universitas">Universitas Mitra</SelectItem>
+              <SelectItem value="lembaga">Lembaga Mitra</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
 
         <Button

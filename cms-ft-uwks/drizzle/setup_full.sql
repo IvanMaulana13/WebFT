@@ -66,6 +66,7 @@ CREATE TABLE IF NOT EXISTS `prestasi` (
 CREATE TABLE IF NOT EXISTS `kemitraan` (
   `id` int AUTO_INCREMENT NOT NULL,
   `partner_name` varchar(255) NOT NULL,
+  `kategori_mitra` enum('universitas','lembaga') NOT NULL DEFAULT 'universitas',
   `logo_url` varchar(500),
   `partnership_type` varchar(100),
   `mou_date` date,
