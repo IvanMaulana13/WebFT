@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Edit2, Loader2, Trash2, Globe } from "lucide-react";
+import { Edit2, Loader2, Trash2, Globe, Image as ImageIcon } from "lucide-react";
 import { toast } from "sonner";
 import { format, isAfter, isSameDay } from "date-fns";
 import { id as idLocale } from "date-fns/locale";
@@ -126,10 +127,27 @@ export function LombaTable() {
                 return (
                   <TableRow key={item.id}>
                     <TableCell>
-                      <div className="font-medium text-gray-900">{item.namaLomba}</div>
-                      <a href={item.linkPendaftaran} target="_blank" rel="noreferrer" className="text-xs text-blue-600 hover:underline flex items-center gap-1 mt-1">
-                        <Globe className="w-3 h-3" /> Link Info
-                      </a>
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-md bg-gray-100 flex items-center justify-center shrink-0 overflow-hidden border">
+                          {item.posterUrl ? (
+                            <Image
+                              src={item.posterUrl}
+                              alt={item.namaLomba}
+                              width={40}
+                              height={40}
+                              className="object-cover w-full h-full"
+                            />
+                          ) : (
+                            <ImageIcon className="w-4 h-4 text-gray-400" />
+                          )}
+                        </div>
+                        <div>
+                          <div className="font-medium text-gray-900">{item.namaLomba}</div>
+                          <a href={item.linkPendaftaran} target="_blank" rel="noreferrer" className="text-xs text-blue-600 hover:underline flex items-center gap-1 mt-1">
+                            <Globe className="w-3 h-3" /> Link Info
+                          </a>
+                        </div>
+                      </div>
                     </TableCell>
                     <TableCell>
                       <Badge variant="outline" className={item.tingkat === 'internasional' ? 'bg-purple-50 text-purple-700 border-purple-200' : 'bg-blue-50 text-blue-700 border-blue-200'}>
