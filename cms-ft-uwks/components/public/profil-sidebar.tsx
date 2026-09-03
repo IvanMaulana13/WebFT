@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { Link, usePathname } from "@/i18n/routing";
+import { useTranslations } from "next-intl";
 import {
   History,
   Eye,
@@ -13,18 +13,22 @@ import {
   ChevronDown,
 } from "lucide-react";
 
-const profilNavItems = [
-  { href: "/sejarah", label: "Sejarah", icon: History },
-  { href: "/visi-misi", label: "Visi & Misi", icon: Eye },
-  { href: "/struktur-organisasi", label: "Struktur Organisasi", icon: GitFork },
-  { href: "/pimpinan-fakultas", label: "Pimpinan Fakultas", icon: Users },
-  { href: "/dosen", label: "Dosen Pengajar", icon: GraduationCap },
-  { href: "/tenaga-kependidikan", label: "Tenaga Kependidikan", icon: BadgeCheck },
-];
-
 export default function ProfilSidebar() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  const tNavbar = useTranslations("navbar");
+  const tProfil = useTranslations("profil");
+  const tCommon = useTranslations("common");
+
+  const profilNavItems = [
+    { href: "/sejarah", label: tNavbar("sejarah"), icon: History },
+    { href: "/visi-misi", label: tNavbar("visiMisi"), icon: Eye },
+    { href: "/struktur-organisasi", label: tNavbar("strukturOrganisasi"), icon: GitFork },
+    { href: "/pimpinan-fakultas", label: tNavbar("pimpinanFakultas"), icon: Users },
+    { href: "/dosen", label: tNavbar("dosen"), icon: GraduationCap },
+    { href: "/tenaga-kependidikan", label: tNavbar("tenagaKependidikan"), icon: BadgeCheck },
+  ];
 
   const activeItem =
     profilNavItems.find(
@@ -47,7 +51,7 @@ export default function ProfilSidebar() {
             <div className="w-1.5 h-8 bg-[#E5B80B] rounded-full flex-shrink-0" />
             <div className="flex flex-col min-w-0">
               <span className="text-[10px] font-bold tracking-wider text-slate-400 uppercase leading-tight">
-                PROFIL FAKULTAS
+                {tProfil("headerTitle")}
               </span>
               <div className="flex items-center gap-2 mt-0.5">
                 <ActiveIcon className="w-4 h-4 text-[#002C5F] shrink-0" />
@@ -58,7 +62,7 @@ export default function ProfilSidebar() {
             </div>
           </div>
           <div className="flex items-center gap-1.5 px-3 py-1.5 bg-[#002C5F] text-white rounded-lg text-xs font-semibold shrink-0 shadow-xs">
-            <span>{mobileOpen ? "Tutup" : "Pilih Menu"}</span>
+            <span>{mobileOpen ? tCommon("tutup") : tCommon("pilihMenu")}</span>
             <ChevronDown
               className={`w-3.5 h-3.5 transition-transform duration-200 ${
                 mobileOpen ? "rotate-180" : ""
@@ -72,10 +76,10 @@ export default function ProfilSidebar() {
           <div className="w-1.5 h-10 bg-[#E5B80B] mr-3 rounded-full flex-shrink-0" />
           <div className="flex flex-col">
             <h3 className="text-xl font-bold text-[#002347] leading-tight uppercase font-sans">
-              PROFIL
+              {tProfil("sidebarHeader1")}
             </h3>
             <h3 className="text-xl font-bold text-[#002347] leading-tight uppercase font-sans">
-              FAKULTAS
+              {tProfil("sidebarHeader2")}
             </h3>
           </div>
         </div>
@@ -90,7 +94,7 @@ export default function ProfilSidebar() {
             const Icon = item.icon;
             const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
             return (
-              <li key={item.label}>
+              <li key={item.href}>
                 <Link
                   href={item.href}
                   onClick={() => setMobileOpen(false)}
