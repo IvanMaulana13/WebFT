@@ -8,7 +8,7 @@ import { logActivity } from "@/lib/activity-log";
 
 // ─────────────────────────────────────────────
 // GET /api/kemitraan
-// Query: page, limit, search
+// Query: page, limit, search, kategori_mitra
 // Default order: order_index ASC, created_at ASC
 // ─────────────────────────────────────────────
 export async function GET(request: NextRequest) {
@@ -20,12 +20,16 @@ export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const search = searchParams.get("search") ?? "";
+    const kategoriMitra = searchParams.get("kategori_mitra") || searchParams.get("kategoriMitra");
     const page = Math.max(1, parseInt(searchParams.get("page") ?? "1", 10));
     const limit = Math.min(100, Math.max(1, parseInt(searchParams.get("limit") ?? "20", 10)));
     const offset = (page - 1) * limit;
 
     const whereClause = and(
       isNull(kemitraan.deletedAt),
+      kategoriMitra === "universitas" || kategoriMitra === "lembaga"
+        ? eq(kemitraan.kategoriMitra, kategoriMitra)
+        : undefined,
       search
         ? or(
             like(kemitraan.partnerName, `%${search}%`),
@@ -79,18 +83,19 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { partnerName, logoUrl, partnershipType, mouDate, description, websiteUrl } = parsed.data;
+    const { partnerName, kategoriMitra, logoUrl, partnershipType, mouDate, description, websiteUrl } = parsed.data;
 
-    // Ambil max order_index untuk menaruh di bawah
+    // Ambil max order_index per kategori_mitra untuk menaruh di urutan terbawah kategori tersebut
     const [maxOrder] = await db
       .select({ maxIdx: sql<number>`MAX(order_index)` })
       .from(kemitraan)
-      .where(isNull(kemitraan.deletedAt));
+      .where(and(isNull(kemitraan.deletedAt), eq(kemitraan.kategoriMitra, kategoriMitra)));
 
     const nextOrder = (Number(maxOrder?.maxIdx ?? -1)) + 1;
 
     const [result] = await db.insert(kemitraan).values({
       partnerName,
+      kategoriMitra,
       logoUrl: logoUrl && logoUrl.trim() !== "" ? logoUrl : null,
       partnershipType: partnershipType && partnershipType.trim() !== "" ? partnershipType : null,
       mouDate: mouDate && mouDate.trim() !== "" ? new Date(mouDate) : null,
@@ -106,7 +111,7 @@ export async function POST(request: NextRequest) {
       action: "create",
       module: "kemitraan",
       recordId: newId,
-      detail: JSON.stringify({ partnerName }),
+      detail: JSON.stringify({ partnerName, kategoriMitra }),
     });
 
     const [newRecord] = await db

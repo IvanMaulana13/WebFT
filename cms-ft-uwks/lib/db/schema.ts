@@ -79,6 +79,9 @@ export type NewPrestasi = typeof prestasi.$inferInsert;
 export const kemitraan = mysqlTable("kemitraan", {
   id: int("id").primaryKey().autoincrement(),
   partnerName: varchar("partner_name", { length: 255 }).notNull(),
+  kategoriMitra: mysqlEnum("kategori_mitra", ["universitas", "lembaga"])
+    .notNull()
+    .default("universitas"),
   logoUrl: varchar("logo_url", { length: 500 }),
   partnershipType: varchar("partnership_type", { length: 100 }),
   mouDate: date("mou_date"),

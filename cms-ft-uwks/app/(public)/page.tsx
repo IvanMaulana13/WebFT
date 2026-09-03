@@ -47,6 +47,7 @@ interface PrestasiItem {
 interface KemitraanItem {
   id: number;
   partnerName: string;
+  kategoriMitra?: string | null;
   logoUrl?: string | null;
   partnershipType?: string | null;
   websiteUrl?: string | null;
@@ -76,8 +77,15 @@ export default async function HomePage() {
     .sort((a, b) => (b.year || 0) - (a.year || 0))
     .slice(0, 4);
 
-  const sortedKemitraan = (kemitraanData || []).sort(
+  const allKemitraan = (kemitraanData || []).sort(
     (a, b) => (a.orderIndex ?? 0) - (b.orderIndex ?? 0)
+  );
+
+  const universitasMitra = allKemitraan.filter(
+    (item) => (item.kategoriMitra ?? "universitas") === "universitas"
+  );
+  const lembagaMitra = allKemitraan.filter(
+    (item) => item.kategoriMitra === "lembaga"
   );
 
   const heroVideoUrl = settings?.heroVideoUrl;
@@ -179,11 +187,6 @@ export default async function HomePage() {
                         <Medal className="w-10 h-10 stroke-1" />
                       </div>
                     )}
-                    <div className="absolute top-2.5 right-2.5">
-                      <span className="bg-[#002347]/90 backdrop-blur-sm text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider shadow-sm border border-white/10">
-                        {item.level}
-                      </span>
-                    </div>
                   </div>
 
                   {/* Info Konten */}
@@ -214,61 +217,161 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ── 5. KEMITRAAN SECTION (Dynamic API) ── */}
+      {/* ── 5. KEMITRAAN SECTION (Dynamic API with 2-Way Marquee) ── */}
       <section className="py-16 bg-white border-t border-slate-200">
         <div className="max-w-6xl mx-auto px-6">
           <div className="flex items-center gap-4 mb-10">
             <h2 className="text-2xl md:text-3xl font-bold text-[#002347] font-sans">
-              Kemitraan Strategis
+              Kemitraan
             </h2>
             <div className="flex-grow h-px bg-slate-200" />
           </div>
 
-          {sortedKemitraan.length > 0 ? (
-            <div className="relative overflow-hidden py-4">
-              <div className="flex gap-8 items-center animate-marquee-ltr whitespace-nowrap">
-                {sortedKemitraan.map((item) => (
-                  <div
-                    key={item.id}
-                    className="flex-shrink-0 w-48 h-24 bg-slate-50 border border-slate-200 rounded-lg flex items-center justify-center p-4 hover:border-[#E5B80B] transition-colors"
-                  >
-                    {item.logoUrl ? (
-                      <Image
-                        src={item.logoUrl}
-                        alt={item.partnerName}
-                        width={120}
-                        height={60}
-                        className="max-h-14 w-auto object-contain"
-                      />
-                    ) : (
-                      <span className="text-xs font-bold text-slate-700 text-center">
-                        {item.partnerName}
-                      </span>
-                    )}
+          {universitasMitra.length > 0 || lembagaMitra.length > 0 ? (
+            <div className="space-y-10">
+              {/* ── Universitas Mitra (Gerak ke KANAN) ── */}
+              {universitasMitra.length > 0 && (
+                <div>
+                  <h3 className="text-xs md:text-sm font-bold text-[#002347] uppercase tracking-wider mb-5">
+                    Universitas Mitra
+                  </h3>
+                  <div className="relative overflow-hidden group">
+                    <div className="absolute inset-y-0 left-0 w-16 md:w-28 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
+                    <div className="absolute inset-y-0 right-0 w-16 md:w-28 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
+                    <div className="flex gap-6 md:gap-8 items-center animate-marquee-ltr whitespace-nowrap py-3 w-max">
+                      {universitasMitra.map((item) => (
+                        <div
+                          key={item.id}
+                          className="flex-shrink-0 w-48 md:w-52 h-24 md:h-28 bg-slate-50 border border-slate-200 rounded-xl flex flex-col items-center justify-center p-3 hover:border-[#E5B80B] hover:shadow-md transition-all duration-300"
+                        >
+                          {item.logoUrl ? (
+                            <>
+                              <div className="relative h-10 md:h-12 w-full flex items-center justify-center mb-1">
+                                <Image
+                                  src={item.logoUrl}
+                                  alt={item.partnerName}
+                                  width={120}
+                                  height={48}
+                                  className="max-h-10 md:max-h-12 w-auto object-contain"
+                                  unoptimized
+                                />
+                              </div>
+                              <span className="text-[11px] font-semibold text-slate-700 text-center line-clamp-1 max-w-full px-1">
+                                {item.partnerName}
+                              </span>
+                            </>
+                          ) : (
+                            <span className="text-xs font-bold text-slate-700 text-center leading-tight">
+                              {item.partnerName}
+                            </span>
+                          )}
+                        </div>
+                      ))}
+                      {/* Duplikasi 2x untuk loop mulus */}
+                      {universitasMitra.map((item) => (
+                        <div
+                          key={`dup-univ-${item.id}`}
+                          className="flex-shrink-0 w-48 md:w-52 h-24 md:h-28 bg-slate-50 border border-slate-200 rounded-xl flex flex-col items-center justify-center p-3 hover:border-[#E5B80B] hover:shadow-md transition-all duration-300"
+                        >
+                          {item.logoUrl ? (
+                            <>
+                              <div className="relative h-10 md:h-12 w-full flex items-center justify-center mb-1">
+                                <Image
+                                  src={item.logoUrl}
+                                  alt={item.partnerName}
+                                  width={120}
+                                  height={48}
+                                  className="max-h-10 md:max-h-12 w-auto object-contain"
+                                  unoptimized
+                                />
+                              </div>
+                              <span className="text-[11px] font-semibold text-slate-700 text-center line-clamp-1 max-w-full px-1">
+                                {item.partnerName}
+                              </span>
+                            </>
+                          ) : (
+                            <span className="text-xs font-bold text-slate-700 text-center leading-tight">
+                              {item.partnerName}
+                            </span>
+                          )}
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                ))}
-                {/* Duplicate for seamless infinite loop */}
-                {sortedKemitraan.map((item) => (
-                  <div
-                    key={`dup-${item.id}`}
-                    className="flex-shrink-0 w-48 h-24 bg-slate-50 border border-slate-200 rounded-lg flex items-center justify-center p-4 hover:border-[#E5B80B] transition-colors"
-                  >
-                    {item.logoUrl ? (
-                      <Image
-                        src={item.logoUrl}
-                        alt={item.partnerName}
-                        width={120}
-                        height={60}
-                        className="max-h-14 w-auto object-contain"
-                      />
-                    ) : (
-                      <span className="text-xs font-bold text-slate-700 text-center">
-                        {item.partnerName}
-                      </span>
-                    )}
+                </div>
+              )}
+
+              {/* ── Lembaga Mitra (Gerak ke KIRI) ── */}
+              {lembagaMitra.length > 0 && (
+                <div>
+                  <h3 className="text-xs md:text-sm font-bold text-[#002347] uppercase tracking-wider mb-5">
+                    Lembaga Mitra
+                  </h3>
+                  <div className="relative overflow-hidden group">
+                    <div className="absolute inset-y-0 left-0 w-16 md:w-28 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
+                    <div className="absolute inset-y-0 right-0 w-16 md:w-28 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
+                    <div className="flex gap-6 md:gap-8 items-center animate-marquee-rtl whitespace-nowrap py-3 w-max">
+                      {lembagaMitra.map((item) => (
+                        <div
+                          key={item.id}
+                          className="flex-shrink-0 w-48 md:w-52 h-24 md:h-28 bg-slate-50 border border-slate-200 rounded-xl flex flex-col items-center justify-center p-3 hover:border-[#E5B80B] hover:shadow-md transition-all duration-300"
+                        >
+                          {item.logoUrl ? (
+                            <>
+                              <div className="relative h-10 md:h-12 w-full flex items-center justify-center mb-1">
+                                <Image
+                                  src={item.logoUrl}
+                                  alt={item.partnerName}
+                                  width={120}
+                                  height={48}
+                                  className="max-h-10 md:max-h-12 w-auto object-contain"
+                                  unoptimized
+                                />
+                              </div>
+                              <span className="text-[11px] font-semibold text-slate-700 text-center line-clamp-1 max-w-full px-1">
+                                {item.partnerName}
+                              </span>
+                            </>
+                          ) : (
+                            <span className="text-xs font-bold text-slate-700 text-center leading-tight">
+                              {item.partnerName}
+                            </span>
+                          )}
+                        </div>
+                      ))}
+                      {/* Duplikasi 2x untuk loop mulus */}
+                      {lembagaMitra.map((item) => (
+                        <div
+                          key={`dup-lembaga-${item.id}`}
+                          className="flex-shrink-0 w-48 md:w-52 h-24 md:h-28 bg-slate-50 border border-slate-200 rounded-xl flex flex-col items-center justify-center p-3 hover:border-[#E5B80B] hover:shadow-md transition-all duration-300"
+                        >
+                          {item.logoUrl ? (
+                            <>
+                              <div className="relative h-10 md:h-12 w-full flex items-center justify-center mb-1">
+                                <Image
+                                  src={item.logoUrl}
+                                  alt={item.partnerName}
+                                  width={120}
+                                  height={48}
+                                  className="max-h-10 md:max-h-12 w-auto object-contain"
+                                  unoptimized
+                                />
+                              </div>
+                              <span className="text-[11px] font-semibold text-slate-700 text-center line-clamp-1 max-w-full px-1">
+                                {item.partnerName}
+                              </span>
+                            </>
+                          ) : (
+                            <span className="text-xs font-bold text-slate-700 text-center leading-tight">
+                              {item.partnerName}
+                            </span>
+                          )}
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                ))}
-              </div>
+                </div>
+              )}
             </div>
           ) : (
             <div className="text-center py-8 text-slate-500 text-sm">

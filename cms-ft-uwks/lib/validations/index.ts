@@ -167,8 +167,14 @@ export type PrestasiUpdateInput = z.infer<typeof prestasiUpdateSchema>;
 // ─────────────────────────────────────────────
 // Kemitraan
 // ─────────────────────────────────────────────
+export const KATEGORI_MITRA = ["universitas", "lembaga"] as const;
+export type KategoriMitra = typeof KATEGORI_MITRA[number];
+
 export const kemitraanSchema = z.object({
   partnerName: z.string().min(1, "Nama mitra wajib diisi").max(255, "Nama mitra maksimal 255 karakter"),
+  kategoriMitra: z.enum(["universitas", "lembaga"], {
+    error: "Kategori mitra wajib diisi ('universitas' atau 'lembaga')",
+  }),
   logoUrl: z.string().url("URL logo tidak valid").max(500).optional().or(z.literal("")),
   partnershipType: z.string().max(100, "Tipe kemitraan maksimal 100 karakter").optional().or(z.literal("")),
   mouDate: z
