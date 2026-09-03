@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   HeartHandshake,
-  MessageCircle,
   MapPin,
   Clock,
   Calendar,
@@ -15,8 +14,6 @@ import {
   CalendarDays,
   Info,
 } from "lucide-react";
-import { format } from "date-fns";
-import { id as idLocale } from "date-fns/locale";
 import { toast } from "sonner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
@@ -32,6 +29,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import type { KonselingLayanan, JadwalKonseling } from "@/lib/db/schema";
+import { useTranslations, useLocale } from "next-intl";
 
 interface KonselingClientProps {
   layanan: KonselingLayanan | null;
@@ -45,6 +43,8 @@ export default function KonselingClient({
   const queryClient = useQueryClient();
   const [selectedJadwal, setSelectedJadwal] = useState<JadwalKonseling | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const t = useTranslations("kemahasiswaan.konseling");
+  const locale = useLocale();
 
   const [bookingForm, setBookingForm] = useState({
     nama_pemesan: "",
@@ -90,7 +90,9 @@ export default function KonselingClient({
     onSuccess: (res) => {
       toast.success(
         res.message ||
-          "Permintaan janji temu berhasil dikirim, silakan konfirmasi ulang ke kontak penanggung jawab."
+          (locale === "en"
+            ? "Appointment request successfully submitted."
+            : "Permintaan janji temu berhasil dikirim.")
       );
       setDialogOpen(false);
       setSelectedJadwal(null);
@@ -113,7 +115,7 @@ export default function KonselingClient({
     e.preventDefault();
     if (!selectedJadwal) return;
     if (!bookingForm.nama_pemesan.trim() || !bookingForm.nim_pemesan.trim() || !bookingForm.keperluan.trim()) {
-      toast.error("Semua field wajib diisi");
+      toast.error(locale === "en" ? "All fields are required" : "Semua field wajib diisi");
       return;
     }
 
@@ -126,7 +128,12 @@ export default function KonselingClient({
   const formatDate = (dateVal: Date | string) => {
     try {
       const d = new Date(dateVal);
-      return format(d, "EEEE, d MMMM yyyy", { locale: idLocale });
+      return d.toLocaleDateString(locale === "en" ? "en-US" : "id-ID", {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      });
     } catch {
       return String(dateVal);
     }
@@ -141,13 +148,13 @@ export default function KonselingClient({
             value="online"
             className="rounded-lg text-xs sm:text-sm font-bold data-[state=active]:bg-[#002C5F] data-[state=active]:text-white data-[state=active]:shadow-sm transition-all"
           >
-            Konseling Online (Daring)
+            {t("tabOnline")}
           </TabsTrigger>
           <TabsTrigger
             value="offline"
             className="rounded-lg text-xs sm:text-sm font-bold data-[state=active]:bg-[#002C5F] data-[state=active]:text-white data-[state=active]:shadow-sm transition-all"
           >
-            Konseling Offline (Tatap Muka)
+            {t("tabOffline")}
           </TabsTrigger>
         </TabsList>
 
@@ -161,7 +168,7 @@ export default function KonselingClient({
               </div>
               <div>
                 <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                  Kontak Penanggung Jawab
+                  {t("kanalKonseling")}
                 </p>
                 <h4 className="text-base sm:text-lg font-bold text-[#002347]">
                   {layanan?.kontakPenanggungJawab || "Bagian Kemahasiswaan FT UWKS"}
@@ -170,7 +177,7 @@ export default function KonselingClient({
             </div>
 
             <div className="text-xs text-slate-500 bg-white/80 px-3.5 py-2 rounded-lg border border-slate-200/80">
-              Pilih slot jadwal di bawah untuk mengajukan sesi konseling
+              {t("jadwalSubtitle")}
             </div>
           </div>
 
@@ -179,17 +186,19 @@ export default function KonselingClient({
             <div className="flex items-center justify-between border-b border-slate-200 pb-3">
               <h3 className="text-base sm:text-lg font-bold text-[#002347] flex items-center gap-2">
                 <CalendarDays className="w-5 h-5 text-[#E5B80B]" />
-                <span>Slot Jadwal Konseling Tersedia</span>
+                <span>{t("jadwalTersedia")}</span>
               </h3>
               <span className="text-xs font-semibold text-slate-500">
-                {jadwalList.length} Slot Aktif
+                {jadwalList.length} {locale === "en" ? "Active Slots" : "Slot Aktif"}
               </span>
             </div>
 
             {isLoadingJadwal ? (
               <div className="p-12 text-center">
                 <Loader2 className="w-8 h-8 animate-spin mx-auto text-[#002C5F]" />
-                <p className="text-xs text-slate-500 mt-2">Memuat jadwal konseling...</p>
+                <p className="text-xs text-slate-500 mt-2">
+                  {locale === "en" ? "Loading counseling slots..." : "Memuat jadwal konseling..."}
+                </p>
               </div>
             ) : jadwalList.length === 0 ? (
               <div className="bg-[#F8F9FA] rounded-xl p-10 text-center border border-slate-200">
@@ -197,10 +206,7 @@ export default function KonselingClient({
                   <Calendar className="w-7 h-7" />
                 </div>
                 <p className="text-slate-600 font-semibold mb-1 text-sm">
-                  Belum ada jadwal konseling online yang tersedia saat ini.
-                </p>
-                <p className="text-xs text-slate-400">
-                  Silakan hubungi kontak penanggung jawab di atas secara langsung untuk konsultasi.
+                  {t("emptyJadwal")}
                 </p>
               </div>
             ) : (
@@ -224,7 +230,7 @@ export default function KonselingClient({
 
                     <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
                       <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200">
-                        <CheckCircle2 className="w-3 h-3" /> Tersedia
+                        <CheckCircle2 className="w-3 h-3" /> {locale === "en" ? "Available" : "Tersedia"}
                       </span>
 
                       <Button
@@ -232,7 +238,7 @@ export default function KonselingClient({
                         onClick={() => handleOpenBooking(item)}
                         className="bg-[#002C5F] hover:bg-[#002347] text-white text-xs font-bold px-4 py-2 rounded-lg shadow-2xs"
                       >
-                        Ajukan Janji Temu
+                        {t("ajukanKonseling")}
                       </Button>
                     </div>
                   </div>
@@ -247,10 +253,10 @@ export default function KonselingClient({
           <div className="bg-[#F8F9FA] rounded-xl p-6 sm:p-8 border border-slate-200 space-y-6">
             <div className="space-y-2">
               <h3 className="text-lg font-bold text-[#002347]">
-                Layanan Konseling Tatap Muka (Offline)
+                {t("tabOffline")}
               </h3>
               <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
-                Bagi mahasiswa yang ingin berkonsultasi secara langsung, Anda dapat mengunjungi ruangan konseling pada jam operasional layanan di bawah ini.
+                {t("jadwalSubtitle")}
               </p>
             </div>
 
@@ -262,7 +268,7 @@ export default function KonselingClient({
                 </div>
                 <div>
                   <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider">
-                    Lokasi Ruangan
+                    {t("ruangKonseling")}
                   </h4>
                   <p className="text-sm sm:text-base font-bold text-[#002347] mt-0.5">
                     {layanan?.lokasi || "Ruang Konseling & Kemahasiswaan Gd. Dekanat Lt. 1"}
@@ -277,20 +283,13 @@ export default function KonselingClient({
                 </div>
                 <div>
                   <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider">
-                    Jam Layanan
+                    {locale === "en" ? "Service Hours" : "Jam Layanan"}
                   </h4>
                   <p className="text-sm sm:text-base font-bold text-[#002347] mt-0.5">
                     {layanan?.jamLayananOffline || "Senin - Jumat, 09.00 - 15.00 WIB"}
                   </p>
                 </div>
               </div>
-            </div>
-
-            <div className="bg-blue-50/70 border border-blue-200 rounded-lg p-4 text-xs text-slate-700 flex items-start gap-2.5">
-              <Info className="w-4 h-4 text-[#002C5F] shrink-0 mt-0.5" />
-              <span>
-                Disarankan membuat konfirmasi terlebih dahulu melalui kontak penanggung jawab sebelum datang langsung untuk memastikan ketersediaan konselor.
-              </span>
             </div>
           </div>
         </TabsContent>
@@ -301,13 +300,13 @@ export default function KonselingClient({
         <DialogContent className="max-w-md w-full">
           <DialogHeader>
             <DialogTitle className="text-lg font-bold text-[#002347]">
-              Pengajuan Janji Temu Konseling
+              {t("dialogTitle")}
             </DialogTitle>
             <DialogDescription className="text-xs text-slate-500">
               {selectedJadwal && (
                 <span>
-                  Sesi pada <strong>{formatDate(selectedJadwal.tanggal)}</strong> pukul{" "}
-                  <strong>{selectedJadwal.jam}</strong>
+                  {t("dialogDesc")} (<strong>{formatDate(selectedJadwal.tanggal)}</strong> pukul{" "}
+                  <strong>{selectedJadwal.jam}</strong>)
                 </span>
               )}
             </DialogDescription>
@@ -316,7 +315,7 @@ export default function KonselingClient({
           <form onSubmit={handleBookingSubmit} className="space-y-4 py-2">
             <div className="space-y-1.5">
               <Label htmlFor="nama" className="text-xs font-bold text-slate-700">
-                Nama Lengkap <span className="text-red-500">*</span>
+                {t("formNama")} <span className="text-red-500">*</span>
               </Label>
               <Input
                 id="nama"
@@ -332,7 +331,7 @@ export default function KonselingClient({
 
             <div className="space-y-1.5">
               <Label htmlFor="nim" className="text-xs font-bold text-slate-700">
-                NIM <span className="text-red-500">*</span>
+                {t("formNpm")} <span className="text-red-500">*</span>
               </Label>
               <Input
                 id="nim"
@@ -348,22 +347,22 @@ export default function KonselingClient({
 
             <div className="space-y-1.5">
               <Label htmlFor="keperluan" className="text-xs font-bold text-slate-700">
-                Keperluan / Topik Singkat <span className="text-red-500">*</span>
+                {t("formKeluhan")} <span className="text-red-500">*</span>
               </Label>
               <Textarea
                 id="keperluan"
-                placeholder="Ceritakan gambaran singkat kendala akademik / pribadi..."
-                rows={3}
+                placeholder="Ceritakan singkat kendala akademik / pribadi..."
                 value={bookingForm.keperluan}
                 onChange={(e) =>
                   setBookingForm({ ...bookingForm, keperluan: e.target.value })
                 }
                 disabled={bookingMutation.isPending}
+                rows={3}
                 required
               />
             </div>
 
-            <DialogFooter className="pt-3 gap-2">
+            <DialogFooter className="gap-2 sm:gap-0 pt-2">
               <Button
                 type="button"
                 variant="outline"
@@ -371,7 +370,7 @@ export default function KonselingClient({
                 disabled={bookingMutation.isPending}
                 className="text-xs"
               >
-                Batal
+                {t("formBatal")}
               </Button>
               <Button
                 type="submit"
@@ -380,13 +379,13 @@ export default function KonselingClient({
               >
                 {bookingMutation.isPending ? (
                   <>
-                    <Loader2 className="w-3.5 h-3.5 mr-1.5 animate-spin" />
-                    Mengirim...
+                    <Loader2 className="w-3.5 h-3.5 animate-spin mr-1.5" />
+                    {t("formMengirim")}
                   </>
                 ) : (
                   <>
                     <Send className="w-3.5 h-3.5 mr-1.5" />
-                    Kirim Permintaan
+                    {t("formKirim")}
                   </>
                 )}
               </Button>

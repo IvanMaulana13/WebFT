@@ -1,37 +1,40 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { Link, usePathname } from "@/i18n/routing";
 import { ChevronRight } from "lucide-react";
-
-const pageTitles: Record<string, { title: string; breadcrumb: string }> = {
-  "/akademik/kalender": {
-    title: "Kalender Akademik",
-    breadcrumb: "KALENDER AKADEMIK",
-  },
-  "/akademik/pedoman": {
-    title: "Pedoman Akademik",
-    breadcrumb: "PEDOMAN AKADEMIK",
-  },
-  "/akademik/jadwal-perkuliahan": {
-    title: "Jadwal Perkuliahan",
-    breadcrumb: "JADWAL PERKULIAHAN",
-  },
-  "/akademik/akreditasi": {
-    title: "Akreditasi Program Studi",
-    breadcrumb: "AKREDITASI",
-  },
-  "/akademik/prosedur": {
-    title: "Prosedur Akademik",
-    breadcrumb: "PROSEDUR AKADEMIK",
-  },
-};
+import { useTranslations } from "next-intl";
 
 export default function AkademikHeader() {
   const pathname = usePathname();
-  const current = pageTitles[pathname] || {
-    title: "Akademik Fakultas Teknik",
-    breadcrumb: "AKADEMIK",
+  const t = useTranslations("akademik");
+  const tCommon = useTranslations("common");
+
+  const pageInfo: Record<string, { title: string; breadcrumb: string }> = {
+    "/akademik/kalender": {
+      title: t("kalender.title"),
+      breadcrumb: t("kalender.breadcrumb"),
+    },
+    "/akademik/pedoman": {
+      title: t("pedoman.title"),
+      breadcrumb: t("pedoman.breadcrumb"),
+    },
+    "/akademik/jadwal-perkuliahan": {
+      title: t("jadwal.title"),
+      breadcrumb: t("jadwal.breadcrumb"),
+    },
+    "/akademik/akreditasi": {
+      title: t("akreditasi.title"),
+      breadcrumb: t("akreditasi.breadcrumb"),
+    },
+    "/akademik/prosedur": {
+      title: t("prosedur.title"),
+      breadcrumb: t("prosedur.breadcrumb"),
+    },
+  };
+
+  const current = pageInfo[pathname] || {
+    title: t("headerTitle"),
+    breadcrumb: t("breadcrumb"),
   };
 
   return (
@@ -47,10 +50,10 @@ export default function AkademikHeader() {
       <div className="relative z-20 max-w-6xl mx-auto px-6 w-full">
         <nav className="flex items-center gap-2 mb-3 text-xs uppercase tracking-wider text-white/80">
           <Link href="/" className="hover:underline">
-            BERANDA
+            {tCommon("beranda")}
           </Link>
           <ChevronRight className="w-3.5 h-3.5" />
-          <span>AKADEMIK</span>
+          <span>{t("breadcrumb")}</span>
           <ChevronRight className="w-3.5 h-3.5" />
           <span className="text-[#E5B80B] font-bold">{current.breadcrumb}</span>
         </nav>

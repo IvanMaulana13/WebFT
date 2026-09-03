@@ -1,7 +1,8 @@
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import { fetchPublicData, fetchPublicVisitorStats } from "@/lib/public-api";
 import { Phone, Mail, Users } from "lucide-react";
+import { getTranslations } from "next-intl/server";
 
 interface SiteSettings {
   socialInstagram?: string | null;
@@ -12,9 +13,11 @@ interface SiteSettings {
 }
 
 export default async function PublicFooter() {
-  const [settings, visitorStats] = await Promise.all([
+  const [settings, visitorStats, tFooter, tNavbar] = await Promise.all([
     fetchPublicData<SiteSettings>("/api/settings"),
     fetchPublicVisitorStats(),
+    getTranslations("footer"),
+    getTranslations("navbar"),
   ]);
 
   const currentYear = new Date().getFullYear();
@@ -93,7 +96,7 @@ export default async function PublicFooter() {
             </div>
           </div>
           <p className="text-xs text-white/80 leading-relaxed mt-1">
-            Gedung B, Kampus Universitas Wijaya Kusuma Surabaya, Jl. Dukuh Kupang XXV No.54, Surabaya, Jawa Timur 60225, Indonesia
+            {tFooter("alamat")}
           </p>
           <div className="flex flex-col gap-2 mt-2 text-xs text-white/80">
             <div className="flex items-center gap-2">
@@ -110,32 +113,32 @@ export default async function PublicFooter() {
         {/* Tautan Cepat */}
         <div className="flex flex-col gap-3">
           <h4 className="text-xs font-bold uppercase tracking-wider text-[#E5B80B] mb-1">
-            Tautan Cepat
+            {tFooter("tautanCepat")}
           </h4>
           <Link href="/sejarah" className="text-xs text-white/70 hover:text-[#E5B80B] transition-colors">
-            Sejarah
+            {tNavbar("sejarah")}
           </Link>
           <Link href="/visi-misi" className="text-xs text-white/70 hover:text-[#E5B80B] transition-colors">
-            Visi & Misi
+            {tNavbar("visiMisi")}
           </Link>
           <Link href="/struktur-organisasi" className="text-xs text-white/70 hover:text-[#E5B80B] transition-colors">
-            Struktur Organisasi
+            {tNavbar("strukturOrganisasi")}
           </Link>
           <Link href="/pimpinan-fakultas" className="text-xs text-white/70 hover:text-[#E5B80B] transition-colors">
-            Pimpinan Fakultas
+            {tNavbar("pimpinanFakultas")}
           </Link>
           <Link href="/dosen" className="text-xs text-white/70 hover:text-[#E5B80B] transition-colors">
-            Dosen Pengajar
+            {tNavbar("dosen")}
           </Link>
           <Link href="/tenaga-kependidikan" className="text-xs text-white/70 hover:text-[#E5B80B] transition-colors">
-            Tenaga Kependidikan
+            {tNavbar("tenagaKependidikan")}
           </Link>
         </div>
 
         {/* Program Studi */}
         <div className="flex flex-col gap-3">
           <h4 className="text-xs font-bold uppercase tracking-wider text-[#E5B80B] mb-1">
-            Program Studi
+            {tFooter("programStudi")}
           </h4>
           <a
             href="https://ts.uwks.ac.id"
@@ -143,7 +146,7 @@ export default async function PublicFooter() {
             rel="noopener noreferrer"
             className="text-xs text-white/70 hover:text-[#E5B80B] transition-colors"
           >
-            Teknik Sipil
+            {tNavbar("sipil")}
           </a>
           <a
             href="https://if.uwks.ac.id"
@@ -151,7 +154,7 @@ export default async function PublicFooter() {
             rel="noopener noreferrer"
             className="text-xs text-white/70 hover:text-[#E5B80B] transition-colors"
           >
-            Informatika
+            {tNavbar("informatika")}
           </a>
           <a
             href="https://tip.uwks.ac.id"
@@ -159,14 +162,14 @@ export default async function PublicFooter() {
             rel="noopener noreferrer"
             className="text-xs text-white/70 hover:text-[#E5B80B] transition-colors"
           >
-            Teknologi Industri Pertanian
+            {tNavbar("tip")}
           </a>
         </div>
 
         {/* Social Media & Stats */}
         <div className="flex flex-col gap-4">
           <h4 className="text-xs font-bold uppercase tracking-wider text-[#E5B80B] mb-1">
-            Media Sosial
+            {tFooter("mediaSosial")}
           </h4>
           {socialPlatforms.length > 0 ? (
             <div className="flex gap-3 flex-wrap">
@@ -185,24 +188,24 @@ export default async function PublicFooter() {
               ))}
             </div>
           ) : (
-            <p className="text-xs text-white/50 italic">Media sosial belum diatur</p>
+            <p className="text-xs text-white/50 italic">{tFooter("mediaSosialKosong")}</p>
           )}
 
           <h4 className="text-xs font-bold uppercase tracking-wider text-[#E5B80B] mt-2 mb-1">
-            Statistik
+            {tFooter("statistik")}
           </h4>
           <div className="bg-white/10 p-3 rounded-lg border border-white/10 flex flex-col gap-2">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1.5 text-xs text-white/80">
                 <Users className="w-3.5 h-3.5 text-[#E5B80B]" />
-                <span>Total Pengunjung</span>
+                <span>{tFooter("totalPengunjung")}</span>
               </div>
               <span className="text-xs font-bold text-[#E5B80B]">
                 {visitorStats.totalVisitors.toLocaleString("id-ID")}
               </span>
             </div>
             <div className="flex items-center justify-between border-t border-white/10 pt-2">
-              <span className="text-xs text-white/60">Hari ini</span>
+              <span className="text-xs text-white/60">{tFooter("hariIni")}</span>
               <span className="text-xs font-semibold text-white/80">
                 {visitorStats.todayVisitors.toLocaleString("id-ID")}
               </span>
@@ -213,7 +216,7 @@ export default async function PublicFooter() {
 
       <div className="mt-10 pt-6 border-t border-white/10 text-center px-6">
         <p className="text-xs text-white/60">
-          © {currentYear} Fakultas Teknik – Universitas Wijaya Kusuma Surabaya. All Rights Reserved.
+          {tFooter("hakCipta", { year: currentYear })}
         </p>
       </div>
     </footer>

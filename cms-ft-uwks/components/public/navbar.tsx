@@ -1,14 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
+import { Link, usePathname } from "@/i18n/routing";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
+import LanguageSwitcher from "@/components/public/language-switcher";
+import GlobalSearch from "@/components/public/global-search";
 import {
   Menu,
   X,
   Search,
-  Globe,
   ChevronRight,
   ChevronDown,
   Home,
@@ -30,6 +31,10 @@ export default function PublicNavbar() {
   const [mobileMutuOpen, setMobileMutuOpen] = useState(false);
   const [mobileAlumniOpen, setMobileAlumniOpen] = useState(false);
   const [mobileInformasiOpen, setMobileInformasiOpen] = useState(false);
+  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
+
+  const t = useTranslations("navbar");
+  const tSearch = useTranslations("search");
   const pathname = usePathname();
 
   const isActive = (path: string) => pathname === path;
@@ -52,14 +57,31 @@ export default function PublicNavbar() {
                 FT UWKS
               </span>
             </Link>
-            <button
-              onClick={() => setMobileMenuOpen(true)}
-              className="p-2 text-slate-700 hover:bg-slate-100 rounded-full"
-              aria-label="Buka Menu"
-            >
-              <Menu className="w-6 h-6" />
-            </button>
+            <div className="flex items-center gap-1 sm:gap-2">
+              <button
+                onClick={() => setMobileSearchOpen(!mobileSearchOpen)}
+                className="p-2 text-slate-700 hover:bg-slate-100 rounded-full transition-colors"
+                aria-label={mobileSearchOpen ? tSearch("close") : tSearch("placeholder")}
+              >
+                {mobileSearchOpen ? <X className="w-5 h-5" /> : <Search className="w-5 h-5" />}
+              </button>
+              <LanguageSwitcher />
+              <button
+                onClick={() => setMobileMenuOpen(true)}
+                className="p-2 text-slate-700 hover:bg-slate-100 rounded-full transition-colors"
+                aria-label="Buka Menu"
+              >
+                <Menu className="w-6 h-6" />
+              </button>
+            </div>
           </div>
+
+          {/* Mobile Search Bar Dropdown */}
+          {mobileSearchOpen && (
+            <div className="border-t border-slate-200 bg-white px-4 py-2.5 shadow-md animate-in fade-in-50 duration-150">
+              <GlobalSearch isMobile onClose={() => setMobileSearchOpen(false)} />
+            </div>
+          )}
         </header>
 
         {/* Mobile Side Drawer Menu */}
@@ -70,14 +92,19 @@ export default function PublicNavbar() {
               onClick={() => setMobileMenuOpen(false)}
             />
             <nav className="relative w-80 max-w-full bg-[#002347] text-white flex flex-col py-6 px-4 h-full overflow-y-auto z-10 shadow-2xl ml-auto">
-              <div className="flex justify-between items-center mb-6 border-b border-white/10 pb-4">
-                <span className="font-bold text-sm text-[#E5B80B]">MENU UTAMA</span>
+              <div className="flex justify-between items-center mb-4 border-b border-white/10 pb-4">
+                <span className="font-bold text-sm text-[#E5B80B]">{t("menuUtama")}</span>
                 <button
                   onClick={() => setMobileMenuOpen(false)}
                   className="p-1 text-white/80 hover:text-white"
                 >
                   <X className="w-6 h-6" />
                 </button>
+              </div>
+
+              {/* Language Switcher on Mobile Drawer */}
+              <div className="mb-4">
+                <LanguageSwitcher isMobile />
               </div>
 
               <div className="flex flex-col gap-1">
@@ -89,7 +116,7 @@ export default function PublicNavbar() {
                     isActive("/") ? "bg-[#002C5F] text-[#E5B80B]" : "text-white/80 hover:bg-white/10 hover:text-white"
                   }`}
                 >
-                  <Home className="w-4 h-4" /> BERANDA
+                  <Home className="w-4 h-4" /> {t("beranda")}
                 </Link>
 
                 {/* 2. PROFIL */}
@@ -99,7 +126,7 @@ export default function PublicNavbar() {
                     className="w-full flex items-center justify-between px-4 py-3 rounded-lg text-xs font-bold uppercase text-white/80 hover:bg-white/10 hover:text-white"
                   >
                     <span className="flex items-center gap-3">
-                      <Landmark className="w-4 h-4" /> PROFIL
+                      <Landmark className="w-4 h-4" /> {t("profil")}
                     </span>
                     <ChevronDown
                       className={`w-4 h-4 transition-transform ${
@@ -110,22 +137,22 @@ export default function PublicNavbar() {
                   {mobileProfilOpen && (
                     <div className="ml-4 pl-3 border-l border-white/20 flex flex-col gap-1 my-1">
                       <Link href="/sejarah" onClick={() => setMobileMenuOpen(false)} className="py-1.5 text-xs text-white/80 hover:text-[#E5B80B]">
-                        Sejarah
+                        {t("sejarah")}
                       </Link>
                       <Link href="/visi-misi" onClick={() => setMobileMenuOpen(false)} className="py-1.5 text-xs text-white/80 hover:text-[#E5B80B]">
-                        Visi, Misi dan Tujuan
+                        {t("visiMisi")}
                       </Link>
                       <Link href="/struktur-organisasi" onClick={() => setMobileMenuOpen(false)} className="py-1.5 text-xs text-white/80 hover:text-[#E5B80B]">
-                        Struktur Organisasi
+                        {t("strukturOrganisasi")}
                       </Link>
                       <Link href="/pimpinan-fakultas" onClick={() => setMobileMenuOpen(false)} className="py-1.5 text-xs text-white/80 hover:text-[#E5B80B]">
-                        Pimpinan Fakultas
+                        {t("pimpinanFakultas")}
                       </Link>
                       <Link href="/dosen" onClick={() => setMobileMenuOpen(false)} className="py-1.5 text-xs text-white/80 hover:text-[#E5B80B]">
-                        Dosen Pengajar
+                        {t("dosen")}
                       </Link>
                       <Link href="/tenaga-kependidikan" onClick={() => setMobileMenuOpen(false)} className="py-1.5 text-xs text-white/80 hover:text-[#E5B80B]">
-                        Tenaga Kependidikan
+                        {t("tenagaKependidikan")}
                       </Link>
                     </div>
                   )}
@@ -138,7 +165,7 @@ export default function PublicNavbar() {
                     className="w-full flex items-center justify-between px-4 py-3 rounded-lg text-xs font-bold uppercase text-white/80 hover:bg-white/10 hover:text-white"
                   >
                     <span className="flex items-center gap-3">
-                      <GraduationCap className="w-4 h-4" /> AKADEMIK
+                      <GraduationCap className="w-4 h-4" /> {t("akademik")}
                     </span>
                     <ChevronDown
                       className={`w-4 h-4 transition-transform ${
@@ -149,7 +176,7 @@ export default function PublicNavbar() {
                   {mobileAkademikOpen && (
                     <div className="ml-4 pl-3 border-l border-white/20 flex flex-col gap-1 my-1">
                       <span className="py-1 text-xs font-bold text-[#E5B80B] uppercase">
-                        Program Studi
+                        {t("programStudi")}
                       </span>
                       <a
                         href="https://ts.uwks.ac.id"
@@ -158,7 +185,7 @@ export default function PublicNavbar() {
                         onClick={() => setMobileMenuOpen(false)}
                         className="py-1 pl-2 text-xs text-white/80 hover:text-[#E5B80B] transition-colors"
                       >
-                        • Teknik Sipil
+                        • {t("sipil")}
                       </a>
                       <a
                         href="https://if.uwks.ac.id"
@@ -167,7 +194,7 @@ export default function PublicNavbar() {
                         onClick={() => setMobileMenuOpen(false)}
                         className="py-1 pl-2 text-xs text-white/80 hover:text-[#E5B80B] transition-colors"
                       >
-                        • Informatika
+                        • {t("informatika")}
                       </a>
                       <a
                         href="https://tip.uwks.ac.id"
@@ -176,42 +203,42 @@ export default function PublicNavbar() {
                         onClick={() => setMobileMenuOpen(false)}
                         className="py-1 pl-2 text-xs text-white/80 hover:text-[#E5B80B] transition-colors"
                       >
-                        • Teknologi Industri Pertanian
+                        • {t("tip")}
                       </a>
                       <Link
                         href="/akademik/kalender"
                         onClick={() => setMobileMenuOpen(false)}
                         className="py-1.5 text-xs text-white/80 hover:text-[#E5B80B] transition-colors"
                       >
-                        Kalender Akademik
+                        {t("kalenderAkademik")}
                       </Link>
                       <Link
                         href="/akademik/pedoman"
                         onClick={() => setMobileMenuOpen(false)}
                         className="py-1.5 text-xs text-white/80 hover:text-[#E5B80B] transition-colors"
                       >
-                        Pedoman Akademik
+                        {t("pedomanAkademik")}
                       </Link>
                       <Link
                         href="/akademik/jadwal-perkuliahan"
                         onClick={() => setMobileMenuOpen(false)}
                         className="py-1.5 text-xs text-white/80 hover:text-[#E5B80B] transition-colors"
                       >
-                        Jadwal Perkuliahan
+                        {t("jadwalPerkuliahan")}
                       </Link>
                       <Link
                         href="/akademik/akreditasi"
                         onClick={() => setMobileMenuOpen(false)}
                         className="py-1.5 text-xs text-white/80 hover:text-[#E5B80B] transition-colors"
                       >
-                        Akreditasi
+                        {t("akreditasi")}
                       </Link>
                       <Link
                         href="/akademik/prosedur"
                         onClick={() => setMobileMenuOpen(false)}
                         className="py-1.5 text-xs text-white/80 hover:text-[#E5B80B] transition-colors"
                       >
-                        Prosedur Akademik
+                        {t("prosedurAkademik")}
                       </Link>
                     </div>
                   )}
@@ -224,17 +251,17 @@ export default function PublicNavbar() {
                     className="w-full flex items-center justify-between px-4 py-3 rounded-lg text-xs font-bold uppercase text-white/80 hover:bg-white/10 hover:text-white"
                   >
                     <span className="flex items-center gap-3">
-                      <FlaskConical className="w-4 h-4" /> PENELITIAN & PENGABDIAN
+                      <FlaskConical className="w-4 h-4" /> {t("penelitian")}
                     </span>
                     <ChevronDown className={`w-4 h-4 transition-transform ${mobilePenelitianOpen ? "rotate-180" : ""}`} />
                   </button>
                   {mobilePenelitianOpen && (
                     <div className="ml-4 pl-3 border-l border-white/20 flex flex-col gap-1 my-1 text-xs text-white/80">
-                      <span className="py-1.5">Peta Jalan (RoadMap)</span>
-                      <span className="py-1.5">Penelitian</span>
-                      <span className="py-1.5">Pengabdian kepada Masyarakat</span>
-                      <span className="py-1.5">Pengelola Jurnal dan Seminar Ilmiah</span>
-                      <span className="py-1.5">Sustainable Development Goals (SDGs)</span>
+                      <span className="py-1.5">{t("roadmap")}</span>
+                      <span className="py-1.5">{t("penelitianSub")}</span>
+                      <span className="py-1.5">{t("pengabdianSub")}</span>
+                      <span className="py-1.5">{t("jurnalSub")}</span>
+                      <span className="py-1.5">{t("sdgsSub")}</span>
                     </div>
                   )}
                 </div>
@@ -246,29 +273,29 @@ export default function PublicNavbar() {
                     className="w-full flex items-center justify-between px-4 py-3 rounded-lg text-xs font-bold uppercase text-white/80 hover:bg-white/10 hover:text-white"
                   >
                     <span className="flex items-center gap-3">
-                      <Users className="w-4 h-4" /> KEMAHASISWAAN
+                      <Users className="w-4 h-4" /> {t("kemahasiswaan")}
                     </span>
                     <ChevronDown className={`w-4 h-4 transition-transform ${mobileKemahasiswaanOpen ? "rotate-180" : ""}`} />
                   </button>
                   {mobileKemahasiswaanOpen && (
                     <div className="ml-4 pl-3 border-l border-white/20 flex flex-col gap-1 my-1 text-xs text-white/80">
                       <Link href="/kemahasiswaan/ormawa" onClick={() => setMobileMenuOpen(false)} className="py-1.5 hover:text-[#E5B80B] transition-colors">
-                        Organisasi Kemahasiswaan
+                        {t("ormawa")}
                       </Link>
                       <Link href="/kemahasiswaan/prestasi" onClick={() => setMobileMenuOpen(false)} className="py-1.5 hover:text-[#E5B80B] transition-colors">
-                        Prestasi Mahasiswa
+                        {t("prestasiMahasiswa")}
                       </Link>
                       <Link href="/kemahasiswaan/beasiswa" onClick={() => setMobileMenuOpen(false)} className="py-1.5 hover:text-[#E5B80B] transition-colors">
-                        Informasi Beasiswa
+                        {t("beasiswa")}
                       </Link>
                       <Link href="/kemahasiswaan/lomba" onClick={() => setMobileMenuOpen(false)} className="py-1.5 hover:text-[#E5B80B] transition-colors">
-                        Informasi Lomba Mahasiswa
+                        {t("lomba")}
                       </Link>
                       <Link href="/kemahasiswaan/kegiatan" onClick={() => setMobileMenuOpen(false)} className="py-1.5 hover:text-[#E5B80B] transition-colors">
-                        Kegiatan Kemahasiswaan
+                        {t("kegiatan")}
                       </Link>
                       <Link href="/kemahasiswaan/konseling" onClick={() => setMobileMenuOpen(false)} className="py-1.5 hover:text-[#E5B80B] transition-colors">
-                        Layanan Konseling Mahasiswa
+                        {t("konseling")}
                       </Link>
                     </div>
                   )}
@@ -281,18 +308,18 @@ export default function PublicNavbar() {
                     className="w-full flex items-center justify-between px-4 py-3 rounded-lg text-xs font-bold uppercase text-white/80 hover:bg-white/10 hover:text-white"
                   >
                     <span className="flex items-center gap-3">
-                      <Award className="w-4 h-4" /> PENJAMINAN MUTU
+                      <Award className="w-4 h-4" /> {t("mutu")}
                     </span>
                     <ChevronDown className={`w-4 h-4 transition-transform ${mobileMutuOpen ? "rotate-180" : ""}`} />
                   </button>
                   {mobileMutuOpen && (
                     <div className="ml-4 pl-3 border-l border-white/20 flex flex-col gap-1 my-1 text-xs text-white/80">
-                      <span className="py-1.5">Evaluasi Pembelajaran</span>
-                      <span className="py-1.5">Sistem Penjamin Mutu Internal</span>
-                      <span className="py-1.5">Audit Mutu Internal</span>
-                      <span className="py-1.5">Rencana Tindak Lanjut</span>
-                      <span className="py-1.5">Rapat Tinjauan Manajemen</span>
-                      <span className="py-1.5">Kepuasan Layanan</span>
+                      <span className="py-1.5">{t("evaluasiPembelajaran")}</span>
+                      <span className="py-1.5">{t("spmi")}</span>
+                      <span className="py-1.5">{t("ami")}</span>
+                      <span className="py-1.5">{t("rencanaTindakLanjut")}</span>
+                      <span className="py-1.5">{t("rtm")}</span>
+                      <span className="py-1.5">{t("kepuasanLayanan")}</span>
                     </div>
                   )}
                 </div>
@@ -304,17 +331,17 @@ export default function PublicNavbar() {
                     className="w-full flex items-center justify-between px-4 py-3 rounded-lg text-xs font-bold uppercase text-white/80 hover:bg-white/10 hover:text-white"
                   >
                     <span className="flex items-center gap-3">
-                      <UserCheck className="w-4 h-4" /> ALUMNI
+                      <UserCheck className="w-4 h-4" /> {t("alumni")}
                     </span>
                     <ChevronDown className={`w-4 h-4 transition-transform ${mobileAlumniOpen ? "rotate-180" : ""}`} />
                   </button>
                   {mobileAlumniOpen && (
                     <div className="ml-4 pl-3 border-l border-white/20 flex flex-col gap-1 my-1 text-xs text-white/80">
-                      <span className="py-1.5">Komisariat Fakultas (KOMFAK)</span>
-                      <span className="py-1.5">Prominent Alumni</span>
-                      <span className="py-1.5">Tracer Study</span>
-                      <span className="py-1.5">Tracer Alumni</span>
-                      <span className="py-1.5">Pengembangan Karir</span>
+                      <span className="py-1.5">{t("komfak")}</span>
+                      <span className="py-1.5">{t("prominentAlumni")}</span>
+                      <span className="py-1.5">{t("tracerStudy")}</span>
+                      <span className="py-1.5">{t("tracerAlumni")}</span>
+                      <span className="py-1.5">{t("karir")}</span>
                     </div>
                   )}
                 </div>
@@ -326,29 +353,29 @@ export default function PublicNavbar() {
                     className="w-full flex items-center justify-between px-4 py-3 rounded-lg text-xs font-bold uppercase text-white/80 hover:bg-white/10 hover:text-white"
                   >
                     <span className="flex items-center gap-3">
-                      <Info className="w-4 h-4" /> INFORMASI
+                      <Info className="w-4 h-4" /> {t("informasi")}
                     </span>
                     <ChevronDown className={`w-4 h-4 transition-transform ${mobileInformasiOpen ? "rotate-180" : ""}`} />
                   </button>
                   {mobileInformasiOpen && (
                     <div className="ml-4 pl-3 border-l border-white/20 flex flex-col gap-1 my-1 text-xs text-white/80">
-                      <span className="py-1.5">Fasilitas</span>
-                      <span className="py-1.5">Pendaftaran Mahasiswa Baru</span>
-                      <span className="py-1.5">Layanan Konsultasi Teknik</span>
-                      <span className="py-1.5">Lowongan Pekerjaan</span>
+                      <span className="py-1.5">{t("fasilitas")}</span>
+                      <span className="py-1.5">{t("pmb")}</span>
+                      <span className="py-1.5">{t("konsultasiTeknik")}</span>
+                      <span className="py-1.5">{t("lowongan")}</span>
                     </div>
                   )}
                 </div>
               </div>
 
               <div className="mt-auto pt-6 border-t border-white/10">
-                <Link
+                <a
                   href="/login"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="w-full block text-center bg-[#E5B80B] text-[#002347] font-bold py-2.5 rounded uppercase text-xs tracking-wider"
+                  className="w-full block text-center bg-[#E5B80B] text-[#002347] font-bold py-2.5 rounded uppercase text-xs tracking-wider hover:bg-[#d4a800] transition-colors"
                 >
-                  PORTAL ADMIN
-                </Link>
+                  {t("portalAdmin")}
+                </a>
               </div>
             </nav>
           </div>
@@ -371,33 +398,22 @@ export default function PublicNavbar() {
               />
               <div className="flex flex-col -space-y-0.5">
                 <h1 className="text-[17px] font-bold text-[#002347] font-sans uppercase leading-tight tracking-tight">
-                  FAKULTAS TEKNIK
+                  {t("title1")}
                 </h1>
                 <h2 className="text-[17px] font-bold text-[#002347] font-sans uppercase leading-tight tracking-tight">
-                  UNIVERSITAS WIJAYA KUSUMA SURABAYA
+                  {t("title2")}
                 </h2>
               </div>
             </Link>
 
-            <div className="flex items-center gap-6">
-              <div className="flex items-center gap-1 cursor-pointer text-[#002347] font-bold text-xs hover:text-[#E5B80B] transition-colors">
-                <Globe className="w-4 h-4" />
-                <span>ID</span>
-                <span className="font-normal text-slate-400">/EN</span>
-              </div>
-              <div className="relative">
-                <input
-                  type="text"
-                  placeholder="Cari..."
-                  className="bg-slate-50 border border-slate-200 rounded-full pl-4 pr-9 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-[#002347] w-56 transition-all focus:w-64"
-                />
-                <Search className="w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-slate-400" />
-              </div>
+            <div className="flex items-center gap-4 lg:gap-6">
+              <LanguageSwitcher />
+              <GlobalSearch />
             </div>
           </div>
         </div>
 
-        {/* Blue Navigation Bar (No Down Arrow icons, clean plain text sub-items) */}
+        {/* Blue Navigation Bar */}
         <nav className="bg-[#002347] w-full h-14 relative shadow-md">
           <div className="max-w-7xl mx-auto px-4 lg:px-6 h-full flex items-center justify-between">
             {/* 1. BERANDA */}
@@ -409,50 +425,50 @@ export default function PublicNavbar() {
                   : "text-white hover:text-[#E5B80B] nav-link-hover"
               }`}
             >
-              BERANDA
+              {t("beranda")}
             </Link>
 
             {/* 2. PROFIL Dropdown */}
             <div className="dropdown h-full relative group">
               <button className="nav-link-hover text-white hover:text-[#E5B80B] transition-colors h-full flex items-center px-3 lg:px-3.5 text-[11px] lg:text-xs font-bold uppercase whitespace-nowrap">
-                PROFIL
+                {t("profil")}
               </button>
               <div className="dropdown-menu hidden group-hover:block absolute top-full left-0 w-64 bg-white shadow-xl py-2 z-50 border-t-2 border-[#E5B80B] rounded-b-lg border-x border-b border-slate-100">
                 <Link
                   href="/sejarah"
                   className="block px-4 py-2 text-slate-800 hover:bg-slate-50 hover:text-[#002347] transition-colors text-xs font-medium"
                 >
-                  Sejarah
+                  {t("sejarah")}
                 </Link>
                 <Link
                   href="/visi-misi"
                   className="block px-4 py-2 text-slate-800 hover:bg-slate-50 hover:text-[#002347] transition-colors text-xs font-medium"
                 >
-                  Visi, Misi dan Tujuan
+                  {t("visiMisi")}
                 </Link>
                 <Link
                   href="/struktur-organisasi"
                   className="block px-4 py-2 text-slate-800 hover:bg-slate-50 hover:text-[#002347] transition-colors text-xs font-medium"
                 >
-                  Struktur Organisasi
+                  {t("strukturOrganisasi")}
                 </Link>
                 <Link
                   href="/pimpinan-fakultas"
                   className="block px-4 py-2 text-slate-800 hover:bg-slate-50 hover:text-[#002347] transition-colors text-xs font-medium"
                 >
-                  Pimpinan Fakultas
+                  {t("pimpinanFakultas")}
                 </Link>
                 <Link
                   href="/dosen"
                   className="block px-4 py-2 text-slate-800 hover:bg-slate-50 hover:text-[#002347] transition-colors text-xs font-medium"
                 >
-                  Dosen Pengajar
+                  {t("dosen")}
                 </Link>
                 <Link
                   href="/tenaga-kependidikan"
                   className="block px-4 py-2 text-slate-800 hover:bg-slate-50 hover:text-[#002347] transition-colors text-xs font-medium"
                 >
-                  Tenaga Kependidikan
+                  {t("tenagaKependidikan")}
                 </Link>
               </div>
             </div>
@@ -460,12 +476,12 @@ export default function PublicNavbar() {
             {/* 3. AKADEMIK Dropdown */}
             <div className="dropdown h-full relative group">
               <button className="nav-link-hover text-white hover:text-[#E5B80B] transition-colors h-full flex items-center px-3 lg:px-3.5 text-[11px] lg:text-xs font-bold uppercase whitespace-nowrap">
-                AKADEMIK
+                {t("akademik")}
               </button>
               <div className="dropdown-menu hidden group-hover:block absolute top-full left-0 w-64 bg-white shadow-xl py-2 z-50 border-t-2 border-[#E5B80B] rounded-b-lg border-x border-b border-slate-100">
                 <div className="submenu relative group/sub">
                   <div className="flex items-center justify-between px-4 py-2 text-slate-800 hover:bg-slate-50 transition-colors text-xs font-medium cursor-pointer">
-                    <span>Program Studi</span>
+                    <span>{t("programStudi")}</span>
                     <ChevronRight className="w-3.5 h-3.5 opacity-60" />
                   </div>
                   <div className="submenu-menu hidden group-hover/sub:block absolute top-0 left-full w-64 bg-white shadow-xl py-2 z-50 border-l-2 border-[#E5B80B] border-y border-r border-slate-100 rounded-r-lg">
@@ -475,7 +491,7 @@ export default function PublicNavbar() {
                       rel="noopener noreferrer"
                       className="block px-4 py-2 text-xs font-bold text-[#002347] hover:bg-slate-50 hover:text-[#E5B80B] transition-colors"
                     >
-                      Teknik Sipil
+                      {t("sipil")}
                     </a>
                     <a
                       href="https://if.uwks.ac.id"
@@ -483,7 +499,7 @@ export default function PublicNavbar() {
                       rel="noopener noreferrer"
                       className="block px-4 py-2 text-xs font-bold text-[#002347] hover:bg-slate-50 hover:text-[#E5B80B] transition-colors"
                     >
-                      Informatika
+                      {t("informatika")}
                     </a>
                     <a
                       href="https://tip.uwks.ac.id"
@@ -491,7 +507,7 @@ export default function PublicNavbar() {
                       rel="noopener noreferrer"
                       className="block px-4 py-2 text-xs font-bold text-[#002347] hover:bg-slate-50 hover:text-[#E5B80B] transition-colors"
                     >
-                      Teknologi Industri Pertanian
+                      {t("tip")}
                     </a>
                   </div>
                 </div>
@@ -499,31 +515,31 @@ export default function PublicNavbar() {
                   href="/akademik/kalender"
                   className="block px-4 py-2 text-slate-800 hover:bg-slate-50 hover:text-[#002347] transition-colors text-xs font-medium"
                 >
-                  Kalender Akademik
+                  {t("kalenderAkademik")}
                 </Link>
                 <Link
                   href="/akademik/pedoman"
                   className="block px-4 py-2 text-slate-800 hover:bg-slate-50 hover:text-[#002347] transition-colors text-xs font-medium"
                 >
-                  Pedoman Akademik
+                  {t("pedomanAkademik")}
                 </Link>
                 <Link
                   href="/akademik/jadwal-perkuliahan"
                   className="block px-4 py-2 text-slate-800 hover:bg-slate-50 hover:text-[#002347] transition-colors text-xs font-medium"
                 >
-                  Jadwal Perkuliahan
+                  {t("jadwalPerkuliahan")}
                 </Link>
                 <Link
                   href="/akademik/akreditasi"
                   className="block px-4 py-2 text-slate-800 hover:bg-slate-50 hover:text-[#002347] transition-colors text-xs font-medium"
                 >
-                  Akreditasi
+                  {t("akreditasi")}
                 </Link>
                 <Link
                   href="/akademik/prosedur"
                   className="block px-4 py-2 text-slate-800 hover:bg-slate-50 hover:text-[#002347] transition-colors text-xs font-medium"
                 >
-                  Prosedur Akademik
+                  {t("prosedurAkademik")}
                 </Link>
               </div>
             </div>
@@ -531,58 +547,58 @@ export default function PublicNavbar() {
             {/* 4. PENELITIAN & PENGABDIAN */}
             <div className="dropdown h-full relative group">
               <button className="nav-link-hover text-white hover:text-[#E5B80B] transition-colors h-full flex items-center px-3 lg:px-3.5 text-[11px] lg:text-xs font-bold uppercase whitespace-nowrap">
-                PENELITIAN & PENGABDIAN
+                {t("penelitian")}
               </button>
               <div className="dropdown-menu hidden group-hover:block absolute top-full left-0 w-64 bg-white shadow-xl py-2 z-50 border-t-2 border-[#E5B80B] rounded-b-lg border-x border-b border-slate-100">
-                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">Peta Jalan (RoadMap)</span>
-                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">Penelitian</span>
-                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">Pengabdian kepada Masyarakat</span>
-                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">Pengelola Jurnal dan Seminar Ilmiah</span>
-                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">Sustainable Development Goals (SDGs)</span>
+                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">{t("roadmap")}</span>
+                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">{t("penelitianSub")}</span>
+                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">{t("pengabdianSub")}</span>
+                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">{t("jurnalSub")}</span>
+                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">{t("sdgsSub")}</span>
               </div>
             </div>
 
             {/* 5. KEMAHASISWAAN */}
             <div className="dropdown h-full relative group">
               <button className="nav-link-hover text-white hover:text-[#E5B80B] transition-colors h-full flex items-center px-3 lg:px-3.5 text-[11px] lg:text-xs font-bold uppercase whitespace-nowrap">
-                KEMAHASISWAAN
+                {t("kemahasiswaan")}
               </button>
               <div className="dropdown-menu hidden group-hover:block absolute top-full left-0 w-64 bg-white shadow-xl py-2 z-50 border-t-2 border-[#E5B80B] rounded-b-lg border-x border-b border-slate-100">
                 <Link
                   href="/kemahasiswaan/ormawa"
                   className="block px-4 py-2 text-slate-800 hover:bg-slate-50 hover:text-[#002347] transition-colors text-xs font-medium"
                 >
-                  Organisasi Kemahasiswaan
+                  {t("ormawa")}
                 </Link>
                 <Link
                   href="/kemahasiswaan/prestasi"
                   className="block px-4 py-2 text-slate-800 hover:bg-slate-50 hover:text-[#002347] transition-colors text-xs font-medium"
                 >
-                  Prestasi Mahasiswa
+                  {t("prestasiMahasiswa")}
                 </Link>
                 <Link
                   href="/kemahasiswaan/beasiswa"
                   className="block px-4 py-2 text-slate-800 hover:bg-slate-50 hover:text-[#002347] transition-colors text-xs font-medium"
                 >
-                  Informasi Beasiswa
+                  {t("beasiswa")}
                 </Link>
                 <Link
                   href="/kemahasiswaan/lomba"
                   className="block px-4 py-2 text-slate-800 hover:bg-slate-50 hover:text-[#002347] transition-colors text-xs font-medium"
                 >
-                  Informasi Lomba Mahasiswa
+                  {t("lomba")}
                 </Link>
                 <Link
                   href="/kemahasiswaan/kegiatan"
                   className="block px-4 py-2 text-slate-800 hover:bg-slate-50 hover:text-[#002347] transition-colors text-xs font-medium"
                 >
-                  Kegiatan Kemahasiswaan
+                  {t("kegiatan")}
                 </Link>
                 <Link
                   href="/kemahasiswaan/konseling"
                   className="block px-4 py-2 text-slate-800 hover:bg-slate-50 hover:text-[#002347] transition-colors text-xs font-medium"
                 >
-                  Layanan Konseling Mahasiswa
+                  {t("konseling")}
                 </Link>
               </div>
             </div>
@@ -590,42 +606,42 @@ export default function PublicNavbar() {
             {/* 6. PENJAMINAN MUTU */}
             <div className="dropdown h-full relative group">
               <button className="nav-link-hover text-white hover:text-[#E5B80B] transition-colors h-full flex items-center px-3 lg:px-3.5 text-[11px] lg:text-xs font-bold uppercase whitespace-nowrap">
-                PENJAMINAN MUTU
+                {t("mutu")}
               </button>
               <div className="dropdown-menu hidden group-hover:block absolute top-full left-0 w-64 bg-white shadow-xl py-2 z-50 border-t-2 border-[#E5B80B] rounded-b-lg border-x border-b border-slate-100">
-                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">Evaluasi Pembelajaran</span>
-                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">Sistem Penjamin Mutu Internal</span>
-                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">Audit Mutu Internal</span>
-                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">Rencana Tindak Lanjut</span>
-                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">Rapat Tinjauan Manajemen</span>
-                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">Kepuasan Layanan</span>
+                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">{t("evaluasiPembelajaran")}</span>
+                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">{t("spmi")}</span>
+                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">{t("ami")}</span>
+                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">{t("rencanaTindakLanjut")}</span>
+                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">{t("rtm")}</span>
+                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">{t("kepuasanLayanan")}</span>
               </div>
             </div>
 
             {/* 7. ALUMNI */}
             <div className="dropdown h-full relative group">
               <button className="nav-link-hover text-white hover:text-[#E5B80B] transition-colors h-full flex items-center px-3 lg:px-3.5 text-[11px] lg:text-xs font-bold uppercase whitespace-nowrap">
-                ALUMNI
+                {t("alumni")}
               </button>
               <div className="dropdown-menu hidden group-hover:block absolute top-full left-0 w-64 bg-white shadow-xl py-2 z-50 border-t-2 border-[#E5B80B] rounded-b-lg border-x border-b border-slate-100">
-                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">Komisariat Fakultas (KOMFAK)</span>
-                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">Prominent Alumni</span>
-                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">Tracer Study</span>
-                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">Tracer Alumni</span>
-                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">Pengembangan Karir</span>
+                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">{t("komfak")}</span>
+                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">{t("prominentAlumni")}</span>
+                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">{t("tracerStudy")}</span>
+                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">{t("tracerAlumni")}</span>
+                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">{t("karir")}</span>
               </div>
             </div>
 
             {/* 8. INFORMASI */}
             <div className="dropdown h-full relative group">
               <button className="nav-link-hover text-white hover:text-[#E5B80B] transition-colors h-full flex items-center px-3 lg:px-3.5 text-[11px] lg:text-xs font-bold uppercase whitespace-nowrap">
-                INFORMASI
+                {t("informasi")}
               </button>
               <div className="dropdown-menu hidden group-hover:block absolute top-full right-0 w-64 bg-white shadow-xl py-2 z-50 border-t-2 border-[#E5B80B] rounded-b-lg border-x border-b border-slate-100">
-                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">Fasilitas</span>
-                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">Pendaftaran Mahasiswa Baru</span>
-                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">Layanan Konsultasi Teknik</span>
-                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">Lowongan Pekerjaan</span>
+                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">{t("fasilitas")}</span>
+                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">{t("pmb")}</span>
+                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">{t("konsultasiTeknik")}</span>
+                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">{t("lowongan")}</span>
               </div>
             </div>
           </div>
