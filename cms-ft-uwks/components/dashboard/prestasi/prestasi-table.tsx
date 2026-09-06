@@ -43,8 +43,15 @@ interface PrestasiApiResponse {
 
 // ─────────────────────────────────────────────
 // Level badge config
-// ─────────────────────────────────────────────
-const levelConfig = {
+const levelConfig: Record<string, { label: string; className: string }> = {
+  kabupaten: {
+    label: "Kabupaten",
+    className: "bg-emerald-100 text-emerald-700 border-emerald-200 hover:bg-emerald-100",
+  },
+  provinsi: {
+    label: "Provinsi",
+    className: "bg-amber-100 text-amber-700 border-amber-200 hover:bg-amber-100",
+  },
   nasional: {
     label: "Nasional",
     className: "bg-blue-100 text-blue-700 border-blue-200 hover:bg-blue-100",
@@ -149,7 +156,11 @@ export function PrestasiTable() {
     columnHelper.accessor("level", {
       header: "Tingkat",
       cell: (info) => {
-        const cfg = levelConfig[info.getValue()];
+        const val = info.getValue();
+        const cfg = levelConfig[val] ?? {
+          label: val,
+          className: "bg-gray-100 text-gray-700 border-gray-200 hover:bg-gray-100",
+        };
         return <Badge className={cfg.className}>{cfg.label}</Badge>;
       },
     }),
@@ -226,6 +237,8 @@ export function PrestasiTable() {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">Semua Tingkat</SelectItem>
+            <SelectItem value="kabupaten">Kabupaten</SelectItem>
+            <SelectItem value="provinsi">Provinsi</SelectItem>
             <SelectItem value="nasional">Nasional</SelectItem>
             <SelectItem value="internasional">Internasional</SelectItem>
           </SelectContent>

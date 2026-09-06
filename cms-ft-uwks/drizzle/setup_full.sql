@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS `prestasi` (
   `id` int AUTO_INCREMENT NOT NULL,
   `title` varchar(500) NOT NULL,
   `achiever_name` varchar(255) NOT NULL,
-  `level` enum('nasional','internasional') NOT NULL,
+  `level` enum('kabupaten','provinsi','nasional','internasional') NOT NULL,
   `year` int NOT NULL,
   `image_url` varchar(500),
   `description` text,

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { prestasi } from "@/lib/db/schema";
-import { prestasiSchema } from "@/lib/validations";
+import { prestasiSchema, PRESTASI_LEVELS, type PrestasiLevel } from "@/lib/validations";
 import { and, isNull, like, or, eq, desc, sql } from "drizzle-orm";
 import { logActivity } from "@/lib/activity-log";
 
@@ -36,8 +36,8 @@ export async function GET(request: NextRequest) {
             like(prestasi.achieverName, `%${search}%`)
           )
         : undefined,
-      level && ["nasional", "internasional"].includes(level)
-        ? eq(prestasi.level, level as "nasional" | "internasional")
+      level && (PRESTASI_LEVELS as readonly string[]).includes(level)
+        ? eq(prestasi.level, level as PrestasiLevel)
         : undefined,
       yearFilter ? eq(prestasi.year, yearFilter) : undefined
     );

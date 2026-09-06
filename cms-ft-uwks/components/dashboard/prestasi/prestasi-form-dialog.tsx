@@ -184,6 +184,8 @@ export function PrestasiFormDialog({ open, onOpenChange, prestasi }: PrestasiFor
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
+                        <SelectItem value="kabupaten">Kabupaten</SelectItem>
+                        <SelectItem value="provinsi">Provinsi</SelectItem>
                         <SelectItem value="nasional">Nasional</SelectItem>
                         <SelectItem value="internasional">Internasional</SelectItem>
                       </SelectContent>

@@ -16,6 +16,36 @@ import { getTranslations, getLocale } from "next-intl/server";
 
 export const revalidate = 60;
 
+function getLevelLabel(level: string | undefined, locale: string) {
+  if (!level) return "";
+  if (locale === "en") {
+    switch (level.toLowerCase()) {
+      case "internasional":
+        return "International";
+      case "nasional":
+        return "National";
+      case "provinsi":
+        return "Provincial";
+      case "kabupaten":
+        return "Regency";
+      default:
+        return level;
+    }
+  }
+  switch (level.toLowerCase()) {
+    case "internasional":
+      return "Internasional";
+    case "nasional":
+      return "Nasional";
+    case "provinsi":
+      return "Provinsi";
+    case "kabupaten":
+      return "Kabupaten";
+    default:
+      return level;
+  }
+}
+
 interface PrestasiDetailPageProps {
   params: Promise<{ id: string; locale: string }>;
 }
@@ -129,7 +159,7 @@ export default async function PrestasiDetailPage({
 
             <div className="flex items-center gap-2">
               <span className="bg-[#E5B80B] text-[#002347] text-xs font-extrabold px-3 py-0.5 rounded-full uppercase tracking-wider">
-                {tCommon("tingkat")}: {prestasi.level}
+                {tCommon("tingkat")}: {getLevelLabel(prestasi.level, locale)}
               </span>
               <span className="bg-white/10 text-white border border-white/20 text-xs font-semibold px-2.5 py-0.5 rounded-full">
                 {tCommon("tahun")} {prestasi.year}
@@ -164,7 +194,7 @@ export default async function PrestasiDetailPage({
                 FT UWKS
               </span>
               <span className="text-xs text-slate-500 mt-1">
-                {tCommon("tingkat")} {prestasi.level.toUpperCase()} • {tCommon("tahun")} {prestasi.year}
+                {tCommon("tingkat")} {getLevelLabel(prestasi.level, locale).toUpperCase()} • {tCommon("tahun")} {prestasi.year}
               </span>
             </div>
           )}
@@ -187,7 +217,7 @@ export default async function PrestasiDetailPage({
               <Award className="w-5 h-5 text-[#E5B80B] flex-shrink-0" />
               <div className="text-xs">
                 <p className="font-semibold text-[#002347]">{locale === "en" ? "Competition Level" : "Tingkat Kompetisi"}</p>
-                <p className="text-slate-500 capitalize">{prestasi.level}</p>
+                <p className="text-slate-500 capitalize">{getLevelLabel(prestasi.level, locale)}</p>
               </div>
             </div>
           </div>

@@ -110,7 +110,7 @@ Berdasarkan desain front-end yang sudah ada (masih tahap proses), halaman publik
 - **Tampilan publik**: section "Berita" di Beranda dan halaman detail berita menyediakan filter/tab kategori (Semua, Berita, Kegiatan, Beasiswa).
 
 ### 5.3 Modul Prestasi
-- Struktur mirip Berita namun lebih ringkas: judul prestasi, nama peraih (mahasiswa/dosen/tim), tingkat (nasional/internasional), tahun, gambar/sertifikat, deskripsi singkat.
+- Struktur mirip Berita namun lebih ringkas: judul prestasi, nama peraih (mahasiswa/dosen/tim), tingkat (kabupaten/provinsi/nasional/internasional), tahun, gambar/sertifikat, deskripsi singkat.
 - CRUD penuh + upload gambar.
 - Filter berdasarkan tahun/tingkat pada tampilan publik.
 - Setiap prestasi dapat dibuka sebagai halaman detail tersendiri (`/prestasi/[id]`), begitu juga berita (`/berita/[slug]`).
@@ -290,7 +290,7 @@ berita
   id, title, slug, content, thumbnail_url, category (enum: 'berita','kegiatan','beasiswa'), status, published_at, created_by, created_at, updated_at
 
 prestasi
-  id, title, achiever_name, level (nasional/internasional), year, image_url, description, created_at, updated_at
+  id, title, achiever_name, level (kabupaten/provinsi/nasional/internasional), year, image_url, description, created_at, updated_at
 
 kemitraan
   id, partner_name, logo_url, partnership_type, mou_date, description, website_url, order_index, created_at, updated_at

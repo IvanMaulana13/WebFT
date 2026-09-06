@@ -141,11 +141,19 @@ export type BeritaUpdateInput = z.infer<typeof beritaUpdateSchema>;
 // ─────────────────────────────────────────────
 const CURRENT_YEAR = new Date().getFullYear();
 
+export const PRESTASI_LEVELS = [
+  "kabupaten",
+  "provinsi",
+  "nasional",
+  "internasional",
+] as const;
+export type PrestasiLevel = (typeof PRESTASI_LEVELS)[number];
+
 export const prestasiSchema = z.object({
   title: z.string().min(1, "Judul wajib diisi").max(500, "Judul maksimal 500 karakter"),
   achieverName: z.string().min(1, "Nama peraih wajib diisi").max(255, "Nama peraih maksimal 255 karakter"),
-  level: z.enum(["nasional", "internasional"] as const, {
-    error: "Level harus nasional atau internasional",
+  level: z.enum(PRESTASI_LEVELS, {
+    error: "Level harus kabupaten, provinsi, nasional, atau internasional",
   }),
   year: z
     .number()

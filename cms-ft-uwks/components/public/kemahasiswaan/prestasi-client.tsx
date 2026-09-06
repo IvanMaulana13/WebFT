@@ -11,6 +11,51 @@ interface PrestasiClientProps {
   initialData: Prestasi[];
 }
 
+const getLevelBadgeClass = (level?: string) => {
+  switch (level?.toLowerCase()) {
+    case "internasional":
+      return "bg-purple-600/90 text-white";
+    case "nasional":
+      return "bg-[#002C5F]/90 text-white";
+    case "provinsi":
+      return "bg-amber-600/90 text-white";
+    case "kabupaten":
+      return "bg-emerald-600/90 text-white";
+    default:
+      return "bg-slate-600/90 text-white";
+  }
+};
+
+const getLevelLabel = (level: string | undefined, locale: string) => {
+  if (!level) return "";
+  if (locale === "en") {
+    switch (level.toLowerCase()) {
+      case "internasional":
+        return "International";
+      case "nasional":
+        return "National";
+      case "provinsi":
+        return "Provincial";
+      case "kabupaten":
+        return "Regency";
+      default:
+        return level;
+    }
+  }
+  switch (level.toLowerCase()) {
+    case "internasional":
+      return "Internasional";
+    case "nasional":
+      return "Nasional";
+    case "provinsi":
+      return "Provinsi";
+    case "kabupaten":
+      return "Kabupaten";
+    default:
+      return level;
+  }
+};
+
 export default function PrestasiClient({ initialData }: PrestasiClientProps) {
   const [selectedYear, setSelectedYear] = useState<string>("all");
   const [selectedLevel, setSelectedLevel] = useState<string>("all");
@@ -68,6 +113,8 @@ export default function PrestasiClient({ initialData }: PrestasiClientProps) {
               className="bg-white border border-slate-300 text-slate-800 text-xs font-semibold rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#002C5F] shadow-2xs"
             >
               <option value="all">{tCommon("semuaTingkat")}</option>
+              <option value="kabupaten">{locale === "en" ? "Regency" : "Kabupaten"}</option>
+              <option value="provinsi">{locale === "en" ? "Provincial" : "Provinsi"}</option>
               <option value="nasional">{locale === "en" ? "National" : "Nasional"}</option>
               <option value="internasional">{locale === "en" ? "International" : "Internasional"}</option>
             </select>
@@ -124,13 +171,11 @@ export default function PrestasiClient({ initialData }: PrestasiClientProps) {
                 {/* Level Badge */}
                 <div className="absolute top-3 right-3">
                   <span
-                    className={`text-[10px] font-extrabold px-2.5 py-1 rounded-full shadow-xs uppercase tracking-wider backdrop-blur-md ${
-                      item.level.toLowerCase() === "internasional"
-                        ? "bg-purple-600/90 text-white"
-                        : "bg-[#002C5F]/90 text-white"
-                    }`}
+                    className={`text-[10px] font-extrabold px-2.5 py-1 rounded-full shadow-xs uppercase tracking-wider backdrop-blur-md ${getLevelBadgeClass(
+                      item.level
+                    )}`}
                   >
-                    {item.level}
+                    {getLevelLabel(item.level, locale)}
                   </span>
                 </div>
               </div>
