@@ -279,7 +279,7 @@ export default function DashboardOverviewPage() {
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Dashboard Overview</h1>
           <p className="text-gray-500 text-sm mt-1">
-            Statistik konten dan aktivitas terkini CMS Fakultas Teknik UWKS
+            Statistik konten dan aktivitas terkini Fakultas Teknik UWKS
           </p>
         </div>
         <button

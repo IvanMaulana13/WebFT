@@ -5,7 +5,7 @@ import { DashboardTopbar } from "@/components/dashboard/topbar";
 export const metadata: Metadata = {
   title: {
     default: "Dashboard",
-    template: "%s | Dashboard CMS FT UWKS",
+    template: "%s | Dashboard FT UWKS",
   },
 };
 

@@ -163,7 +163,7 @@ export function DashboardSidebar() {
             />
           </div>
           <div>
-            <div className="font-bold text-sm">CMS FT UWKS</div>
+            <div className="font-bold text-sm">FT UWKS</div>
             <div className="text-xs text-gray-400">Dashboard Admin</div>
           </div>
         </Link>
@@ -339,7 +339,14 @@ export function DashboardSidebar() {
       <div className="p-4 border-t border-gray-700">
         <button
           id="sidebar-logout-btn"
-          onClick={() => signOut({ callbackUrl: "/login" })}
+          onClick={async () => {
+            try {
+              await signOut({ redirectTo: "/login", callbackUrl: "/login" });
+            } catch (err) {
+              console.error("Logout error:", err);
+              window.location.href = "/login";
+            }
+          }}
           className="flex items-center gap-3 w-full px-3 py-2 rounded-lg text-sm text-gray-400 hover:bg-gray-800 hover:text-red-400 transition-colors"
         >
           <LogOut className="w-4 h-4" />

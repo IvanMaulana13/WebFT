@@ -64,7 +64,7 @@ export function LoginForm() {
               priority
             />
           </div>
-          <h1 className="text-2xl font-bold text-white">CMS FT UWKS</h1>
+          <h1 className="text-2xl font-bold text-white">FT UWKS</h1>
           <p className="text-blue-300 text-sm mt-1">
             Dashboard Administrasi Fakultas Teknik
           </p>
@@ -166,7 +166,7 @@ export function LoginForm() {
 
         <div className="text-center mt-6">
           <p className="text-blue-400 text-xs">
-            CMS Fakultas Teknik UWKS © {new Date().getFullYear()}
+            Fakultas Teknik UWKS © {new Date().getFullYear()}
           </p>
         </div>
       </div>
