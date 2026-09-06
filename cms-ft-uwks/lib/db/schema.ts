@@ -61,7 +61,12 @@ export const prestasi = mysqlTable("prestasi", {
   id: int("id").primaryKey().autoincrement(),
   title: varchar("title", { length: 500 }).notNull(),
   achieverName: varchar("achiever_name", { length: 255 }).notNull(),
-  level: mysqlEnum("level", ["nasional", "internasional"]).notNull(),
+  level: mysqlEnum("level", [
+    "kabupaten",
+    "provinsi",
+    "nasional",
+    "internasional",
+  ]).notNull(),
   year: int("year").notNull(),
   imageUrl: varchar("image_url", { length: 500 }),
   description: text("description"),
