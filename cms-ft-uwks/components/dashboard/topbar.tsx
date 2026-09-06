@@ -13,9 +13,15 @@ export function DashboardTopbar() {
 
   const handleLogout = () => {
     startTransition(async () => {
-      toast.loading("Keluar dari sesi...", { id: "logout" });
-      await signOut({ callbackUrl: "/login" });
-      toast.dismiss("logout");
+      try {
+        toast.loading("Keluar dari sesi...", { id: "logout" });
+        await signOut({ redirectTo: "/login", callbackUrl: "/login" });
+      } catch (err) {
+        console.error("Logout error:", err);
+        window.location.href = "/login";
+      } finally {
+        toast.dismiss("logout");
+      }
     });
   };
 

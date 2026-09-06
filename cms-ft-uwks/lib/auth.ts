@@ -12,6 +12,7 @@ import { authConfig } from "@/auth.config";
 export const { handlers, auth, signIn, signOut } = NextAuth({
   // Spread shared config (pages, session strategy, JWT + session callbacks)
   ...authConfig,
+  trustHost: true,
 
   // Override providers dengan implementasi penuh (boleh pakai Node.js modules)
   providers: [
