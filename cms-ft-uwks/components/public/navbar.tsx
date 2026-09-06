@@ -39,6 +39,19 @@ export default function PublicNavbar() {
 
   const isActive = (path: string) => pathname === path;
 
+  const profilRoutes = [
+    "/sejarah",
+    "/visi-misi",
+    "/struktur-organisasi",
+    "/pimpinan-fakultas",
+    "/dosen",
+    "/tenaga-kependidikan",
+  ];
+  const isProfilActive = profilRoutes.some(
+    (route) => pathname === route || pathname.startsWith(`${route}/`)
+  );
+  const isAkademikActive = pathname.startsWith("/akademik");
+
   return (
     <>
       {/* ── Mobile Nav Header (Fixed Top) ── */}
@@ -123,7 +136,11 @@ export default function PublicNavbar() {
                 <div>
                   <button
                     onClick={() => setMobileProfilOpen(!mobileProfilOpen)}
-                    className="w-full flex items-center justify-between px-4 py-3 rounded-lg text-xs font-bold uppercase text-white/80 hover:bg-white/10 hover:text-white"
+                    className={`w-full flex items-center justify-between px-4 py-3 rounded-lg text-xs font-bold uppercase transition-colors ${
+                      isProfilActive
+                        ? "bg-[#002C5F] text-[#E5B80B]"
+                        : "text-white/80 hover:bg-white/10 hover:text-white"
+                    }`}
                   >
                     <span className="flex items-center gap-3">
                       <Landmark className="w-4 h-4" /> {t("profil")}
@@ -162,7 +179,11 @@ export default function PublicNavbar() {
                 <div>
                   <button
                     onClick={() => setMobileAkademikOpen(!mobileAkademikOpen)}
-                    className="w-full flex items-center justify-between px-4 py-3 rounded-lg text-xs font-bold uppercase text-white/80 hover:bg-white/10 hover:text-white"
+                    className={`w-full flex items-center justify-between px-4 py-3 rounded-lg text-xs font-bold uppercase transition-colors ${
+                      isAkademikActive
+                        ? "bg-[#002C5F] text-[#E5B80B]"
+                        : "text-white/80 hover:bg-white/10 hover:text-white"
+                    }`}
                   >
                     <span className="flex items-center gap-3">
                       <GraduationCap className="w-4 h-4" /> {t("akademik")}
@@ -257,11 +278,21 @@ export default function PublicNavbar() {
                   </button>
                   {mobilePenelitianOpen && (
                     <div className="ml-4 pl-3 border-l border-white/20 flex flex-col gap-1 my-1 text-xs text-white/80">
-                      <span className="py-1.5">{t("roadmap")}</span>
-                      <span className="py-1.5">{t("penelitianSub")}</span>
-                      <span className="py-1.5">{t("pengabdianSub")}</span>
-                      <span className="py-1.5">{t("jurnalSub")}</span>
-                      <span className="py-1.5">{t("sdgsSub")}</span>
+                      <Link href="/penelitian-pengabdian/roadmap" onClick={() => setMobileMenuOpen(false)} className="py-1.5 hover:text-[#E5B80B] transition-colors">
+                        {t("roadmap")}
+                      </Link>
+                      <Link href="/penelitian-pengabdian/penelitian" onClick={() => setMobileMenuOpen(false)} className="py-1.5 hover:text-[#E5B80B] transition-colors">
+                        {t("penelitianSub")}
+                      </Link>
+                      <Link href="/penelitian-pengabdian/pengabdian" onClick={() => setMobileMenuOpen(false)} className="py-1.5 hover:text-[#E5B80B] transition-colors">
+                        {t("pengabdianSub")}
+                      </Link>
+                      <Link href="/penelitian-pengabdian/jurnal-seminar" onClick={() => setMobileMenuOpen(false)} className="py-1.5 hover:text-[#E5B80B] transition-colors">
+                        {t("jurnalSub")}
+                      </Link>
+                      <Link href="/penelitian-pengabdian/sdgs" onClick={() => setMobileMenuOpen(false)} className="py-1.5 hover:text-[#E5B80B] transition-colors">
+                        {t("sdgsSub")}
+                      </Link>
                     </div>
                   )}
                 </div>
@@ -314,12 +345,24 @@ export default function PublicNavbar() {
                   </button>
                   {mobileMutuOpen && (
                     <div className="ml-4 pl-3 border-l border-white/20 flex flex-col gap-1 my-1 text-xs text-white/80">
-                      <span className="py-1.5">{t("evaluasiPembelajaran")}</span>
-                      <span className="py-1.5">{t("spmi")}</span>
-                      <span className="py-1.5">{t("ami")}</span>
-                      <span className="py-1.5">{t("rencanaTindakLanjut")}</span>
-                      <span className="py-1.5">{t("rtm")}</span>
-                      <span className="py-1.5">{t("kepuasanLayanan")}</span>
+                      <Link href="/penjaminan-mutu/evaluasi-pembelajaran" onClick={() => setMobileMenuOpen(false)} className="py-1.5 hover:text-[#E5B80B] transition-colors">
+                        {t("evaluasiPembelajaran")}
+                      </Link>
+                      <Link href="/penjaminan-mutu/spmi" onClick={() => setMobileMenuOpen(false)} className="py-1.5 hover:text-[#E5B80B] transition-colors">
+                        {t("spmi")}
+                      </Link>
+                      <Link href="/penjaminan-mutu/audit-mutu" onClick={() => setMobileMenuOpen(false)} className="py-1.5 hover:text-[#E5B80B] transition-colors">
+                        {t("ami")}
+                      </Link>
+                      <Link href="/penjaminan-mutu/rtl" onClick={() => setMobileMenuOpen(false)} className="py-1.5 hover:text-[#E5B80B] transition-colors">
+                        {t("rencanaTindakLanjut")}
+                      </Link>
+                      <Link href="/penjaminan-mutu/rtm" onClick={() => setMobileMenuOpen(false)} className="py-1.5 hover:text-[#E5B80B] transition-colors">
+                        {t("rtm")}
+                      </Link>
+                      <Link href="/penjaminan-mutu/kepuasan-layanan" onClick={() => setMobileMenuOpen(false)} className="py-1.5 hover:text-[#E5B80B] transition-colors">
+                        {t("kepuasanLayanan")}
+                      </Link>
                     </div>
                   )}
                 </div>
@@ -337,11 +380,21 @@ export default function PublicNavbar() {
                   </button>
                   {mobileAlumniOpen && (
                     <div className="ml-4 pl-3 border-l border-white/20 flex flex-col gap-1 my-1 text-xs text-white/80">
-                      <span className="py-1.5">{t("komfak")}</span>
-                      <span className="py-1.5">{t("prominentAlumni")}</span>
-                      <span className="py-1.5">{t("tracerStudy")}</span>
-                      <span className="py-1.5">{t("tracerAlumni")}</span>
-                      <span className="py-1.5">{t("karir")}</span>
+                      <Link href="/alumni/komfak" onClick={() => setMobileMenuOpen(false)} className="py-1.5 hover:text-[#E5B80B] transition-colors">
+                        {t("komfak")}
+                      </Link>
+                      <Link href="/alumni/prominent-alumni" onClick={() => setMobileMenuOpen(false)} className="py-1.5 hover:text-[#E5B80B] transition-colors">
+                        {t("prominentAlumni")}
+                      </Link>
+                      <Link href="/alumni/tracer-study" onClick={() => setMobileMenuOpen(false)} className="py-1.5 hover:text-[#E5B80B] transition-colors">
+                        {t("tracerStudy")}
+                      </Link>
+                      <Link href="/alumni/tracer-alumni" onClick={() => setMobileMenuOpen(false)} className="py-1.5 hover:text-[#E5B80B] transition-colors">
+                        {t("tracerAlumni")}
+                      </Link>
+                      <Link href="/alumni/pengembangan-karir" onClick={() => setMobileMenuOpen(false)} className="py-1.5 hover:text-[#E5B80B] transition-colors">
+                        {t("karir")}
+                      </Link>
                     </div>
                   )}
                 </div>
@@ -359,10 +412,18 @@ export default function PublicNavbar() {
                   </button>
                   {mobileInformasiOpen && (
                     <div className="ml-4 pl-3 border-l border-white/20 flex flex-col gap-1 my-1 text-xs text-white/80">
-                      <span className="py-1.5">{t("fasilitas")}</span>
-                      <span className="py-1.5">{t("pmb")}</span>
-                      <span className="py-1.5">{t("konsultasiTeknik")}</span>
-                      <span className="py-1.5">{t("lowongan")}</span>
+                      <Link href="/informasi/fasilitas" onClick={() => setMobileMenuOpen(false)} className="py-1.5 hover:text-[#E5B80B] transition-colors">
+                        {t("fasilitas")}
+                      </Link>
+                      <Link href="/informasi/pmb" onClick={() => setMobileMenuOpen(false)} className="py-1.5 hover:text-[#E5B80B] transition-colors">
+                        {t("pmb")}
+                      </Link>
+                      <Link href="/informasi/konsultasi-teknik" onClick={() => setMobileMenuOpen(false)} className="py-1.5 hover:text-[#E5B80B] transition-colors">
+                        {t("konsultasiTeknik")}
+                      </Link>
+                      <Link href="/informasi/lowongan-kerja" onClick={() => setMobileMenuOpen(false)} className="py-1.5 hover:text-[#E5B80B] transition-colors">
+                        {t("lowongan")}
+                      </Link>
                     </div>
                   )}
                 </div>
@@ -430,7 +491,13 @@ export default function PublicNavbar() {
 
             {/* 2. PROFIL Dropdown */}
             <div className="dropdown h-full relative group">
-              <button className="nav-link-hover text-white hover:text-[#E5B80B] transition-colors h-full flex items-center px-3 lg:px-3.5 text-[11px] lg:text-xs font-bold uppercase whitespace-nowrap">
+              <button
+                className={`nav-link-hover hover:text-[#E5B80B] transition-colors h-full flex items-center px-3 lg:px-3.5 text-[11px] lg:text-xs font-bold uppercase whitespace-nowrap ${
+                  isProfilActive
+                    ? "text-[#E5B80B] border-b-2 border-[#E5B80B]"
+                    : "text-white"
+                }`}
+              >
                 {t("profil")}
               </button>
               <div className="dropdown-menu hidden group-hover:block absolute top-full left-0 w-64 bg-white shadow-xl py-2 z-50 border-t-2 border-[#E5B80B] rounded-b-lg border-x border-b border-slate-100">
@@ -475,7 +542,13 @@ export default function PublicNavbar() {
 
             {/* 3. AKADEMIK Dropdown */}
             <div className="dropdown h-full relative group">
-              <button className="nav-link-hover text-white hover:text-[#E5B80B] transition-colors h-full flex items-center px-3 lg:px-3.5 text-[11px] lg:text-xs font-bold uppercase whitespace-nowrap">
+              <button
+                className={`nav-link-hover hover:text-[#E5B80B] transition-colors h-full flex items-center px-3 lg:px-3.5 text-[11px] lg:text-xs font-bold uppercase whitespace-nowrap ${
+                  isAkademikActive
+                    ? "text-[#E5B80B] border-b-2 border-[#E5B80B]"
+                    : "text-white"
+                }`}
+              >
                 {t("akademik")}
               </button>
               <div className="dropdown-menu hidden group-hover:block absolute top-full left-0 w-64 bg-white shadow-xl py-2 z-50 border-t-2 border-[#E5B80B] rounded-b-lg border-x border-b border-slate-100">
@@ -546,21 +619,54 @@ export default function PublicNavbar() {
 
             {/* 4. PENELITIAN & PENGABDIAN */}
             <div className="dropdown h-full relative group">
-              <button className="nav-link-hover text-white hover:text-[#E5B80B] transition-colors h-full flex items-center px-3 lg:px-3.5 text-[11px] lg:text-xs font-bold uppercase whitespace-nowrap">
+              <button className={`nav-link-hover hover:text-[#E5B80B] transition-colors h-full flex items-center px-3 lg:px-3.5 text-[11px] lg:text-xs font-bold uppercase whitespace-nowrap ${
+                pathname.startsWith("/penelitian-pengabdian")
+                  ? "text-[#E5B80B] border-b-2 border-[#E5B80B]"
+                  : "text-white"
+              }`}>
                 {t("penelitian")}
               </button>
-              <div className="dropdown-menu hidden group-hover:block absolute top-full left-0 w-64 bg-white shadow-xl py-2 z-50 border-t-2 border-[#E5B80B] rounded-b-lg border-x border-b border-slate-100">
-                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">{t("roadmap")}</span>
-                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">{t("penelitianSub")}</span>
-                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">{t("pengabdianSub")}</span>
-                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">{t("jurnalSub")}</span>
-                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">{t("sdgsSub")}</span>
+              <div className="dropdown-menu hidden group-hover:block absolute top-full left-0 w-72 bg-white shadow-xl py-2 z-50 border-t-2 border-[#E5B80B] rounded-b-lg border-x border-b border-slate-100">
+                <Link
+                  href="/penelitian-pengabdian/roadmap"
+                  className="block px-4 py-2 text-slate-800 hover:bg-slate-50 hover:text-[#002347] transition-colors text-xs font-medium"
+                >
+                  {t("roadmap")}
+                </Link>
+                <Link
+                  href="/penelitian-pengabdian/penelitian"
+                  className="block px-4 py-2 text-slate-800 hover:bg-slate-50 hover:text-[#002347] transition-colors text-xs font-medium"
+                >
+                  {t("penelitianSub")}
+                </Link>
+                <Link
+                  href="/penelitian-pengabdian/pengabdian"
+                  className="block px-4 py-2 text-slate-800 hover:bg-slate-50 hover:text-[#002347] transition-colors text-xs font-medium"
+                >
+                  {t("pengabdianSub")}
+                </Link>
+                <Link
+                  href="/penelitian-pengabdian/jurnal-seminar"
+                  className="block px-4 py-2 text-slate-800 hover:bg-slate-50 hover:text-[#002347] transition-colors text-xs font-medium"
+                >
+                  {t("jurnalSub")}
+                </Link>
+                <Link
+                  href="/penelitian-pengabdian/sdgs"
+                  className="block px-4 py-2 text-slate-800 hover:bg-slate-50 hover:text-[#002347] transition-colors text-xs font-medium"
+                >
+                  {t("sdgsSub")}
+                </Link>
               </div>
             </div>
 
             {/* 5. KEMAHASISWAAN */}
             <div className="dropdown h-full relative group">
-              <button className="nav-link-hover text-white hover:text-[#E5B80B] transition-colors h-full flex items-center px-3 lg:px-3.5 text-[11px] lg:text-xs font-bold uppercase whitespace-nowrap">
+              <button className={`nav-link-hover hover:text-[#E5B80B] transition-colors h-full flex items-center px-3 lg:px-3.5 text-[11px] lg:text-xs font-bold uppercase whitespace-nowrap ${
+                pathname.startsWith("/kemahasiswaan")
+                  ? "text-[#E5B80B] border-b-2 border-[#E5B80B]"
+                  : "text-white"
+              }`}>
                 {t("kemahasiswaan")}
               </button>
               <div className="dropdown-menu hidden group-hover:block absolute top-full left-0 w-64 bg-white shadow-xl py-2 z-50 border-t-2 border-[#E5B80B] rounded-b-lg border-x border-b border-slate-100">
@@ -605,43 +711,130 @@ export default function PublicNavbar() {
 
             {/* 6. PENJAMINAN MUTU */}
             <div className="dropdown h-full relative group">
-              <button className="nav-link-hover text-white hover:text-[#E5B80B] transition-colors h-full flex items-center px-3 lg:px-3.5 text-[11px] lg:text-xs font-bold uppercase whitespace-nowrap">
+              <button className={`nav-link-hover hover:text-[#E5B80B] transition-colors h-full flex items-center px-3 lg:px-3.5 text-[11px] lg:text-xs font-bold uppercase whitespace-nowrap ${
+                pathname.startsWith("/penjaminan-mutu")
+                  ? "text-[#E5B80B] border-b-2 border-[#E5B80B]"
+                  : "text-white"
+              }`}>
                 {t("mutu")}
               </button>
-              <div className="dropdown-menu hidden group-hover:block absolute top-full left-0 w-64 bg-white shadow-xl py-2 z-50 border-t-2 border-[#E5B80B] rounded-b-lg border-x border-b border-slate-100">
-                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">{t("evaluasiPembelajaran")}</span>
-                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">{t("spmi")}</span>
-                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">{t("ami")}</span>
-                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">{t("rencanaTindakLanjut")}</span>
-                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">{t("rtm")}</span>
-                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">{t("kepuasanLayanan")}</span>
+              <div className="dropdown-menu hidden group-hover:block absolute top-full left-0 w-72 bg-white shadow-xl py-2 z-50 border-t-2 border-[#E5B80B] rounded-b-lg border-x border-b border-slate-100">
+                <Link
+                  href="/penjaminan-mutu/evaluasi-pembelajaran"
+                  className="block px-4 py-2 text-slate-800 hover:bg-slate-50 hover:text-[#002347] transition-colors text-xs font-medium"
+                >
+                  {t("evaluasiPembelajaran")}
+                </Link>
+                <Link
+                  href="/penjaminan-mutu/spmi"
+                  className="block px-4 py-2 text-slate-800 hover:bg-slate-50 hover:text-[#002347] transition-colors text-xs font-medium"
+                >
+                  {t("spmi")}
+                </Link>
+                <Link
+                  href="/penjaminan-mutu/audit-mutu"
+                  className="block px-4 py-2 text-slate-800 hover:bg-slate-50 hover:text-[#002347] transition-colors text-xs font-medium"
+                >
+                  {t("ami")}
+                </Link>
+                <Link
+                  href="/penjaminan-mutu/rtl"
+                  className="block px-4 py-2 text-slate-800 hover:bg-slate-50 hover:text-[#002347] transition-colors text-xs font-medium"
+                >
+                  {t("rencanaTindakLanjut")}
+                </Link>
+                <Link
+                  href="/penjaminan-mutu/rtm"
+                  className="block px-4 py-2 text-slate-800 hover:bg-slate-50 hover:text-[#002347] transition-colors text-xs font-medium"
+                >
+                  {t("rtm")}
+                </Link>
+                <Link
+                  href="/penjaminan-mutu/kepuasan-layanan"
+                  className="block px-4 py-2 text-slate-800 hover:bg-slate-50 hover:text-[#002347] transition-colors text-xs font-medium"
+                >
+                  {t("kepuasanLayanan")}
+                </Link>
               </div>
             </div>
 
             {/* 7. ALUMNI */}
             <div className="dropdown h-full relative group">
-              <button className="nav-link-hover text-white hover:text-[#E5B80B] transition-colors h-full flex items-center px-3 lg:px-3.5 text-[11px] lg:text-xs font-bold uppercase whitespace-nowrap">
+              <button className={`nav-link-hover hover:text-[#E5B80B] transition-colors h-full flex items-center px-3 lg:px-3.5 text-[11px] lg:text-xs font-bold uppercase whitespace-nowrap ${
+                pathname.startsWith("/alumni")
+                  ? "text-[#E5B80B] border-b-2 border-[#E5B80B]"
+                  : "text-white"
+              }`}>
                 {t("alumni")}
               </button>
               <div className="dropdown-menu hidden group-hover:block absolute top-full left-0 w-64 bg-white shadow-xl py-2 z-50 border-t-2 border-[#E5B80B] rounded-b-lg border-x border-b border-slate-100">
-                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">{t("komfak")}</span>
-                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">{t("prominentAlumni")}</span>
-                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">{t("tracerStudy")}</span>
-                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">{t("tracerAlumni")}</span>
-                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">{t("karir")}</span>
+                <Link
+                  href="/alumni/komfak"
+                  className="block px-4 py-2 text-slate-800 hover:bg-slate-50 hover:text-[#002347] transition-colors text-xs font-medium"
+                >
+                  {t("komfak")}
+                </Link>
+                <Link
+                  href="/alumni/prominent-alumni"
+                  className="block px-4 py-2 text-slate-800 hover:bg-slate-50 hover:text-[#002347] transition-colors text-xs font-medium"
+                >
+                  {t("prominentAlumni")}
+                </Link>
+                <Link
+                  href="/alumni/tracer-study"
+                  className="block px-4 py-2 text-slate-800 hover:bg-slate-50 hover:text-[#002347] transition-colors text-xs font-medium"
+                >
+                  {t("tracerStudy")}
+                </Link>
+                <Link
+                  href="/alumni/tracer-alumni"
+                  className="block px-4 py-2 text-slate-800 hover:bg-slate-50 hover:text-[#002347] transition-colors text-xs font-medium"
+                >
+                  {t("tracerAlumni")}
+                </Link>
+                <Link
+                  href="/alumni/pengembangan-karir"
+                  className="block px-4 py-2 text-slate-800 hover:bg-slate-50 hover:text-[#002347] transition-colors text-xs font-medium"
+                >
+                  {t("karir")}
+                </Link>
               </div>
             </div>
 
             {/* 8. INFORMASI */}
             <div className="dropdown h-full relative group">
-              <button className="nav-link-hover text-white hover:text-[#E5B80B] transition-colors h-full flex items-center px-3 lg:px-3.5 text-[11px] lg:text-xs font-bold uppercase whitespace-nowrap">
+              <button className={`nav-link-hover hover:text-[#E5B80B] transition-colors h-full flex items-center px-3 lg:px-3.5 text-[11px] lg:text-xs font-bold uppercase whitespace-nowrap ${
+                pathname.startsWith("/informasi")
+                  ? "text-[#E5B80B] border-b-2 border-[#E5B80B]"
+                  : "text-white"
+              }`}>
                 {t("informasi")}
               </button>
               <div className="dropdown-menu hidden group-hover:block absolute top-full right-0 w-64 bg-white shadow-xl py-2 z-50 border-t-2 border-[#E5B80B] rounded-b-lg border-x border-b border-slate-100">
-                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">{t("fasilitas")}</span>
-                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">{t("pmb")}</span>
-                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">{t("konsultasiTeknik")}</span>
-                <span className="block px-4 py-2 text-slate-700 text-xs font-medium">{t("lowongan")}</span>
+                <Link
+                  href="/informasi/fasilitas"
+                  className="block px-4 py-2 text-slate-800 hover:bg-slate-50 hover:text-[#002347] transition-colors text-xs font-medium"
+                >
+                  {t("fasilitas")}
+                </Link>
+                <Link
+                  href="/informasi/pmb"
+                  className="block px-4 py-2 text-slate-800 hover:bg-slate-50 hover:text-[#002347] transition-colors text-xs font-medium"
+                >
+                  {t("pmb")}
+                </Link>
+                <Link
+                  href="/informasi/konsultasi-teknik"
+                  className="block px-4 py-2 text-slate-800 hover:bg-slate-50 hover:text-[#002347] transition-colors text-xs font-medium"
+                >
+                  {t("konsultasiTeknik")}
+                </Link>
+                <Link
+                  href="/informasi/lowongan-kerja"
+                  className="block px-4 py-2 text-slate-800 hover:bg-slate-50 hover:text-[#002347] transition-colors text-xs font-medium"
+                >
+                  {t("lowongan")}
+                </Link>
               </div>
             </div>
           </div>

@@ -97,7 +97,7 @@ export default async function HomePage() {
   return (
     <main className="w-full">
       {/* ── 1. HERO SECTION WITH DYNAMIC VIDEO BACKGROUND ── */}
-      <section className="relative w-full h-[550px] md:h-[650px] bg-[#000d21] flex items-center justify-center overflow-hidden">
+      <section className="relative w-full h-[550px] md:h-[650px] bg-black flex items-center justify-center overflow-hidden">
         {heroVideoUrl ? (
           <video
             autoPlay
@@ -105,7 +105,7 @@ export default async function HomePage() {
             loop
             playsInline
             poster={heroPosterUrl || undefined}
-            className="absolute inset-0 w-full h-full object-cover z-0 opacity-80"
+            className="absolute inset-0 w-full h-full object-cover"
           >
             <source src={heroVideoUrl} />
             Browser Anda tidak mendukung pemutaran video.
@@ -114,15 +114,12 @@ export default async function HomePage() {
           <img
             src={heroPosterUrl}
             alt="Hero Poster FT UWKS"
-            className="absolute inset-0 w-full h-full object-cover z-0 opacity-80"
+            className="absolute inset-0 w-full h-full object-cover"
           />
         ) : (
           /* Fallback background polos gelap jika video dan poster belum diupload */
-          <div className="absolute inset-0 bg-gradient-to-br from-[#00152e] via-[#000d21] to-[#000814] z-0" />
+          <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-slate-900 to-black" />
         )}
-
-        {/* Overlay gelap semi-transparan untuk keterbacaan teks */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#000d21] via-[#000d21]/60 to-black/40 z-10" />
       </section>
 
       {/* ── 2. BENTO STATS SECTION ── */}

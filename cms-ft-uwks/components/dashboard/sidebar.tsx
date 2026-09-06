@@ -163,7 +163,7 @@ export function DashboardSidebar() {
             />
           </div>
           <div>
-            <div className="font-bold text-sm">CMS FT UWKS</div>
+            <div className="font-bold text-sm">FT UWKS</div>
             <div className="text-xs text-gray-400">Dashboard Admin</div>
           </div>
         </Link>

@@ -55,7 +55,7 @@ export default async function UsersPage() {
       <div>
         <h1 className="text-2xl font-bold text-gray-900">Manajemen User</h1>
         <p className="text-gray-500 text-sm mt-1">
-          Kelola akun admin yang dapat mengakses dashboard CMS.
+          Kelola akun admin yang dapat mengakses dashboard.
         </p>
       </div>
 
