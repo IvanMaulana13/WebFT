@@ -1,6 +1,9 @@
-import Link from "next/link";
+"use client";
+
+import { Link } from "@/i18n/routing";
 import Image from "next/image";
 import { Building2 } from "lucide-react";
+import { useTranslations, useLocale } from "next-intl";
 
 interface BeritaItem {
   id: number;
@@ -18,13 +21,16 @@ interface Props {
 }
 
 export function BeritaSection({ items }: Props) {
+  const t = useTranslations("beranda");
+  const locale = useLocale();
+
   return (
     <section className="py-16 bg-white border-t border-slate-200">
       <div className="max-w-6xl mx-auto px-6">
         {/* Header */}
         <div className="flex items-center gap-4 mb-8">
           <h2 className="text-2xl md:text-3xl font-bold text-[#002347] font-sans">
-            Berita &amp; Kegiatan
+            {t("beritaSectionTitle")}
           </h2>
           <div className="flex-grow h-px bg-slate-200" />
         </div>
@@ -56,11 +62,14 @@ export function BeritaSection({ items }: Props) {
                 <div className="p-5 flex flex-col gap-2 flex-grow">
                   <div className="flex items-center gap-2">
                     <span className="text-xs text-slate-400 font-medium">
-                      {new Date(item.publishedAt || item.createdAt).toLocaleDateString("id-ID", {
-                        day: "numeric",
-                        month: "long",
-                        year: "numeric",
-                      })}
+                      {new Date(item.publishedAt || item.createdAt).toLocaleDateString(
+                        locale === "en" ? "en-US" : "id-ID",
+                        {
+                          day: "numeric",
+                          month: "long",
+                          year: "numeric",
+                        }
+                      )}
                     </span>
                   </div>
                   <h3 className="text-base font-bold text-[#002347] group-hover:text-[#E5B80B] transition-colors leading-snug line-clamp-2">
@@ -72,11 +81,10 @@ export function BeritaSection({ items }: Props) {
           </div>
         ) : (
           <div className="text-center py-8 text-slate-500 text-sm">
-            Belum ada berita &amp; kegiatan terbaru.
+            {t("emptyBerita")}
           </div>
         )}
       </div>
     </section>
   );
 }
-

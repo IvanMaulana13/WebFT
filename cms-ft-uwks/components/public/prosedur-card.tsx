@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { FileText, ExternalLink, Download, UserCheck, ChevronDown, ChevronUp } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface ProsedurItem {
   id: number;
@@ -14,6 +15,8 @@ interface ProsedurItem {
 
 export default function ProsedurCard({ item }: { item: ProsedurItem }) {
   const [expanded, setExpanded] = useState(false);
+  const t = useTranslations("akademik.prosedur");
+  const tCommon = useTranslations("common");
 
   const isLong = item.narasi.length > 220;
   const displayNarasi = !isLong || expanded ? item.narasi : `${item.narasi.slice(0, 220)}...`;
@@ -34,15 +37,20 @@ export default function ProsedurCard({ item }: { item: ProsedurItem }) {
             </h3>
             <div className="flex items-center gap-1.5 text-xs text-slate-500 mt-1">
               <UserCheck className="w-3.5 h-3.5 text-[#E5B80B]" />
-              <span>Penanggung Jawab: <strong className="text-slate-700">{item.penanggungJawab}</strong></span>
+              <span>
+                {t("penanggungJawab")}:{" "}
+                <strong className="text-slate-700">{item.penanggungJawab}</strong>
+              </span>
             </div>
           </div>
         </div>
 
-        <span className={`hidden sm:inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md ${
-          isFile ? "bg-blue-100 text-blue-800" : "bg-purple-100 text-purple-800"
-        }`}>
-          {isFile ? "Dokumen PDF" : "Tautan Eksternal"}
+        <span
+          className={`hidden sm:inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md ${
+            isFile ? "bg-blue-100 text-blue-800" : "bg-purple-100 text-purple-800"
+          }`}
+        >
+          {isFile ? t("dokumenPdf") : t("tautanEksternal")}
         </span>
       </div>
 
@@ -53,17 +61,19 @@ export default function ProsedurCard({ item }: { item: ProsedurItem }) {
             onClick={() => setExpanded(!expanded)}
             className="text-xs text-[#002347] hover:text-[#E5B80B] font-semibold mt-1 inline-flex items-center gap-1 transition-colors cursor-pointer"
           >
-            <span>{expanded ? "Sembunyikan" : "Baca Selengkapnya"}</span>
+            <span>{expanded ? t("sembunyikan") : tCommon("bacaSelengkapnya")}</span>
             {expanded ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
           </button>
         )}
       </div>
 
       <div className="pt-2 flex items-center justify-between border-t border-slate-200/60">
-        <span className={`sm:hidden inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded ${
-          isFile ? "bg-blue-100 text-blue-800" : "bg-purple-100 text-purple-800"
-        }`}>
-          {isFile ? "Dokumen PDF" : "Tautan Eksternal"}
+        <span
+          className={`sm:hidden inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded ${
+            isFile ? "bg-blue-100 text-blue-800" : "bg-purple-100 text-purple-800"
+          }`}
+        >
+          {isFile ? t("dokumenPdf") : t("tautanEksternal")}
         </span>
 
         {targetUrl !== "#" ? (
@@ -74,10 +84,12 @@ export default function ProsedurCard({ item }: { item: ProsedurItem }) {
             className="ml-auto inline-flex items-center gap-2 px-5 py-2.5 bg-[#E5B80B] hover:bg-[#d4a800] text-[#002347] font-bold text-xs uppercase tracking-wider rounded-lg shadow-sm hover:shadow-md transition-all transform hover:-translate-y-0.5 whitespace-nowrap"
           >
             {isFile ? <Download className="w-3.5 h-3.5" /> : <ExternalLink className="w-3.5 h-3.5" />}
-            <span>{isFile ? "Unduh Dokumen SOP" : "Buka Tautan SOP"}</span>
+            <span>{isFile ? t("unduhSop") : t("bukaSop")}</span>
           </a>
         ) : (
-          <span className="ml-auto text-xs text-slate-400 italic">Dokumen belum tersedia</span>
+          <span className="ml-auto text-xs text-slate-400 italic">
+            {t("dokumenBelumTersedia")}
+          </span>
         )}
       </div>
     </div>

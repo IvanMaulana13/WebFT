@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { Search, Filter, User } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export interface DosenItem {
   id: number;
@@ -22,6 +23,7 @@ interface DosenContentProps {
 export default function DosenContent({ initialData }: DosenContentProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedProdi, setSelectedProdi] = useState("all");
+  const t = useTranslations("profil.dosen");
 
   // Filter list by prodi and search term
   const filteredDosen = initialData.filter((item) => {
@@ -50,7 +52,7 @@ export default function DosenContent({ initialData }: DosenContentProps) {
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Cari Dosen (Nama, NIDN, NIK)..."
+            placeholder={t("cariDosen")}
             className="w-full pl-9 pr-4 py-2 bg-white border border-slate-200 rounded-lg text-xs focus:outline-none focus:ring-1 focus:ring-[#002347]"
           />
         </div>
@@ -63,7 +65,7 @@ export default function DosenContent({ initialData }: DosenContentProps) {
             onChange={(e) => setSelectedProdi(e.target.value)}
             className="w-full sm:w-auto bg-white border border-slate-200 rounded-lg px-3 py-2 text-xs font-medium text-slate-700 focus:outline-none focus:ring-1 focus:ring-[#002347]"
           >
-            <option value="all">Semua Program Studi</option>
+            <option value="all">{t("filterProdi")}</option>
             {prodiOptions.map((p) => (
               <option key={p} value={p}>
                 {p}
@@ -73,67 +75,51 @@ export default function DosenContent({ initialData }: DosenContentProps) {
         </div>
       </div>
 
-      {/* ── Dosen Table (1:1 Stitch Design) ── */}
+      {/* ── Dosen Card Grid ── */}
       {filteredDosen.length > 0 ? (
-        <div className="overflow-x-auto border border-slate-200 rounded-xl shadow-sm">
-          <table className="w-full text-left border-collapse min-w-[700px]">
-            <thead>
-              <tr className="bg-[#002347] text-white">
-                <th className="p-3.5 font-bold uppercase tracking-wider text-xs">Foto</th>
-                <th className="p-3.5 font-bold uppercase tracking-wider text-xs">NIK</th>
-                <th className="p-3.5 font-bold uppercase tracking-wider text-xs">Kode</th>
-                <th className="p-3.5 font-bold uppercase tracking-wider text-xs">NIDN</th>
-                <th className="p-3.5 font-bold uppercase tracking-wider text-xs">Nama Lengkap</th>
-                <th className="p-3.5 font-bold uppercase tracking-wider text-xs">Prodi</th>
-                <th className="p-3.5 font-bold uppercase tracking-wider text-xs">Email</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-200 text-xs">
-              {filteredDosen.map((item, idx) => (
-                <tr
-                  key={item.id}
-                  className={`hover:bg-slate-50 transition-colors ${
-                    idx % 2 === 0 ? "bg-white" : "bg-slate-50/50"
-                  }`}
-                >
-                  <td className="p-3.5">
-                    <div className="w-10 h-10 rounded-full overflow-hidden border border-slate-200 bg-slate-100 relative">
-                      {item.photoUrl ? (
-                        <Image
-                          src={item.photoUrl}
-                          alt={item.name}
-                          fill
-                          className="object-cover"
-                          sizes="40px"
-                        />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center text-slate-400">
-                          <User className="w-5 h-5" />
-                        </div>
-                      )}
-                    </div>
-                  </td>
-                  <td className="p-3.5 font-medium text-slate-700">{item.nik}</td>
-                  <td className="p-3.5 text-slate-600">{item.kodeDosen}</td>
-                  <td className="p-3.5 text-slate-600">{item.nidn}</td>
-                  <td className="p-3.5 font-bold text-[#002347]">{item.name}</td>
-                  <td className="p-3.5 font-medium text-slate-700">{item.prodi}</td>
-                  <td className="p-3.5">
-                    <a
-                      href={`mailto:${item.email}`}
-                      className="text-[#002347] hover:text-[#E5B80B] underline transition-colors"
-                    >
-                      {item.email}
-                    </a>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          {filteredDosen.map((item) => (
+            <div
+              key={item.id}
+              className="bg-slate-50 rounded-xl p-5 border border-slate-200 flex flex-col items-center text-center hover:border-[#E5B80B] hover:shadow-md transition-all"
+            >
+              <div className="w-36 h-44 relative rounded-lg overflow-hidden border border-slate-200 bg-slate-200 mb-4">
+                {item.photoUrl ? (
+                  <Image
+                    src={item.photoUrl}
+                    alt={item.name}
+                    fill
+                    className="object-cover"
+                    sizes="144px"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center text-slate-400">
+                    <User className="w-12 h-12" />
+                  </div>
+                )}
+              </div>
+              <span className="text-[11px] font-bold text-[#002347] uppercase tracking-wider mb-1">
+                {item.prodi}
+              </span>
+              <h3 className="text-sm font-bold text-slate-900 leading-tight mb-1">
+                {item.name}
+              </h3>
+              {item.nidn && (
+                <p className="text-[11px] text-slate-500 font-mono">
+                  NIDN: {item.nidn}
+                </p>
+              )}
+              {item.email && (
+                <p className="text-[11px] text-[#002347] font-medium mt-1 truncate max-w-full">
+                  {item.email}
+                </p>
+              )}
+            </div>
+          ))}
         </div>
       ) : (
-        <div className="text-center py-12 bg-slate-50 border border-slate-200 rounded-xl text-slate-500 text-sm">
-          Tidak ada data dosen yang sesuai pencarian/filter.
+        <div className="text-center py-12 text-slate-500 text-sm">
+          {t("empty")}
         </div>
       )}
     </div>

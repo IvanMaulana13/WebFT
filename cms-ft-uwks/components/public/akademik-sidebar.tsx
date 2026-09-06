@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { Link, usePathname } from "@/i18n/routing";
+import { useTranslations } from "next-intl";
 import {
   Calendar,
   BookOpen,
@@ -12,17 +12,21 @@ import {
   ChevronDown,
 } from "lucide-react";
 
-const akademikNavItems = [
-  { href: "/akademik/kalender", label: "Kalender Akademik", icon: Calendar },
-  { href: "/akademik/pedoman", label: "Pedoman Akademik", icon: BookOpen },
-  { href: "/akademik/jadwal-perkuliahan", label: "Jadwal Perkuliahan", icon: CalendarDays },
-  { href: "/akademik/akreditasi", label: "Akreditasi", icon: Award },
-  { href: "/akademik/prosedur", label: "Prosedur Akademik", icon: ClipboardList },
-];
-
 export default function AkademikSidebar() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  const tNavbar = useTranslations("navbar");
+  const tAkademik = useTranslations("akademik");
+  const tCommon = useTranslations("common");
+
+  const akademikNavItems = [
+    { href: "/akademik/kalender", label: tNavbar("kalenderAkademik"), icon: Calendar },
+    { href: "/akademik/pedoman", label: tNavbar("pedomanAkademik"), icon: BookOpen },
+    { href: "/akademik/jadwal-perkuliahan", label: tNavbar("jadwalPerkuliahan"), icon: CalendarDays },
+    { href: "/akademik/akreditasi", label: tNavbar("akreditasi"), icon: Award },
+    { href: "/akademik/prosedur", label: tNavbar("prosedurAkademik"), icon: ClipboardList },
+  ];
 
   const activeItem =
     akademikNavItems.find(
@@ -45,7 +49,7 @@ export default function AkademikSidebar() {
             <div className="w-1.5 h-8 bg-[#E5B80B] rounded-full flex-shrink-0" />
             <div className="flex flex-col min-w-0">
               <span className="text-[10px] font-bold tracking-wider text-slate-400 uppercase leading-tight">
-                MENU AKADEMIK
+                {tAkademik("headerTitle")}
               </span>
               <div className="flex items-center gap-2 mt-0.5">
                 <ActiveIcon className="w-4 h-4 text-[#002C5F] shrink-0" />
@@ -56,7 +60,7 @@ export default function AkademikSidebar() {
             </div>
           </div>
           <div className="flex items-center gap-1.5 px-3 py-1.5 bg-[#002C5F] text-white rounded-lg text-xs font-semibold shrink-0 shadow-xs">
-            <span>{mobileOpen ? "Tutup" : "Pilih Menu"}</span>
+            <span>{mobileOpen ? tCommon("tutup") : tCommon("pilihMenu")}</span>
             <ChevronDown
               className={`w-3.5 h-3.5 transition-transform duration-200 ${
                 mobileOpen ? "rotate-180" : ""
@@ -70,10 +74,10 @@ export default function AkademikSidebar() {
           <div className="w-1.5 h-10 bg-[#E5B80B] mr-3 rounded-full flex-shrink-0" />
           <div className="flex flex-col">
             <h3 className="text-xl font-bold text-[#002347] leading-tight uppercase font-sans">
-              MENU
+              {tAkademik("sidebarHeader1")}
             </h3>
             <h3 className="text-xl font-bold text-[#002347] leading-tight uppercase font-sans">
-              AKADEMIK
+              {tAkademik("sidebarHeader2")}
             </h3>
           </div>
         </div>
@@ -88,7 +92,7 @@ export default function AkademikSidebar() {
             const Icon = item.icon;
             const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
             return (
-              <li key={item.label}>
+              <li key={item.href}>
                 <Link
                   href={item.href}
                   onClick={() => setMobileOpen(false)}

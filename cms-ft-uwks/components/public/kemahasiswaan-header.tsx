@@ -1,41 +1,44 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { Link, usePathname } from "@/i18n/routing";
 import { ChevronRight } from "lucide-react";
-
-const pageTitles: Record<string, { title: string; breadcrumb: string }> = {
-  "/kemahasiswaan/ormawa": {
-    title: "Organisasi Kemahasiswaan",
-    breadcrumb: "ORGANISASI KEMAHASISWAAN",
-  },
-  "/kemahasiswaan/prestasi": {
-    title: "Prestasi Mahasiswa",
-    breadcrumb: "PRESTASI MAHASISWA",
-  },
-  "/kemahasiswaan/beasiswa": {
-    title: "Informasi Beasiswa",
-    breadcrumb: "INFORMASI BEASISWA",
-  },
-  "/kemahasiswaan/lomba": {
-    title: "Informasi Lomba Mahasiswa",
-    breadcrumb: "INFORMASI LOMBA",
-  },
-  "/kemahasiswaan/kegiatan": {
-    title: "Kegiatan Kemahasiswaan",
-    breadcrumb: "KEGIATAN KEMAHASISWAAN",
-  },
-  "/kemahasiswaan/konseling": {
-    title: "Layanan Konseling Mahasiswa",
-    breadcrumb: "LAYANAN KONSELING",
-  },
-};
+import { useTranslations } from "next-intl";
 
 export default function KemahasiswaanHeader() {
   const pathname = usePathname();
-  const current = pageTitles[pathname] || {
-    title: "Kemahasiswaan Fakultas Teknik",
-    breadcrumb: "KEMAHASISWAAN",
+  const t = useTranslations("kemahasiswaan");
+  const tCommon = useTranslations("common");
+
+  const pageInfo: Record<string, { title: string; breadcrumb: string }> = {
+    "/kemahasiswaan/ormawa": {
+      title: t("ormawa.title"),
+      breadcrumb: t("ormawa.breadcrumb"),
+    },
+    "/kemahasiswaan/prestasi": {
+      title: t("prestasi.title"),
+      breadcrumb: t("prestasi.breadcrumb"),
+    },
+    "/kemahasiswaan/beasiswa": {
+      title: t("beasiswa.title"),
+      breadcrumb: t("beasiswa.breadcrumb"),
+    },
+    "/kemahasiswaan/lomba": {
+      title: t("lomba.title"),
+      breadcrumb: t("lomba.breadcrumb"),
+    },
+    "/kemahasiswaan/kegiatan": {
+      title: t("kegiatan.title"),
+      breadcrumb: t("kegiatan.breadcrumb"),
+    },
+    "/kemahasiswaan/konseling": {
+      title: t("konseling.title"),
+      breadcrumb: t("konseling.breadcrumb"),
+    },
+  };
+
+  const current = pageInfo[pathname] || {
+    title: t("headerTitle"),
+    breadcrumb: t("breadcrumb"),
   };
 
   return (
@@ -51,10 +54,10 @@ export default function KemahasiswaanHeader() {
       <div className="relative z-20 max-w-6xl mx-auto px-6 w-full">
         <nav className="flex items-center gap-2 mb-3 text-xs uppercase tracking-wider text-white/80 flex-wrap">
           <Link href="/" className="hover:underline hover:text-[#E5B80B] transition-colors">
-            BERANDA
+            {tCommon("beranda")}
           </Link>
           <ChevronRight className="w-3.5 h-3.5" />
-          <span>KEMAHASISWAAN</span>
+          <span>{t("breadcrumb")}</span>
           <ChevronRight className="w-3.5 h-3.5" />
           <span className="text-[#E5B80B] font-bold">{current.breadcrumb}</span>
         </nav>
