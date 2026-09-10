@@ -115,11 +115,6 @@ export default function PublicNavbar() {
                 </button>
               </div>
 
-              {/* Language Switcher on Mobile Drawer */}
-              <div className="mb-4">
-                <LanguageSwitcher isMobile />
-              </div>
-
               <div className="flex flex-col gap-1">
                 {/* 1. BERANDA */}
                 <Link
@@ -427,16 +422,6 @@ export default function PublicNavbar() {
                     </div>
                   )}
                 </div>
-              </div>
-
-              <div className="mt-auto pt-6 border-t border-white/10">
-                <a
-                  href="/login"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="w-full block text-center bg-[#E5B80B] text-[#002347] font-bold py-2.5 rounded uppercase text-xs tracking-wider hover:bg-[#d4a800] transition-colors"
-                >
-                  {t("portalAdmin")}
-                </a>
               </div>
             </nav>
           </div>
