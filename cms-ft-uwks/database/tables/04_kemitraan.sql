@@ -1,0 +1,21 @@
+-- Table: kemitraan
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
+
+CREATE TABLE IF NOT EXISTS `kemitraan` (
+  `id` INT AUTO_INCREMENT NOT NULL,
+  `partner_name` VARCHAR(255) NOT NULL,
+  `kategori_mitra` ENUM('universitas', 'lembaga') NOT NULL DEFAULT 'universitas',
+  `logo_url` VARCHAR(500) DEFAULT NULL,
+  `partnership_type` VARCHAR(100) DEFAULT NULL,
+  `mou_date` DATE DEFAULT NULL,
+  `description` TEXT DEFAULT NULL,
+  `website_url` VARCHAR(500) DEFAULT NULL,
+  `order_index` INT NOT NULL DEFAULT 0,
+  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `deleted_at` DATETIME DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+SET FOREIGN_KEY_CHECKS = 1;

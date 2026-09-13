@@ -4,12 +4,15 @@ import path from "path";
 import { auth } from "@/lib/auth";
 
 // PDF dan image diizinkan untuk dokumen akademik
-const ALLOWED_TYPES = [
+const ALLOWED_MIME_TYPES = [
   "application/pdf",
+  "application/x-pdf",
   "image/jpeg",
   "image/png",
+  "image/webp",
 ];
-const MAX_SIZE_BYTES = 10 * 1024 * 1024; // 10MB
+const ALLOWED_EXTENSIONS = ["pdf", "jpg", "jpeg", "png", "webp"];
+const MAX_SIZE_BYTES = 15 * 1024 * 1024; // 15MB
 
 export async function POST(request: NextRequest) {
   const session = await auth();
@@ -28,10 +31,17 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Validasi tipe
-    if (!ALLOWED_TYPES.includes(file.type)) {
+    const fileType = (file.type || "").toLowerCase();
+    const rawExt = path.extname(file.name || "").toLowerCase().replace(/^\./, "");
+
+    // Validasi tipe file via MIME atau ekstensi nama file
+    const isValidType =
+      ALLOWED_MIME_TYPES.includes(fileType) ||
+      ALLOWED_EXTENSIONS.includes(rawExt);
+
+    if (!isValidType) {
       return NextResponse.json(
-        { error: "Tipe file tidak didukung. Gunakan PDF, JPG, atau PNG." },
+        { error: "Tipe file tidak didukung. Gunakan file PDF, JPG, PNG, atau WebP." },
         { status: 400 }
       );
     }
@@ -39,7 +49,7 @@ export async function POST(request: NextRequest) {
     // Validasi ukuran
     if (file.size > MAX_SIZE_BYTES) {
       return NextResponse.json(
-        { error: "Ukuran file melebihi 10MB." },
+        { error: "Ukuran file melebihi batas 15MB." },
         { status: 400 }
       );
     }
@@ -47,16 +57,23 @@ export async function POST(request: NextRequest) {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    // Tentukan ekstensi
-    let ext = "pdf";
-    if (file.type === "image/jpeg") ext = "jpg";
-    else if (file.type === "image/png") ext = "png";
+    // Tentukan ekstensi yang konsisten
+    let ext = rawExt || "pdf";
+    if (fileType === "application/pdf" || fileType === "application/x-pdf") {
+      ext = "pdf";
+    } else if (fileType === "image/jpeg" || ext === "jpeg") {
+      ext = "jpg";
+    } else if (fileType === "image/png") {
+      ext = "png";
+    } else if (fileType === "image/webp") {
+      ext = "webp";
+    }
 
-    // Nama file unik dengan prefix 'doc-' untuk membedakan dari gambar biasa
-    const uniqueName = `doc-${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+    // Nama file unik dengan prefix 'doc-' untuk membedakan dari upload umum
+    const uniqueName = `doc-${Date.now()}-${Math.random().toString(36).slice(2, 10)}.${ext}`;
 
     // Pastikan folder uploads ada
-    const uploadDir = path.join(process.cwd(), "public", "uploads");
+    const uploadDir = path.resolve(process.cwd(), "public", "uploads");
     await mkdir(uploadDir, { recursive: true });
 
     const filePath = path.join(uploadDir, uniqueName);

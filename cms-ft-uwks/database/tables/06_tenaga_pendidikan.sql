@@ -1,0 +1,19 @@
+-- Table: tenaga_pendidikan
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
+
+CREATE TABLE IF NOT EXISTS `tenaga_pendidikan` (
+  `id` INT AUTO_INCREMENT NOT NULL,
+  `photo_url` VARCHAR(500) DEFAULT NULL,
+  `nuptk` VARCHAR(20) DEFAULT NULL,
+  `name` VARCHAR(255) NOT NULL,
+  `jabatan` VARCHAR(255) NOT NULL,
+  `email` VARCHAR(255) NOT NULL,
+  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `deleted_at` DATETIME DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `tenaga_pendidikan_nuptk_unique` (`nuptk`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+SET FOREIGN_KEY_CHECKS = 1;
