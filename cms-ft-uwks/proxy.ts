@@ -41,7 +41,12 @@ export const proxy = auth((req) => {
     return NextResponse.next();
   }
 
-  // 3. Delegate public routes to next-intl middleware
+  // 3. Bypass direct static uploads
+  if (pathname.startsWith("/uploads")) {
+    return NextResponse.next();
+  }
+
+  // 4. Delegate public routes to next-intl middleware
   return intlMiddleware(req);
 });
 
@@ -50,11 +55,12 @@ export const config = {
     /*
      * Match semua path KECUALI:
      * - api (API routes, termasuk api/auth, api/users, dll)
+     * - uploads (file upload publik)
      * - _next/static (static files)
      * - _next/image (image optimization)
      * - favicon.ico
      * - static files with extension (e.g. .png, .jpg, .svg, .pdf)
      */
-    "/((?!api|_next/static|_next/image|favicon\\.ico|.*\\..*).*)",
+    "/((?!api|uploads|_next/static|_next/image|favicon\\.ico|.*\\..*).*)",
   ],
 };
